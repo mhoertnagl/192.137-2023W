@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import TextIO
 
 from parse import compile, parse
@@ -28,8 +29,9 @@ class Reader:
         Reads an s-plex specification file.
         :param file: The file object.
         """
+        name = Path(file.name).stem
         res = parse(self.PARAMS_FORMAT, file.readline().strip())
-        instance = Instance(res['s'], res['n'], res['m'])
+        instance = Instance(name, res['s'], res['n'], res['m'])
         while line := file.readline():
             res = self.row_pattern.parse(line.strip())
             s, t, p, w = res['s'], res['t'], res['p'], res['w']
