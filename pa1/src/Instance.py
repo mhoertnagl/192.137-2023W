@@ -86,7 +86,7 @@ class Instance:
             self.__change_matrix[m0, m1] = 0
             self.changeset.remove((m0, m1))
         self.__current_adjacency_matrix[m0, m1] = 0
-        # TODO: Reinitialize DisjointSet.
+        # TODO: Reinitialize self.__components and self.__connections.
         self.__neighbor_counts[m0] -= 1
         self.__neighbor_counts[m1] -= 1
         self.__edges.remove((m0, m1))
@@ -98,10 +98,34 @@ class Instance:
         :param s: The start node.
         :param t: The target node.
         :return: True iff the edge from node s to node t
-                 is edited
+                 is edited.
+        """
+        m0, m1 = min(s, t), max(s, t)
+        return self.__change_matrix[m0, m1] != 0
+
+    def is_added(self, s: int, t: int):
+        """
+        Returns True iff the edge from node s to node t
+        is an added edge.
+        :param s: The start node.
+        :param t: The target node.
+        :return: True iff the edge from node s to node t
+                 is an added edge.
         """
         m0, m1 = min(s, t), max(s, t)
         return self.__change_matrix[m0, m1] == 1
+
+    def is_deleted(self, s: int, t: int):
+        """
+        Returns True iff the edge from node s to node t
+        is a deleted edge.
+        :param s: The start node.
+        :param t: The target node.
+        :return: True iff the edge from node s to node t
+                 is a deleted edge.
+        """
+        m0, m1 = min(s, t), max(s, t)
+        return self.__change_matrix[m0, m1] == -1
 
     def is_adjacent(self, s: int, t: int):
         """

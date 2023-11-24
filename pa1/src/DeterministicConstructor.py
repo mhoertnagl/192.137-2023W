@@ -5,12 +5,7 @@ from Instance import Instance
 
 class DeterministicConstructor:
     """
-    Start with a fully connected adjacency matrix B.
-    Iteratively consider the edge with the highest weight.
-    Test whether the nodes of that edge still meet the
-    s-plex criterion. If true remove the edge in B. If
-    false the edge remains intact. Then continue with the
-    edge with the second-highest weight.
+
     """
 
     def __init__(self, instance: Instance):
