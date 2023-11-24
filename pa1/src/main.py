@@ -17,6 +17,8 @@ def main():
     reader = Reader()
     instance = reader.read(args.input)
     print(instance)
+    for edge in instance:
+        print(edge)
 
 
 if __name__ == '__main__':

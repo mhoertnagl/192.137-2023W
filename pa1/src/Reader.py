@@ -37,4 +37,5 @@ class Reader:
             s, t, p, w = res['s'], res['t'], res['p'], res['w']
             instance.set_adjacency(s, t, p)
             instance.set_weight(s, t, w)
+        instance.finish()
         return instance
