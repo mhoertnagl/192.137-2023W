@@ -35,7 +35,6 @@ class Reader:
         while line := file.readline():
             res = self.row_pattern.parse(line.strip())
             s, t, p, w = res['s'], res['t'], res['p'], res['w']
-            instance.set_adjacency(s, t, p)
-            instance.set_weight(s, t, w)
+            instance.set_edge(s, t, p, w)
         instance.finish()
         return instance

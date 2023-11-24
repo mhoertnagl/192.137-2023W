@@ -16,9 +16,11 @@ def main():
     global args
     reader = Reader()
     instance = reader.read(args.input)
-    print(instance)
-    for edge in instance:
-        print(edge)
+    print("https://dreampuf.github.io/GraphvizOnline")
+    print(instance.graph())
+    # print(instance)
+    # for edge in instance.edges_by_weight_ascending():
+    #     print(edge)
 
 
 if __name__ == '__main__':

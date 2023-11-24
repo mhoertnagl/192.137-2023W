@@ -14,10 +14,10 @@ class DisjointSet:
         :param x: Item x for which to find the representative.
         :return: Set representative.
         """
-        # Finds the representative of the set
-        # that x is an element of.
+        # Finds the root representative of the set for which
+        # x is an element of.
         if self.parent[x] != x:
-            # if x is not the parent of itself then x is
+            # If x is not the parent of itself then x is
             # not the representative of its set, so we
             # recursively call Find on its parent and
             # move i's node directly under the
@@ -31,23 +31,35 @@ class DisjointSet:
         :param x: Set represented by x.
         :param y: Set represented by y.
         """
-        # Find current sets of x and y
-        xset = self.find(x)
-        yset = self.find(y)
-        # If they are already in same set
-        if xset == yset:
+        # Find root representatives of the sets for which
+        # x and y are elements of.
+        sx = self.find(x)
+        sy = self.find(y)
+        # If they are already in same set.
+        if sx == sy:
             return
         # Put smaller ranked item under bigger ranked item
         # if ranks are different.
-        if self.rank[xset] < self.rank[yset]:
-            self.parent[xset] = yset
-        elif self.rank[xset] > self.rank[yset]:
-            self.parent[yset] = xset
+        if self.rank[sx] < self.rank[sy]:
+            self.parent[sx] = sy
+        elif self.rank[sx] > self.rank[sy]:
+            self.parent[sy] = sx
         # If ranks are same, then move y under x and
         # increment rank of x's tree.
         else:
-            self.parent[yset] = xset
-            self.rank[xset] = self.rank[xset] + 1
+            self.parent[sy] = sx
+            self.rank[sx] = self.rank[sx] + 1
+
+    def connected(self, x: int, y: int):
+        """
+        Returns True iff the two sets represented by x and y
+        are connected.
+        :param x: Set represented by x.
+        :param y: Set represented by y.
+        :return: True iff sets represented by x and y are
+                 connected.
+        """
+        return self.find(x) == self.find(y)
 
     def size(self, x: int) -> int:
         """

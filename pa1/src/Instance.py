@@ -2,6 +2,8 @@ from io import StringIO
 
 import numpy as np
 
+from DisjointSet import DisjointSet
+
 
 class Instance:
     """
@@ -26,22 +28,26 @@ class Instance:
         """The number of edges."""
         self.f = 0
         """The objective value."""
-        self.__W = np.zeros((n+1, n+1), dtype=int)
+        self.__weights = np.zeros((n + 1, n + 1), dtype=int)
         """The weight matrix."""
-        self.__A = np.zeros((n+1, n+1), dtype=int)
+        self.__initial_adjacency_matrix = np.zeros((n + 1, n + 1), dtype=int)
         """The initial adjacency matrix."""
-        self.__B = np.zeros((n+1, n+1), dtype=int)
+        self.__current_adjacency_matrix = np.zeros((n + 1, n + 1), dtype=int)
         """The current adjacency matrix."""
-        self.__neighbor_counts: dict[int, int] = {i+1: 0 for i in range(n)}
-        """The number of neighbors for each vertex."""
-        self.__E = np.zeros((n+1, n+1), dtype=int)
+        self.__change_matrix = np.zeros((n + 1, n + 1), dtype=int)
         """The edit matrix."""
         self.changeset: set[(int, int)] = set()
         """The set of edited edges."""
         # Implicit assumption: indices of vertices range from 1 to n+1.
-        self.__P = Plexes(n)
-        """The dictionary of fully connected  components."""
-        self.__R: list[WeightItem] = []
+        self.__components = Components(n)
+        """The dictionary of graph components."""
+        self.__connections = DisjointSet(n+1)
+        """Connected vertices."""
+        self.__neighbor_counts: dict[int, int] = {i+1: 0 for i in range(n)}
+        """The number of neighbors for each vertex."""
+        self.__edges: set[(int, int)] = set()
+        """List of all edges."""
+        self.__edges_by_weight: list[WeightItem] = []
         """The list of weighted edges in ascending order."""
 
     def add_edge(self, s: int, t: int):
@@ -52,15 +58,18 @@ class Instance:
         :param t: The target node.
         """
         m0, m1 = min(s, t), max(s, t)
-        if self.__A[m0, m1] == 0:
-            self.__E[m0, m1] = 1
+        if self.__initial_adjacency_matrix[m0, m1] == 0:
+            self.__change_matrix[m0, m1] = 1
             self.changeset.add((m0, m1))
         else:
-            self.__E[m0, m1] = 0
+            self.__change_matrix[m0, m1] = 0
             self.changeset.remove((m0, m1))
-        self.__B[m0, m1] = 1
+        self.__current_adjacency_matrix[m0, m1] = 1
+        self.__components.add_edge(m0, m1)
+        self.__connections.union(m0, m1)
         self.__neighbor_counts[m0] += 1
         self.__neighbor_counts[m1] += 1
+        self.__edges.add((m0, m1))
 
     def remove_edge(self, s: int, t: int):
         """
@@ -70,15 +79,29 @@ class Instance:
         :param t: The target node.
         """
         m0, m1 = min(s, t), max(s, t)
-        if self.__A[m0, m1] == 1:
-            self.__E[m0, m1] = -1
+        if self.__initial_adjacency_matrix[m0, m1] == 1:
+            self.__change_matrix[m0, m1] = -1
             self.changeset.add((m0, m1))
         else:
-            self.__E[m0, m1] = 0
+            self.__change_matrix[m0, m1] = 0
             self.changeset.remove((m0, m1))
-        self.__B[m0, m1] = 0
+        self.__current_adjacency_matrix[m0, m1] = 0
+        # TODO: Reinitialize DisjointSet.
         self.__neighbor_counts[m0] -= 1
         self.__neighbor_counts[m1] -= 1
+        self.__edges.remove((m0, m1))
+
+    def is_edited(self, s: int, t: int):
+        """
+        Returns True iff the edge from node s to node t
+        is edited (added or removed).
+        :param s: The start node.
+        :param t: The target node.
+        :return: True iff the edge from node s to node t
+                 is edited
+        """
+        m0, m1 = min(s, t), max(s, t)
+        return self.__change_matrix[m0, m1] == 1
 
     def is_adjacent(self, s: int, t: int):
         """
@@ -89,7 +112,7 @@ class Instance:
         :return: true if s and t are adjacent, false else.
         """
         m0, m1 = min(s, t), max(s, t)
-        return self.__B[m0, m1] == 1
+        return self.__current_adjacency_matrix[m0, m1] == 1
 
     def get_weight(self, s: int, t: int):
         """
@@ -99,18 +122,7 @@ class Instance:
         :return: The weight of edge {s, t}.
         """
         m0, m1 = min(s, t), max(s, t)
-        return self.__W[m0, m1]
-
-    def set_weight(self, s: int, t: int, w: int):
-        """
-        Set the weight for edge {s, t}.
-        :param s: The start node.
-        :param t: The target node.
-        :param w: The weight of edge {s, t}.
-        """
-        m0, m1 = min(s, t), max(s, t)
-        self.__W[m0, m1] = w
-        self.__R.append(WeightItem(m0, m1, w))
+        return self.__weights[m0, m1]
 
     def evaluate(self):
         """
@@ -120,8 +132,8 @@ class Instance:
         self.f = 0
         for i in range(self.n):
             for j in range(i+1, self.n):
-                if self.__E[i+1, j+1] == 1:
-                    self.f += self.__W[i+1, j+1]
+                if self.__change_matrix[i + 1, j + 1] == 1:
+                    self.f += self.__weights[i + 1, j + 1]
         return self.f
 
     def delta_evaluate(self, s: int, t: int):
@@ -129,8 +141,11 @@ class Instance:
         # TODO: Check if this edge would be edited
         #       then compute delta evaluation.
 
-    def __iter__(self):
-        return self.__R.__iter__()
+    def edges(self):
+        return self.__edges.__iter__()
+
+    def edges_by_weight_ascending(self):
+        return self.__edges_by_weight.__iter__()
 
     def __str__(self):
         s = StringIO()
@@ -140,28 +155,44 @@ class Instance:
         s.write(f"Number of edges: {self.m}\n")
         s.write(f"Objective value: {self.f}\n")
         s.write("Adjacency matrix A:\n")
-        s.write(self.__A.__str__())
+        s.write(self.__initial_adjacency_matrix.__str__())
         s.write("\n")
         s.write("Weights matrix W:\n")
-        s.write(self.__W.__str__())
+        s.write(self.__weights.__str__())
         s.write("\n")
         return s.getvalue()
 
-    def set_adjacency(self, s: int, t: int, p: int):
+    def graph(self):
+        s = StringIO()
+        s.write(f"graph {self.name} {{\n")
+        for (v, w) in self.edges():
+            s.write(f"  {v} -- {w} \n")
+        s.write("}\n")
+        return s.getvalue()
+
+    def set_edge(self, s: int, t: int, p: int, w: int):
         """
-        Set the adjacency for nodes s and t without
+        Set the adjacency and weight for nodes s and t without
         affecting the edit status of the edge.
-        Call this method only to initially populate
-        the instance.
+        Call this method only to initially populate the instance.
         :param s: The start node.
         :param t: The target node.
         :param p: 0 or 1 indicating adjacency.
+        :param w: The weight of edge {s, t}.
         """
         m0, m1 = min(s, t), max(s, t)
-        self.__A[m0, m1] = p
-        self.__B[m0, m1] = p
-        self.__neighbor_counts[m0] += 1
-        self.__neighbor_counts[m1] += 1
+        # Set adjacency.
+        if p == 1:
+            self.__initial_adjacency_matrix[m0, m1] = 1
+            self.__current_adjacency_matrix[m0, m1] = 1
+            self.__components.add_edge(m0, m1)
+            self.__connections.union(m0, m1)
+            self.__neighbor_counts[m0] += 1
+            self.__neighbor_counts[m1] += 1
+            self.__edges.add((m0, m1))
+        # Set weight.
+        self.__weights[m0, m1] = w
+        self.__edges_by_weight.append(WeightItem(m0, m1, w, p))
 
     def finish(self):
         """
@@ -170,10 +201,10 @@ class Instance:
         this instance.
         """
         self.evaluate()
-        self.__R.sort()
+        self.__edges_by_weight.sort()
 
 
-class Plexes:
+class Components:
 
     def __init__(self, n: int):
         """
@@ -192,7 +223,12 @@ class Plexes:
         """
         vs = self.__components[i]
         ws = self.__components[j]
-        vs.union(ws)
+        # Add the component with fewer items to the
+        # component with more items.
+        if vs.n > ws.n:
+            vs.union(ws)
+        else:
+            ws.union(vs)
 
 
 class Component:
@@ -210,17 +246,11 @@ class Component:
         self.n = len(self.vertices)
         other.vertices = self.vertices
         other.n = self.n
-        # vs = self.vertices.union(other.vertices)
-        # vl = len(vs)
-        # self.vertices = vs
-        # other.vertices = vs
-        # self.n = vl
-        # other.n = vl
 
 
 class WeightItem:
 
-    def __init__(self, s: int, t: int, w: int):
+    def __init__(self, s: int, t: int, w: int, p: int):
         m0, m1 = min(s, t), max(s, t)
         self.s = m0
         """The start node."""
@@ -228,9 +258,11 @@ class WeightItem:
         """THe target node."""
         self.w = w
         """The weight."""
+        self.p = p
+        """The initial adjacency."""
 
     def __lt__(self, other):
-        return self.w < other.w
+        return self.w < other.w or (self.w == other.w and self.p > other.p)
 
     def __str__(self):
-        return f"{self.s} ---[{self.w}]--> {self.t}"
+        return f"{self.s} {'*' if self.p == 1 else '-'}---[{self.w}]--> {self.t}"
