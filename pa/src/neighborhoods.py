@@ -23,6 +23,14 @@ class OneFlipNeighborhood(Neighborhood, ABC):
 class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
+        # Randomly choose component c with size >= 4.
+        # Randomly choose two edges e1 = (x1, y1) and
+        # e2 = (x2, y2) from c that do not share a vertex
+        # (x1 != x2 != y1 != y2). There should not be
+        # a direct edge between x1 and y2 or x2 and
+        # y1. Or equivalently: edges (x1, y2) and
+        # (x2, y1) must not exist.
+        # Swap the edges.
         pass
 
 
