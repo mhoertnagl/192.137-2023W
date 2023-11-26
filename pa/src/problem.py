@@ -11,10 +11,8 @@ class Problem:
         self.name = name     # Problem instance name.
         self.s = s           # s-plex number.
         self.n = n           # Number of vertices.
-        self.__graph = nx.Graph()  # Input graph.
-        # self.H = nx.Graph()  # Fully connected graph.
-        # self.__neighbors = np.zeros((n, n), dtype=bool)  # Initial adjacency matrix.
-        self.__weights = np.zeros((n, n), dtype=int)
+        self.graph = nx.Graph()  # Input graph.
+        self.weights = np.zeros((n, n), dtype=int)
         self.all_edges = []
         self.__inti_edges(edges)
         self.__init_all_edges()
@@ -22,10 +20,8 @@ class Problem:
     def __inti_edges(self, edges: list):
         for (u, v, p, w) in edges:
             if p == 1:
-                self.__graph.add_edge(u, v)
-            # self.H.add_edge(u, v)
-            # self.__neighbors[u-1, v-1], = p == 1
-            self.__weights[u-1, v-1] = w
+                self.graph.add_edge(u, v)
+            self.weights[u - 1, v - 1] = w
 
     def __init_all_edges(self):
         for i in range(1, self.n+1):
@@ -33,16 +29,14 @@ class Problem:
                 self.all_edges.append((i, j))
 
     def has_edge(self, u: int, v: int):
-        # m0, m1 = min(u, v), max(u, v)
-        # return self.__graph.has_edge(m0, m1)
-        return self.__graph.has_edge(u, v)
+        return self.graph.has_edge(u, v)
 
     def weight(self, u: int, v: int):
         m0, m1 = min(u, v), max(u, v)
-        return self.__weights[m0-1, m1-1]
+        return self.weights[m0 - 1, m1 - 1]
 
     def edges(self):
-        return self.__graph.edges()
+        return self.graph.edges()
 
     def initial_edges_weighted(self, reverse=False):
         edges = [(self.weight(u, v), u, v) for (u, v) in self.edges()]
@@ -66,10 +60,10 @@ class Problem:
         # s.write(self.__initial_adjacency_matrix.__str__())
         # s.write("\n")
         s.write("Weights matrix W:\n")
-        s.write(self.__weights.__str__())
+        s.write(self.weights.__str__())
         s.write("\n")
         return s.getvalue()
 
     def draw(self):
-        nx.draw(self.__graph, with_labels=True, font_weight='bold')
+        nx.draw(self.graph, with_labels=True, font_weight='bold')
         plt.show()
