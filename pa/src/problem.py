@@ -51,6 +51,12 @@ class Problem:
             edges.append((w, i, j))
         return sorted(edges, reverse=reverse)
 
+    def worst_value(self):
+        f = 0
+        for (i, j) in self.all_edges:
+            f += self.weight(i, j)
+        return f
+
     def __str__(self):
         s = StringIO()
         s.write(f"Name: {self.name}\n")

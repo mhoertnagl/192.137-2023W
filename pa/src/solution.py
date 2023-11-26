@@ -124,6 +124,9 @@ class Solution:
     def delta_evaluate(self, edges: list[(int, int)]):
         pass
 
+    def worst_value(self):
+        return self.prob.worst_value()
+
     def draw(self):
         nx.draw(self.graph, with_labels=True, font_weight='bold')
         plt.show()
