@@ -15,7 +15,9 @@ class Problem:
         # self.H = nx.Graph()  # Fully connected graph.
         # self.__neighbors = np.zeros((n, n), dtype=bool)  # Initial adjacency matrix.
         self.__weights = np.zeros((n, n), dtype=int)
+        self.all_edges = []
         self.__inti_edges(edges)
+        self.__init_all_edges()
 
     def __inti_edges(self, edges: list):
         for (u, v, p, w) in edges:
@@ -24,6 +26,11 @@ class Problem:
             # self.H.add_edge(u, v)
             # self.__neighbors[u-1, v-1], = p == 1
             self.__weights[u-1, v-1] = w
+
+    def __init_all_edges(self):
+        for i in range(1, self.n+1):
+            for j in range(i+1, self.n+1):
+                self.all_edges.append((i, j))
 
     def has_edge(self, u: int, v: int):
         # m0, m1 = min(u, v), max(u, v)
@@ -43,12 +50,11 @@ class Problem:
 
     def all_edges_weighted(self, reverse=False):
         edges = []
-        for i in range(1, self.n+1):
-            for j in range(i+1, self.n+1):
-                w = self.weight(i, j)
-                # If it is an initial edge take the negated weight.
-                w = -w if self.has_edge(i, j) else w
-                edges.append((w, i, j))
+        for (i, j) in self.all_edges:
+            w = self.weight(i, j)
+            # If it is an initial edge take the negated weight.
+            w = -w if self.has_edge(i, j) else w
+            edges.append((w, i, j))
         return sorted(edges, reverse=reverse)
 
     def __str__(self):

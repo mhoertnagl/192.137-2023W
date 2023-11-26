@@ -2,8 +2,8 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from Problem import Problem
-from Solution import Solution
+from problem import Problem
+from solution import Solution
 
 
 class DetCon1:
@@ -11,8 +11,12 @@ class DetCon1:
     def __init__(self, problem: Problem):
         self.__problem = problem
         self.__solution = Solution(problem)
+        # For the initial empty solution, every vertex
+        # is a singular component.
+        n = self.__problem.n + 1
+        self.__components = [{i} for i in range(1, n)]
         # TODO: Replace with custom data structure.
-        self.__components: list[set] = self.__solution.components()
+        # self.__components: list[set] = self.__solution.components()
 
     def construct(self):
         edges = self.__problem.initial_edges_weighted(reverse=True)
@@ -23,8 +27,8 @@ class DetCon1:
             cv = self.component(v)
             # The union would be the new component if we add
             # edge (u,v).
-            # TODO: Take set sizes into account.
-            cn = cu.union(cv)
+            # Add the smaller set to the larger one.
+            cn = cu.union(cv) if len(cu) > len(cv) else cv.union(cu)
             # Find the minimum degree of all vertices in the
             # unified component. For vertices u and v the degree
             # is incremented by because of the new edge added.
@@ -58,3 +62,17 @@ class DetCon1:
             if v in c:
                 return c
         return set()
+
+
+class DetCon2:
+
+    def __init__(self, problem: Problem):
+        self.__problem = problem
+        self.__solution = Solution(problem)
+
+    def construct(self):
+        for (_, i, j) in self.__problem.all_edges_weighted():
+            self.__solution.add_edge(i, j)
+            if not self.__solution.is_feasible():
+                self.__solution.remove_edge(i, j)
+        return self.__solution

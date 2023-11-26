@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TextIO
 
-from Problem import Problem
+from problem import Problem
 
 
 class Reader:

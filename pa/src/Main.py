@@ -9,25 +9,24 @@ import traceback
 import argparse
 import time
 
-from Reader import Reader
-from DetCon1 import DetCon1
-from DetCon2 import DetCon2
+from reader import Reader
+from detcon import DetCon1, DetCon2
 
 
 def main():
     global args
     reader = Reader()
     problem = reader.read(args.input)
-    problem.s = 1
+    problem.s = 3
     # print(problem)
     # print(problem.weight(1, 6))
     # print(problem.all_edges_weighted())
     # problem.draw()
 
-    # con = DetCon1(problem)
-    con = DetCon2(problem)
+    con = DetCon1(problem)
+    # con = DetCon2(problem)
     solution = con.construct()
-    # solution.draw()
+    solution.draw()
     print(solution.evaluate())
 
 
