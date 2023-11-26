@@ -8,31 +8,27 @@ import sys
 import traceback
 import argparse
 import time
-import numpy as np
-import networkx as nx
 
 from Reader import Reader
-from DetCon2 import DetCon2
 from DetCon1 import DetCon1
+from DetCon2 import DetCon2
 
 
 def main():
     global args
     reader = Reader()
     problem = reader.read(args.input)
-    problem.s = 3
+    problem.s = 1
     # print(problem)
     # print(problem.weight(1, 6))
     # print(problem.all_edges_weighted())
     # problem.draw()
 
-    # con = DetCon2(problem)
-    # solution = con.construct()
-    # solution.draw()
-
     # con = DetCon1(problem)
-    # solution = con.construct()
+    con = DetCon2(problem)
+    solution = con.construct()
     # solution.draw()
+    print(solution.evaluate())
 
 
 if __name__ == '__main__':
