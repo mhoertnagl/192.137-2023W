@@ -7,32 +7,29 @@ from solution import Solution
 
 class Annealer:
 
-    def __init__(self,
-                 solution: Solution,
-                 neighborhood: Neighborhood,
-                 alpha: float = 0.95):
-        self.__solution = solution
-        self.__neighborhood = neighborhood
-        self.__alpha = alpha
-        self.__temperature = 0
-        self.__terminate = False
+    def __init__(self, sol: Solution, neighbors: Neighborhood, alpha: float = 0.95):
+        self.sol = sol
+        self.neighbors = neighbors
+        self.alpha = alpha
+        self.temperature = 0
+        self.terminate = False
 
     def run(self) -> Solution:
         # while not self.__terminate:
         for _ in range(1000):
             # while True: # TODO: Equilibrium condition?
             for _ in range(1000):
-                new_solution, delta = self.__neighborhood.choose(self.__solution)
-                if self.metropolis(delta):
-                    self.__solution = new_solution
+                new_sol = self.neighbors.choose(self.sol)
+                if self.metropolis(new_sol.value - self.sol.value):
+                    self.sol = new_sol
             self.cool_down()
-        return self.__solution
+        return self.sol
 
     def metropolis(self, delta: int) -> bool:
         if delta < 0:
             return True
-        t = abs(delta) / self.__temperature
+        t = abs(delta) / self.temperature
         return np.random.random_sample() <= math.exp(-t)
 
     def cool_down(self):
-        self.__temperature *= self.__alpha
+        self.temperature *= self.alpha
