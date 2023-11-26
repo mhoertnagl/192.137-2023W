@@ -12,13 +12,27 @@ import numpy as np
 import networkx as nx
 
 from Reader import Reader
+from DetCon2 import DetCon2
+from DetCon1 import DetCon1
 
 
 def main():
     global args
     reader = Reader()
     problem = reader.read(args.input)
-    problem.draw()
+    problem.s = 3
+    # print(problem)
+    # print(problem.weight(1, 6))
+    # print(problem.all_edges_weighted())
+    # problem.draw()
+
+    # con = DetCon2(problem)
+    # solution = con.construct()
+    # solution.draw()
+
+    # con = DetCon1(problem)
+    # solution = con.construct()
+    # solution.draw()
 
 
 if __name__ == '__main__':

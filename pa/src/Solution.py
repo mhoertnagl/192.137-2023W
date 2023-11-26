@@ -11,6 +11,7 @@ class Solution:
     def __init__(self, problem: Problem):
         self.__problem = problem
         self.__graph = nx.Graph()
+        self.__graph.add_nodes_from(range(1, problem.n))
 
     def add_edge(self, u: int, v: int):
         return self.__graph.add_edge(u, v)
@@ -27,7 +28,7 @@ class Solution:
         return self.has_edge(u, v) != self.__problem.has_edge(u, v)
 
     def components(self) -> list[set]:
-        return nx.connected_components(self.__graph)
+        return list(nx.connected_components(self.__graph))
 
     def degree(self, v: int):
         return self.__graph.degree(v)
@@ -37,9 +38,9 @@ class Solution:
         for component in self.components():
             size = len(component)
             for v in component:
-                if size - s > self.degree(v):
-                    return True
-        return False
+                if self.degree(v) < size - s:
+                    return False
+        return True
 
     def is_vertex_feasible(self, v: int):
         s = self.__problem.s

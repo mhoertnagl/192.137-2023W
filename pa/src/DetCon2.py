@@ -2,7 +2,7 @@ from Problem import Problem
 from Solution import Solution
 
 
-class DetCon1:
+class DetCon2:
 
     def __init__(self, problem: Problem):
         self.__problem = problem

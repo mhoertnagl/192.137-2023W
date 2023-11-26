@@ -1,3 +1,5 @@
+from io import StringIO
+
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -46,8 +48,21 @@ class Problem:
                 w = self.weight(i, j)
                 # If it is an initial edge take the negated weight.
                 w = -w if self.has_edge(i, j) else w
-                edges.append((-w, i, j))
+                edges.append((w, i, j))
         return sorted(edges, reverse=reverse)
+
+    def __str__(self):
+        s = StringIO()
+        s.write(f"Name: {self.name}\n")
+        s.write(f"s-plex number: {self.s}\n")
+        s.write(f"Number of nodes: {self.n}\n")
+        # s.write("Adjacency matrix A:\n")
+        # s.write(self.__initial_adjacency_matrix.__str__())
+        # s.write("\n")
+        s.write("Weights matrix W:\n")
+        s.write(self.__weights.__str__())
+        s.write("\n")
+        return s.getvalue()
 
     def draw(self):
         nx.draw(self.__graph, with_labels=True, font_weight='bold')

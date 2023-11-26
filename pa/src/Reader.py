@@ -9,7 +9,7 @@ class Reader:
     def read(self, filename: str):
         with open(filename) as file:
             name = get_file_stem(file)
-            (s, n) = parse_ints(file.readline())
+            (s, n, _, _) = parse_ints(file.readline())
             edges = self.__read_edges(file)
             return Problem(name, s, n, edges)
 
