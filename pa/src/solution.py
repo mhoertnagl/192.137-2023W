@@ -12,8 +12,11 @@ class Solution:
         self.prob = prob
         self.graph = nx.Graph()
         self.graph.add_nodes_from(range(1, prob.n))
-        self.value_valid = False
-        self.value = self.evaluate()
+        # An empty solution has all initial edges deleted.
+        self.changeset = set(prob.edges())
+        # self.value_valid = False
+        # self.value = self.evaluate()
+        self.value = self.__evaluate()
         self.components_valid = False
         self.components = self.get_components()
 
@@ -26,14 +29,42 @@ class Solution:
         return self.prob.n
 
     def add_edge(self, u: int, v: int):
-        self.value_valid = False
+        # Update changeset.
+        if self.prob.has_edge(u, v):
+            # Add an initial vertex.
+            self.changeset.remove((u, v))
+            self.value -= self.prob.weight(u, v)
+        else:
+            # Add an additional vertex.
+            self.changeset.add((u, v))
+            self.value += self.prob.weight(u, v)
+        # Invalidate computed values.
+        # self.value_valid = False
         self.components_valid = False
+        # Add edge.
         return self.graph.add_edge(u, v)
 
     def remove_edge(self, u: int, v: int):
-        self.value_valid = False
+        # Update changeset.
+        if self.prob.has_edge(u, v):
+            # Remove an initial edge.
+            self.changeset.add((u, v))
+            self.value += self.prob.weight(u, v)
+        else:
+            # Remove an additional edge.
+            self.changeset.remove((u, v))
+            self.value -= self.prob.weight(u, v)
+        # Invalidate computed values.
+        # self.value_valid = False
         self.components_valid = False
+        # Remove edge.
         return self.graph.remove_edge(u, v)
+
+    def toggle_edge(self, u: int, v: int):
+        if self.has_edge(u, v):
+            return self.remove_edge(u, v)
+        else:
+            return self.add_edge(u, v)
 
     def random_edge_from_all(self) -> (int, int):
         i = np.random.random_integers(1, self.num_of_vertices())
@@ -72,18 +103,23 @@ class Solution:
         return False
 
     def evaluate(self):
-        if not self.value_valid:
-            self.value = self.__evaluate()
-            self.value_valid = True
+        # if not self.value_valid:
+        # self.value = self.__evaluate()
+        # self.value_valid = True
         return self.value
 
     def __evaluate(self):
-        f, n = 0, self.prob.n + 1
-        for i in range(1, n):
-            for j in range(i+1, n):
-                if self.edge_edited(i, j):
-                    f += self.prob.weight(i, j)
+        # return sum([self.prob.weight(i, j) for (i, j) in self.changeset])
+        f = 0
+        for (i, j) in self.changeset:
+            f += self.prob.weight(i, j)
         return f
+        # f, n = 0, self.prob.n + 1
+        # for i in range(1, n):
+        #     for j in range(i+1, n):
+        #         if self.edge_edited(i, j):
+        #             f += self.prob.weight(i, j)
+        # return f
 
     def delta_evaluate(self, edges: list[(int, int)]):
         pass
