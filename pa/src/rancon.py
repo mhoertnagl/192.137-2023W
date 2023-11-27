@@ -9,6 +9,7 @@ from problem import Problem
 from solution import Solution
 import random
 
+
 class RanCon:
 
     def __init__(self, prob: Problem, k: int):
@@ -19,8 +20,6 @@ class RanCon:
         # is a singular component.
         n = self.prob.n + 1
         self.components = [{i} for i in range(1, n)]
-        # TODO: Replace with custom data structure.
-        # self.__components: list[set] = self.__solution.components()
 
     def construct(self):
         edges = self.prob.initial_edges_weighted(reverse=True)
@@ -45,21 +44,19 @@ class RanCon:
             # s-plex property is met if the minimum degree of
             # unified component is greater or equal to the
             # required degree.
-            if min_component_degree >= min_required_degree:
+            if min_component_degree > min_required_degree:
                 self.sol.add_edge(u, v)
                 # Update the connected components.
-                # TODO: Use custom data structure for increased speed.
                 self.components = self.sol.get_components()
         return self.sol
 
-    
-    def random_shuffle(self, edges:list):
-        # Partition list of edges in k long sublists
+    def random_shuffle(self, edges: list):
+        # Partition list of edges in k long sub-lists.
         p_edges = [edges[i:i + self.k] for i in range(0, len(edges), self.k)]
-        # Shuffle each sublist
+        # Shuffle each sublist.
         for i in range(len(p_edges)):
             random.shuffle(p_edges[i]) 
-        # merge partitioned list
+        # Merge partitioned list.
         shuffled_edges = [j for i in p_edges for j in i]
         return shuffled_edges
     

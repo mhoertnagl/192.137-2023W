@@ -11,8 +11,6 @@ class DetCon1:
         # is a singular component.
         n = self.prob.n + 1
         self.components = [{i} for i in range(1, n)]
-        # TODO: Replace with custom data structure.
-        # self.__components: list[set] = self.__solution.components()
 
     def construct(self):
         edges = self.prob.initial_edges_weighted(reverse=True)
@@ -44,7 +42,6 @@ class DetCon1:
     # Get the minimum degree node for a connected component.
     def min_degree(self, c: set, x: int, y: int) -> int:
         return min(map(lambda v: self.degree(v, x, y), c))
-        # return min(map(lambda v: self.sol.degree(v), c))
 
     # Get the degree for vertex v and the degree
     # plus one if v is x or y.
@@ -72,7 +69,3 @@ class DetCon2:
             if not self.sol.is_feasible():
                 self.sol.remove_edge(i, j)
         return self.sol
-
-# TODO: Randomisierte Varianten
-# Zufällig aus edges mit gleichen Gewichten
-# In n Blöcke teilen und die Blöcke shufflen.
