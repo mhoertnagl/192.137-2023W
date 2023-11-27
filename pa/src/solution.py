@@ -95,8 +95,14 @@ class Solution:
     def get_neighbors(self, v: int):
         return self.graph.neighbors(v)
 
-    def get_edges(self, nbunch: any):
-        return list(self.graph.edges(nbunch))
+    def get_edges(self, vs: set[int]):
+        # TODO: Sollte eigentlich funktionieren, tut es aber nicht.
+        # return list(self.graph.edges(nbunch))
+        edges = []
+        for (u, v) in self.graph.edges:
+            if u in vs or v in vs:
+                edges.append((u, v))
+        return edges
 
     def get_components(self) -> list[set[int]]:
         if not self.components_valid:

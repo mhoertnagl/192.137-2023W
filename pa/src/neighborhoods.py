@@ -32,18 +32,64 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
         cs = sol.get_components()
-        # Get components with at least two edges
-        # that do not share a vertex.
-        # (Ignore the shared vertex.)
-        es = []  # TODO
+        # Consider all components of length at
+        # least 4. Then the components have at
+        # least 3 edges.
+        cs = list(filter(lambda x: len(x) >= 4, cs))
+        # Pick one of the components randomly.
+        # TODO: We could do this multiple times
+        #       in a single choose operation.
+        c = cs[np.random.randint(0, len(cs))]
+        # Get all edges for this component.
+        es = sol.get_edges(c)
+        # Shuffle the edges, then take the first
+        # two edges.
         random.shuffle(es)
         (x1, y1) = es[0]
         (x2, y2) = es[1]
         new_sol = sol.copy()
-        new_sol.remove_edge(x1, y1)
-        new_sol.remove_edge(x2, y2)
-        new_sol.add_edge(x1, y2)
-        new_sol.add_edge(x2, y1)
+        # Make sure that the cross-edges do not exist.
+        if not sol.has_edge(x1, y2) and not sol.has_edge(x2, y1):
+            # Remove the chosen edges, ...
+            new_sol.remove_edge(x1, y1)
+            new_sol.remove_edge(x2, y2)
+            # ... then add the cross-edges.
+            new_sol.add_edge(x1, y2)
+            new_sol.add_edge(x2, y1)
+        return new_sol
+
+
+class SingleComponentMultiExchangeNeighborhood(Neighborhood, ABC):
+
+    def choose(self, sol: Solution) -> Solution:
+        cs = sol.get_components()
+        # Consider all components of length at
+        # least 4. Then the components have at
+        # least 3 edges.
+        cs = list(filter(lambda x: len(x) >= 4, cs))
+        # Pick one of the components randomly.
+        # TODO: We could do this multiple times
+        #       in a single choose operation.
+        c = cs[np.random.randint(0, len(cs))]
+        # Get all edges for this component.
+        es = sol.get_edges(c)
+        # Shuffle the edges, then take the first
+        # two edges.
+        random.shuffle(es)
+        new_sol = sol.copy()
+        # Iterate over all edges.
+        for i in range(0, len(es)):
+            (x1, y1) = es[i]
+            (x2, y2) = es[i+1]
+            # Make sure that the cross-edges do not exist.
+            if not sol.has_edge(x1, y2) and not sol.has_edge(x2, y1):
+                # Remove the chosen edges, ...
+                new_sol.remove_edge(x1, y1)
+                new_sol.remove_edge(x2, y2)
+                # ... then add the cross edges.
+                new_sol.add_edge(x1, y2)
+                new_sol.add_edge(x2, y1)
+                # Stop with the first successful exchange.
         return new_sol
 
 
