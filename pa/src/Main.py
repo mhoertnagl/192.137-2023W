@@ -20,20 +20,20 @@ def main():
     reader = Reader()
     # problem = reader.read(args.input)
     problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-    problem.s = 1
+    # problem.s = 1
     # print(problem)
     # print(problem.weight(1, 6))
     # print(problem.all_edges_weighted())
     # problem.draw()
 
-    # con = DetCon1(problem)
-    con = DetCon2(problem)
+    con = DetCon1(problem)
+    # con = DetCon2(problem)
     sol = con.construct()
     sol.draw()
     print(sol.get_value())
 
     nbh = VertexMoveNeighborhood()
-    ls = LocalSearch(sol, nbh, 100)
+    ls = LocalSearch(sol, nbh, 1000)
     new_sol = ls.run()
     new_sol.draw()
     print(new_sol.get_value())

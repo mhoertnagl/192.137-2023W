@@ -30,7 +30,8 @@ class OneFlipNeighborhood(Neighborhood, ABC):
 class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
-        # components = sol.get_components()
+        cs = sol.get_components()
+        cs = filter(lambda c: len(c) >= 4, cs)
         # i = np.random.randint(0, len(components))
         # Randomly choose component c with size >= 4.
         # Randomly choose two edges e1 = (x1, y1) and
