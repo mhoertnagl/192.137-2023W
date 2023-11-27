@@ -12,20 +12,15 @@ class Neighborhood(ABC):
         pass
 
 
-class OneFlipNeighborhood(Neighborhood, ABC):
-
-    def choose(self, sol: Solution) -> Solution:
-        new_sol = sol.copy()
-        for (i, j) in sol.prob.all_edges:
-            new_sol.toggle_edge(i, j)
-            if new_sol.is_feasible():
-                return new_sol
-            else:
-                new_sol.toggle_edge(i, j)
-        # (i, j) = sol.random_edge_from_all()
-        # new_sol = sol.copy()
-        # new_sol.toggle_edge(i, j)
-        return new_sol
+# class OneFlipNeighborhood(Neighborhood, ABC):
+#
+#     def choose(self, sol: Solution) -> Solution:
+#         new_sol = sol.copy()
+#         for (i, j) in sol.prob.all_edges:
+#             new_sol.toggle_edge(i, j)
+#             if new_sol.is_feasible():
+#                 return new_sol
+#         return sol
 
 
 class TwoExchangeNeighborhood(Neighborhood, ABC):
