@@ -67,7 +67,7 @@ class Solution:
             return self.add_edge(u, v)
 
     def random_edge_from_all(self) -> (int, int):
-        i = np.random.random_integers(1, self.num_of_vertices())
+        i = np.random.randint(0, len(self.prob.all_edges)-1)
         return self.prob.all_edges[i]
 
     def has_edge(self, u: int, v: int):
