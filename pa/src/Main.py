@@ -35,6 +35,7 @@ def main():
     nbh = VertexMoveNeighborhood()
     ls = LocalSearch(sol, nbh, 1000)
     new_sol = ls.run()
+    print(new_sol.is_feasible())
     new_sol.draw()
     print(new_sol.get_value())
 

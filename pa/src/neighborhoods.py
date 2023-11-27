@@ -1,3 +1,4 @@
+import random
 from abc import ABC, abstractmethod
 import numpy as np
 
@@ -31,8 +32,11 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
         cs = sol.get_components()
-        cs = filter(lambda c: len(c) >= 4, cs)
-        # i = np.random.randint(0, len(components))
+        cs = list(filter(lambda c: len(c) >= 4, cs))
+        i = np.random.randint(0, len(cs))
+        c = list(cs[i])
+        random.shuffle(c)
+
         # Randomly choose component c with size >= 4.
         # Randomly choose two edges e1 = (x1, y1) and
         # e2 = (x2, y2) from c that do not share a vertex
@@ -56,7 +60,8 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
             new_sol.remove_edge(u, v)
         # Add edges to new component.
         for u in c2:
-            new_sol.add_edge(u, v)
+            if u != v:
+                new_sol.add_edge(u, v)
         return new_sol
 
 
