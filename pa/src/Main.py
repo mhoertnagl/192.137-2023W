@@ -20,8 +20,10 @@ def main():
     # global args
     reader = Reader()
     # problem = reader.read(args.input)
-    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-    problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
+    # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     print(problem)
     # problem.s = 1
     # print(problem)
@@ -37,10 +39,11 @@ def main():
     print(sol.get_value())
 
     nbh1 = nhs.VertexMoveNeighborhood()
-    # ls1 = LocalSearch(sol, nbh1, 1000)
-    # sol1 = ls1.run()
-    an = Annealer(sol, nbh1, 50, 0.75)
-    sol1 = an.run()
+    nbh1 = nhs.ComponentMergeNeighborhood()
+    ls1 = LocalSearch(sol, nbh1, 1000)
+    sol1 = ls1.run()
+    # an = Annealer(sol, nbh1, 50, 0.75)
+    # sol1 = an.run()
     print(sol1.is_feasible())
     sol1.draw()
     print(sol1.get_value())

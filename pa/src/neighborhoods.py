@@ -109,6 +109,14 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
-        c1 = sol.get_random_component()
-        c2 = sol.get_random_component()
-        pass
+        cs = sol.get_components()
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        c1 = cs[0]
+        c2 = cs[1]
+        new_sol = sol.copy()
+        for v1 in c1:
+            for v2 in c2:
+                new_sol.add_edge(v1, v2)
+        return new_sol
