@@ -17,6 +17,6 @@ class LocalSearch:
     def run(self) -> Solution:
         for _ in range(self.num_iterations):
             new_sol = self.nbh.choose(self.sol)
-            if new_sol.value <= self.sol.value:
+            if new_sol.get_value() <= self.sol.get_value():
                 self.sol = new_sol
         return self.sol

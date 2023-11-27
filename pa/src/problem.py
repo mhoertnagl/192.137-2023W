@@ -13,9 +13,11 @@ class Problem:
         self.n = n           # Number of vertices.
         self.graph = nx.Graph()  # Input graph.
         self.weights = np.zeros((n, n), dtype=int)
+        self.edges = set()
         self.all_edges = []
         self.__inti_edges(edges)
         self.__init_all_edges()
+        self.__init_edges()
 
     def __inti_edges(self, edges: list):
         for (u, v, p, w) in edges:
@@ -28,6 +30,9 @@ class Problem:
             for j in range(i+1, self.n+1):
                 self.all_edges.append((i, j))
 
+    def __init_edges(self):
+        self.edges = {tuple(sorted(t)) for t in self.graph.edges()}
+
     def has_edge(self, u: int, v: int):
         return self.graph.has_edge(u, v)
 
@@ -35,11 +40,8 @@ class Problem:
         m0, m1 = min(u, v), max(u, v)
         return self.weights[m0 - 1, m1 - 1]
 
-    def edges(self):
-        return self.graph.edges()
-
     def initial_edges_weighted(self, reverse=False):
-        edges = [(self.weight(u, v), u, v) for (u, v) in self.edges()]
+        edges = [(self.weight(u, v), u, v) for (u, v) in self.edges]
         return sorted(edges, reverse=reverse)
 
     def all_edges_weighted(self, reverse=False):
