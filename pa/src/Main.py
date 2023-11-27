@@ -12,13 +12,17 @@ import time
 from reader import Reader
 from detcon import DetCon1, DetCon2
 from localsearch import LocalSearch
+from annealer import Annealer
 import neighborhoods as nhs
+
 
 def main():
     # global args
     reader = Reader()
     # problem = reader.read(args.input)
-    problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    print(problem)
     # problem.s = 1
     # print(problem)
     # print(problem.weight(1, 6))
@@ -28,23 +32,25 @@ def main():
     con = DetCon1(problem)
     # con = DetCon2(problem)
     sol = con.construct()
+    print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
 
     nbh1 = nhs.VertexMoveNeighborhood()
-    ls1 = LocalSearch(sol, nbh1, 1000)
-    sol1 = ls1.run()
+    # ls1 = LocalSearch(sol, nbh1, 1000)
+    # sol1 = ls1.run()
+    an = Annealer(sol, nbh1, 50, 0.75)
+    sol1 = an.run()
     print(sol1.is_feasible())
     sol1.draw()
     print(sol1.get_value())
-
-    nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
-    ls2 = LocalSearch(sol1, nbh2, 1000)
-    sol2 = ls2.run()
-    print(sol2.is_feasible())
-    sol2.draw()
-    print(sol2.get_value())
-
+    #
+    # nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
+    # ls2 = LocalSearch(sol1, nbh2, 1000)
+    # sol2 = ls2.run()
+    # print(sol2.is_feasible())
+    # sol2.draw()
+    # print(sol2.get_value())
 
 if __name__ == '__main__':
     main()

@@ -51,7 +51,8 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
             # ... then add the cross-edges.
             new_sol.add_edge(x1, y2)
             new_sol.add_edge(x2, y1)
-        return new_sol
+            return new_sol
+        return sol
 
 
 class SingleComponentMultiExchangeNeighborhood(Neighborhood, ABC):

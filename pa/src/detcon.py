@@ -33,18 +33,18 @@ class DetCon1:
             # for the unified component.
             min_required_degree = len(cn) - self.prob.s
             # s-plex property is met if the minimum degree of
-            # unified component is greater or equal to the
-            # required degree.
-            if min_component_degree >= min_required_degree:
+            # unified component is greater than the required
+            # degree. TODO: Sure?
+            if min_component_degree > min_required_degree:
                 self.sol.add_edge(u, v)
                 # Update the connected components.
-                # TODO: Use custom data structure for increased speed.
                 self.components = self.sol.get_components()
         return self.sol
 
     # Get the minimum degree node for a connected component.
     def min_degree(self, c: set, x: int, y: int) -> int:
         return min(map(lambda v: self.degree(v, x, y), c))
+        # return min(map(lambda v: self.sol.degree(v), c))
 
     # Get the degree for vertex v and the degree
     # plus one if v is x or y.

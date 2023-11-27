@@ -67,9 +67,9 @@ class Problem:
         # s.write("Adjacency matrix A:\n")
         # s.write(self.__initial_adjacency_matrix.__str__())
         # s.write("\n")
-        s.write("Weights matrix W:\n")
-        s.write(self.weights.__str__())
-        s.write("\n")
+        # s.write("Weights matrix W:\n")
+        # s.write(self.weights.__str__())
+        # s.write("\n")
         return s.getvalue()
 
     def draw(self):
