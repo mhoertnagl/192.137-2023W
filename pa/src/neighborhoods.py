@@ -32,20 +32,19 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
         cs = sol.get_components()
-        cs = list(filter(lambda c: len(c) >= 4, cs))
-        i = np.random.randint(0, len(cs))
-        c = list(cs[i])
-        random.shuffle(c)
-
-        # Randomly choose component c with size >= 4.
-        # Randomly choose two edges e1 = (x1, y1) and
-        # e2 = (x2, y2) from c that do not share a vertex
-        # (x1 != x2 != y1 != y2). There should not be
-        # a direct edge between x1 and y2 or x2 and
-        # y1. Or equivalently: edges (x1, y2) and
-        # (x2, y1) must not exist.
-        # Swap the edges.
-        pass
+        # Get components with at least two edges
+        # that do not share a vertex.
+        # (Ignore the shared vertex.)
+        es = []  # TODO
+        random.shuffle(es)
+        (x1, y1) = es[0]
+        (x2, y2) = es[1]
+        new_sol = sol.copy()
+        new_sol.remove_edge(x1, y1)
+        new_sol.remove_edge(x2, y2)
+        new_sol.add_edge(x1, y2)
+        new_sol.add_edge(x2, y1)
+        return new_sol
 
 
 class VertexMoveNeighborhood(Neighborhood, ABC):
