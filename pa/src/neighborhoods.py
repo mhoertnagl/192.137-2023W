@@ -78,7 +78,7 @@ class SingleComponentMultiExchangeNeighborhood(Neighborhood, ABC):
         random.shuffle(es)
         new_sol = sol.copy()
         # Iterate over all edges.
-        for i in range(0, len(es)):
+        for i in range(0, len(es)-1):
             (x1, y1) = es[i]
             (x2, y2) = es[i+1]
             # Make sure that the cross-edges do not exist.

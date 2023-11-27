@@ -9,11 +9,10 @@ import traceback
 import argparse
 import time
 
-from localsearch import LocalSearch
-from neighborhoods import OneFlipNeighborhood, VertexMoveNeighborhood
 from reader import Reader
 from detcon import DetCon1, DetCon2
-
+from localsearch import LocalSearch
+import neighborhoods as nhs
 
 def main():
     # global args
@@ -32,12 +31,19 @@ def main():
     sol.draw()
     print(sol.get_value())
 
-    nbh = VertexMoveNeighborhood()
-    ls = LocalSearch(sol, nbh, 1000)
-    new_sol = ls.run()
-    print(new_sol.is_feasible())
-    new_sol.draw()
-    print(new_sol.get_value())
+    nbh1 = nhs.VertexMoveNeighborhood()
+    ls1 = LocalSearch(sol, nbh1, 1000)
+    sol1 = ls1.run()
+    print(sol1.is_feasible())
+    sol1.draw()
+    print(sol1.get_value())
+
+    nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
+    ls2 = LocalSearch(sol1, nbh2, 1000)
+    sol2 = ls2.run()
+    print(sol2.is_feasible())
+    sol2.draw()
+    print(sol2.get_value())
 
 
 if __name__ == '__main__':
