@@ -43,8 +43,8 @@ def main():
     print(sol.get_value())
 
     # nbh1 = nhs.VertexSwapNeighborhood()
-    # ls1 = LocalSearch(sol, nbh1, 1000)
-    # sol1 = ls1.run()
+    # ls1 = LocalSearch(nbh1, 1000)
+    # sol1 = ls1.run(sol)
     # # an = Annealer(sol, nbh1, 50, 0.75)
     # # sol1 = an.run()
     # print(sol1.is_feasible())
@@ -52,8 +52,8 @@ def main():
     # print(sol1.get_value())
     #
     # nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
-    # ls2 = LocalSearch(sol1, nbh2, 1000)
-    # sol2 = ls2.run()
+    # ls2 = LocalSearch(nbh2, 1000)
+    # sol2 = ls2.run(sol1)
     # print(sol2.is_feasible())
     # sol2.draw()
     # print(sol2.get_value())
@@ -67,7 +67,7 @@ def ran_vs_det():
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     problem = reader.read("../inst/testing/heur039_n_361_m_13593.txt")
 
-    rcon = rc.RanCon(problem, 10)
+    rcon = rc.RanCon1(problem, 10)
     rsol = rcon.construct()
     print(rsol.is_feasible())
     rsol.draw()

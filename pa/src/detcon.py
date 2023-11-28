@@ -3,11 +3,19 @@ from typing import Iterable
 
 import networkx as nx
 
+from abc import ABC, abstractmethod
 from problem import Problem
 from solution import Solution
 
 
-class DetCon1:
+class DetCon(ABC):
+
+    @abstractmethod
+    def construct(self) -> Solution:
+        pass
+
+
+class DetCon1(DetCon, ABC):
 
     def __init__(self, prob: Problem):
         self.prob = prob
@@ -62,7 +70,7 @@ class DetCon1:
         return set()
 
 
-class DetCon2:
+class DetCon2(DetCon, ABC):
 
     def __init__(self, prob: Problem):
         self.prob = prob
@@ -76,7 +84,7 @@ class DetCon2:
         return self.sol
 
 
-class DetCon3:
+class DetCon3(DetCon, ABC):
 
     def __init__(self, prob: Problem):
         self.prob = prob

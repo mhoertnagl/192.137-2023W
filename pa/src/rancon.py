@@ -5,12 +5,20 @@ Created on Mon Nov 27 15:45:42 2023
 @author: Martin
 """
 
+from abc import ABC, abstractmethod
 from problem import Problem
 from solution import Solution
 import random
 
 
-class RanCon:
+class RanCon(ABC):
+
+    @abstractmethod
+    def construct(self) -> Solution:
+        pass
+
+
+class RanCon1(RanCon, ABC):
 
     def __init__(self, prob: Problem, k: int):
         self.prob = prob
@@ -21,7 +29,7 @@ class RanCon:
         n = self.prob.n + 1
         self.components = [{i} for i in range(1, n)]
 
-    def construct(self):
+    def construct(self) -> Solution:
         edges = self.prob.initial_edges_weighted(reverse=True)
         ran_edges = self.random_shuffle(edges)
                 
@@ -78,7 +86,7 @@ class RanCon:
         return set()
 
 
-# class RanCon2:
+# class RanCon2(RanCon, ABC):
 #
 #     def __init__(self, prob: Problem):
 #         self.prob = prob
@@ -88,7 +96,7 @@ class RanCon:
 #         n = self.prob.n + 1
 #         self.components = [{i} for i in range(1, n)]
 #
-#     def construct(self):
+#     def construct(self) -> Solution:
 #         edges = self.prob.initial_edges_weighted(reverse=True)
 #
 #         for (_, u, v) in edges:
