@@ -160,8 +160,11 @@ class VertexSwapNeighborhood(Neighborhood, ABC):
 
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
+    def __init__(self, k_max: int = 10):
+        self.k_max = k_max
+
     def choose(self, sol: Solution) -> Solution:
-        cs = sol.get_components()
+        cs = [c for c in sol.get_components() if len(c) <= self.k_max]
         if len(cs) < 2:
             return sol
         random.shuffle(cs)

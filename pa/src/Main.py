@@ -40,7 +40,7 @@ def main():
     sol.draw()
     print(sol.get_value())
 
-    nbh = nhs.UnredundantNeighborhood()
+    nbh = nhs.ComponentMergeNeighborhood(10)
     ls = LocalSearch(nbh, 1000)
     sol = ls.run(sol)
     print(sol.is_feasible())
