@@ -8,7 +8,7 @@ from solution import Solution
 class Neighborhood(ABC):
 
     @abstractmethod
-    def choose(self, sol: Solution) -> Solution:
+    def choose(self, sol: Solution,step_fun: str) -> Solution:
         pass
 
 
@@ -24,19 +24,34 @@ class Neighborhood(ABC):
 
 class TwoFlipNeighborhood(Neighborhood, ABC):
 
-    # first improvement
-     def choose(self, sol: Solution) -> Solution:
+     def choose(self, sol: Solution,step_fun: str) -> Solution:
          new_sol = sol.copy()
-         for (i, j) in sol.prob.all_edges:
-             for (k, l) in sol.prob.all_edges:
+         if step_fun == "random":
+            i,j = sol.random_edge_from_all()
+            k, l = sol.random_edge_from_all()
+            while i == k and j == l:
+                k, l = sol.random_edge_from_all()
+            test_sol = sol.copy()
+            test_sol.toggle_edge(i, j)
+            test_sol.toggle_edge(k, l)
+            if test_sol.is_feasible():
+                return test_sol          
+            else:
+                return new_sol
+         for (_, i, j) in sol.prob.all_edges_weighted():
+             for (_, k, l) in sol.prob.all_edges_weighted():
                  if i != k or j != l:
-                     new_sol = sol.copy()
-                     new_sol.toggle_edge(i, j)
-                     new_sol.toggle_edge(k, l)
-                 if new_sol.is_feasible():
-                     if new_sol.get_value() < sol.get_value():
-                         #if step_fun == "first improvement":
-                         return new_sol
+                     test_sol = sol.copy()
+                     test_sol.toggle_edge(i, j)
+                     test_sol.toggle_edge(k, l)
+                     if test_sol.is_feasible():
+                         if test_sol.get_value() < new_sol.get_value():
+                             if step_fun == "best improvement":
+                                 new_sol = test_sol.copy()
+                             if step_fun == "first improvement":
+                                 print("first improvement found for:",i,j,k,l)
+                                 new_sol = test_sol.copy()
+                                 return new_sol
          return new_sol
 
 
