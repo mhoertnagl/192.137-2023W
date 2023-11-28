@@ -11,14 +11,21 @@ import time
 
 from reader import Reader
 from detcon import DetCon1, DetCon2
+from rancon import RanCon
 from localsearch import LocalSearch
+from annealer import Annealer
 import neighborhoods as nhs
+
 
 def main():
     # global args
     reader = Reader()
     # problem = reader.read(args.input)
-    problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
+    # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
+    print(problem)
     # problem.s = 1
     # print(problem)
     # print(problem.weight(1, 6))
@@ -27,27 +34,52 @@ def main():
 
     con = DetCon1(problem)
     # con = DetCon2(problem)
+    # con = RanCon(problem, 10)
     sol = con.construct()
+    print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
 
-    nbh1 = nhs.VertexMoveNeighborhood()
+    nbh1 = nhs.VertexSwapNeighborhood()
     ls1 = LocalSearch(sol, nbh1, 1000)
     sol1 = ls1.run()
+    # an = Annealer(sol, nbh1, 50, 0.75)
+    # sol1 = an.run()
     print(sol1.is_feasible())
     sol1.draw()
     print(sol1.get_value())
+    #
+    # nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
+    # ls2 = LocalSearch(sol1, nbh2, 1000)
+    # sol2 = ls2.run()
+    # print(sol2.is_feasible())
+    # sol2.draw()
+    # print(sol2.get_value())
 
-    nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
-    ls2 = LocalSearch(sol1, nbh2, 1000)
-    sol2 = ls2.run()
-    print(sol2.is_feasible())
-    sol2.draw()
-    print(sol2.get_value())
 
+def ran_vs_det():
+    reader = Reader()
+    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
+    # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
+    problem = reader.read("../inst/testing/heur039_n_361_m_13593.txt")
+
+    rcon = RanCon(problem, 10)
+    rsol = rcon.construct()
+    print(rsol.is_feasible())
+    rsol.draw()
+    print(rsol.get_value())
+
+    dcon = DetCon1(problem)
+    dsol = dcon.construct()
+    print(dsol.is_feasible())
+    dsol.draw()
+    print(dsol.get_value())
 
 if __name__ == '__main__':
     main()
+    # ran_vs_det()
     # try:
     #     start_time = time.time()
     #     parser = argparse.ArgumentParser(description=__doc__)

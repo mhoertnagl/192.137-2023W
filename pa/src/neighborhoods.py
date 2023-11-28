@@ -68,7 +68,8 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
             # ... then add the cross-edges.
             new_sol.add_edge(x1, y2)
             new_sol.add_edge(x2, y1)
-        return new_sol
+            return new_sol
+        return sol
 
 
 class SingleComponentMultiExchangeNeighborhood(Neighborhood, ABC):
@@ -121,10 +122,44 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                 new_sol.add_edge(u, v)
         return new_sol
 
+# # Mieser Algorithmus
+# class VertexSwapNeighborhood(Neighborhood, ABC):
+#
+#     def choose(self, sol: Solution) -> Solution:
+#         c1 = list(sol.get_random_component())
+#         c2 = list(sol.get_random_component())
+#         v1 = c1[np.random.randint(0, len(c1))]
+#         v2 = c2[np.random.randint(0, len(c2))]
+#         new_sol = sol.copy()
+#         ns1 = list(sol.get_neighbors(v1))
+#         ns2 = list(sol.get_neighbors(v2))
+#         # Remove edges of v1 to old
+#         # component and add edges to v2.
+#         for u in ns1:
+#             if new_sol.has_edge(u, v1):
+#                 new_sol.remove_edge(u, v1)
+#             if u != v2:
+#                 new_sol.add_edge(u, v2)
+#         # Remove edges of v2 to old
+#         # component and add edges to v1.
+#         for u in ns2:
+#             if new_sol.has_edge(u, v2):
+#                 new_sol.remove_edge(u, v2)
+#             if u != v1:
+#                 new_sol.add_edge(u, v1)
+#         return new_sol
 
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:
-        c1 = sol.get_random_component()
-        c2 = sol.get_random_component()
-        pass
+        cs = sol.get_components()
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        c1 = cs[0]
+        c2 = cs[1]
+        new_sol = sol.copy()
+        for v1 in c1:
+            for v2 in c2:
+                new_sol.add_edge(v1, v2)
+        return new_sol

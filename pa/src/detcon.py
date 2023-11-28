@@ -11,8 +11,6 @@ class DetCon1:
         # is a singular component.
         n = self.prob.n + 1
         self.components = [{i} for i in range(1, n)]
-        # TODO: Replace with custom data structure.
-        # self.__components: list[set] = self.__solution.components()
 
     def construct(self):
         edges = self.prob.initial_edges_weighted(reverse=True)
@@ -33,12 +31,11 @@ class DetCon1:
             # for the unified component.
             min_required_degree = len(cn) - self.prob.s
             # s-plex property is met if the minimum degree of
-            # unified component is greater or equal to the
-            # required degree.
-            if min_component_degree >= min_required_degree:
+            # unified component is greater than the required
+            # degree. TODO: Sure?
+            if min_component_degree > min_required_degree:
                 self.sol.add_edge(u, v)
                 # Update the connected components.
-                # TODO: Use custom data structure for increased speed.
                 self.components = self.sol.get_components()
         return self.sol
 
@@ -72,7 +69,3 @@ class DetCon2:
             if not self.sol.is_feasible():
                 self.sol.remove_edge(i, j)
         return self.sol
-
-# TODO: Randomisierte Varianten
-# Zufällig aus edges mit gleichen Gewichten
-# In n Blöcke teilen und die Blöcke shufflen.
