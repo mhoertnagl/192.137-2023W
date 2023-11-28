@@ -12,15 +12,23 @@ class Neighborhood(ABC):
         pass
 
 
-# class OneFlipNeighborhood(Neighborhood, ABC):
-#
-#     def choose(self, sol: Solution) -> Solution:
-#         new_sol = sol.copy()
-#         for (i, j) in sol.prob.all_edges:
-#             new_sol.toggle_edge(i, j)
-#             if new_sol.is_feasible():
-#                 return new_sol
-#         return sol
+class UnredundantNeighborhood(Neighborhood, ABC):
+
+    def choose(self, sol: Solution) -> Solution:
+        for c in sol.get_components():
+            b = len(c) - sol.prob.s
+            for u in c:
+                for v in c:
+                    if self.redundant(sol, b, u, v):
+                        sol.remove_edge(u, v)
+                    if sol.edge_deleted(u, v):
+                        sol.add_edge(u, v)
+        return sol
+
+    def redundant(self, sol: Solution, b: int, u: int, v: int):
+        du, dv = sol.degree(u), sol.degree(v)
+        return u != v and du > b and dv > b and sol.edge_added(u, v)
+
 
 class TwoFlipNeighborhood(Neighborhood, ABC):
 
@@ -137,38 +145,41 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                 new_sol.add_edge(u, v)
         return new_sol
 
-# # Mieser Algorithmus
-# class VertexSwapNeighborhood(Neighborhood, ABC):
-#
-#     def choose(self, sol: Solution) -> Solution:
-#         c1 = list(sol.get_random_component())
-#         c2 = list(sol.get_random_component())
-#         v1 = c1[np.random.randint(0, len(c1))]
-#         v2 = c2[np.random.randint(0, len(c2))]
-#         new_sol = sol.copy()
-#         ns1 = list(sol.get_neighbors(v1))
-#         ns2 = list(sol.get_neighbors(v2))
-#         # Remove edges of v1 to old
-#         # component and add edges to v2.
-#         for u in ns1:
-#             if new_sol.has_edge(u, v1):
-#                 new_sol.remove_edge(u, v1)
-#             if u != v2:
-#                 new_sol.add_edge(u, v2)
-#         # Remove edges of v2 to old
-#         # component and add edges to v1.
-#         for u in ns2:
-#             if new_sol.has_edge(u, v2):
-#                 new_sol.remove_edge(u, v2)
-#             if u != v1:
-#                 new_sol.add_edge(u, v1)
-#         return new_sol
+
+class VertexSwapNeighborhood(Neighborhood, ABC):
+
+    def choose(self, sol: Solution) -> Solution:
+        c1 = list(sol.get_random_component())
+        c2 = list(sol.get_random_component())
+        v1 = c1[np.random.randint(0, len(c1))]
+        v2 = c2[np.random.randint(0, len(c2))]
+        new_sol = sol.copy()
+        ns1 = list(sol.get_neighbors(v1))
+        ns2 = list(sol.get_neighbors(v2))
+        # Remove edges of v1 to old
+        # component and add edges to v2.
+        for u in ns1:
+            if new_sol.has_edge(u, v1):
+                new_sol.remove_edge(u, v1)
+            if u != v2:
+                new_sol.add_edge(u, v2)
+        # Remove edges of v2 to old
+        # component and add edges to v1.
+        for u in ns2:
+            if new_sol.has_edge(u, v2):
+                new_sol.remove_edge(u, v2)
+            if u != v1:
+                new_sol.add_edge(u, v1)
+        return new_sol
 
 
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
+    def __init__(self, k_max: int = 10):
+        self.k_max = k_max
+
     def choose(self, sol: Solution) -> Solution:
-        cs = sol.get_components()
+        cs = [c for c in sol.get_components() if len(c) <= self.k_max]
         if len(cs) < 2:
             return sol
         random.shuffle(cs)
