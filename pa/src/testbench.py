@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 import time
 from concurrent.futures import ProcessPoolExecutor, Future
 from io import StringIO
-
 import numpy as np
 
 from problem import Problem

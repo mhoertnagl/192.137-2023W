@@ -1,19 +1,22 @@
 from neighborhoods import Neighborhood
 from solution import Solution
+from termination import Termination
+
 
 # TODO: Termination condition.
 
 
 class LocalSearch:
 
-    def __init__(self, nbh: Neighborhood, num_iterations: int):
+    def __init__(self, nbh: Neighborhood, ter: Termination):
         self.nbh = nbh
-        self.num_iterations = num_iterations
-        
+        self.ter = ter
 
     def run(self, sol: Solution) -> Solution:
-        for _ in range(self.num_iterations):
+        while True:
             new_sol = self.nbh.choose(sol)
+            if self.ter.done(sol, new_sol):
+                break
             if new_sol.get_value() <= sol.get_value():
                 sol = new_sol
         return sol

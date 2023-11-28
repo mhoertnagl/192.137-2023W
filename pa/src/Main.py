@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
-
+import termination
 from reader import Reader
 import detcon as dc
 import rancon as rc
@@ -38,7 +38,8 @@ def main():
     # print(sol.get_value())
     
     nbh = nhs.TwoFlipNeighborhood(step_fun="best improvement")
-    ls = LocalSearch(nbh, 10)
+    ter = termination.IterationTermination(1000)
+    ls = LocalSearch(nbh, ter)
     sol = ls.run(sol)
     print(sol.is_feasible())
     sol.draw()

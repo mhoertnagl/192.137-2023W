@@ -1,24 +1,24 @@
 from rancon import RanCon
 from solution import Solution
 from localsearch import LocalSearch
+from termination import Termination
 
 
 class Grasper:
 
-    def __init__(self,
-                 ls: LocalSearch,
-                 rc: RanCon,
-                 num_iterations: int):
-        self.ls = ls
+    def __init__(self, rc: RanCon, ls: LocalSearch, ter: Termination):
         self.rc = rc
-        self.num_iterations = num_iterations
+        self.ls = ls
+        self.ter = ter
 
     def run(self) -> Solution:
         sol = self.rc.construct()
         sol = self.ls.run(sol)
-        for _ in range(self.num_iterations):
+        while True:
             new_sol = self.rc.construct()
             new_sol = self.ls.run(new_sol)
+            if self.ter.done(sol, new_sol):
+                break
             if new_sol.get_value() <= sol.get_value():
                 sol = new_sol
         return sol
