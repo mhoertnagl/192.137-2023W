@@ -1,36 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
-"""
-DESCRIPTION GOES HERE
-"""
 
-import sys
-import traceback
-import argparse
-import time
-
-from grasper import Grasper
 from reader import Reader
-from localsearch import LocalSearch
-from annealer import Annealer
 import detcon as dc
 import rancon as rc
 import neighborhoods as nhs
+from annealer import Annealer
+from localsearch import LocalSearch
+from grasper import Grasper
 from vnd import VND
 
 
 def main():
-    # global args
     reader = Reader()
-    # problem = reader.read(args.input)
+
     problem = reader.read("../inst/testing/test.txt")
     # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-    #problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
     # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     print(problem)
-    # problem.s = 1
-    # problem.draw()
 
     # con = dc.DetCon3(problem)
     con = dc.DetCon2(problem)
@@ -54,7 +43,6 @@ def main():
     print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
-    
 
     # nbh1 = nhs.VertexSwapNeighborhood()
     # ls1 = LocalSearch(nbh1, 1000)
@@ -117,21 +105,3 @@ def ran_vs_det():
 if __name__ == '__main__':
     main()
     # ran_vs_det()
-    # try:
-    #     start_time = time.time()
-    #     parser = argparse.ArgumentParser(description=__doc__)
-    #     parser.add_argument('input')
-    #     parser.add_argument('-v', '--version', action='version', version='0.0.1')
-    #     args = parser.parse_args()
-    #     main()
-    #     print("Total running time in seconds: %0.2f" % (time.time() - start_time))
-    #     sys.exit(0)
-    # except KeyboardInterrupt as e:
-    #     raise e
-    # except SystemExit as e:
-    #     raise e
-    # except Exception as e:
-    #     print('ERROR, UNEXPECTED EXCEPTION')
-    #     print(str(e))
-    #     traceback.print_exc()
-    #     sys.exit(1)
