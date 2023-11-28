@@ -9,9 +9,20 @@ from annealer import Annealer
 from localsearch import LocalSearch
 from grasper import Grasper
 from vnd import VND
+import testbench as tb
 
 
 def main():
+    bench = tb.Testbench(5)
+
+    bench.add_filename("../inst/testing/test.txt")
+    bench.add_filename("../inst/testing/heur002_n_100_m_3274.txt")
+    bench.add_filename("../inst/testing/heur003_n_120_m_2588.txt")
+    bench.add_filename("../inst/testing/heur004_n_140_m_3014.txt")
+    bench.add_filename("../inst/testing/heur005_n_160_m_4015.txt")
+
+
+
     reader = Reader()
 
     problem = reader.read("../inst/testing/test.txt")

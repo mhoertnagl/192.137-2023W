@@ -12,7 +12,7 @@ class Termination(ABC):
 
 class IterationTermination(Termination, ABC):
 
-    def __init__(self, n: int):
+    def __init__(self, n: int = 1000):
         self.i = 0
         self.n = n
 
@@ -25,7 +25,7 @@ class IterationTermination(Termination, ABC):
 
 class ImprovementTermination(Termination, ABC):
 
-    def __init__(self, percent: float):
+    def __init__(self, percent: float = 3):
         self.limit = percent / 100
 
     def done(self, sol: Solution, new_sol: Solution) -> bool:
