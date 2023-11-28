@@ -25,7 +25,7 @@ class DetCon1(DetCon, ABC):
         n = self.prob.n + 1
         self.components = [{i} for i in range(1, n)]
 
-    def construct(self):
+    def construct(self) -> Solution:
         edges = self.prob.initial_edges_weighted(reverse=True)
         for (_, u, v) in edges:
             # Find the components that contain u and v
@@ -76,7 +76,7 @@ class DetCon2(DetCon, ABC):
         self.prob = prob
         self.sol = Solution(prob)
 
-    def construct(self):
+    def construct(self) -> Solution:
         for (_, i, j) in self.prob.all_edges_weighted():
             self.sol.add_edge(i, j)
             if not self.sol.is_feasible():
@@ -91,7 +91,7 @@ class DetCon3(DetCon, ABC):
         self.sol = Solution(prob, empty=False)
 
     # TODO: Could be used as a neighborhood structure.
-    def construct(self):
+    def construct(self) -> Solution:
         ies = self.prob.initial_edges_weighted()
         nes = self.prob.non_edges_weighted()
         i = 0

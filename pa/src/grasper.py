@@ -19,6 +19,6 @@ class Grasper:
         for _ in range(self.num_iterations):
             new_sol = self.rc.construct()
             new_sol = self.ls.run(new_sol)
-            if sol is None or new_sol.get_value() <= sol.get_value():
+            if new_sol.get_value() <= sol.get_value():
                 sol = new_sol
         return sol

@@ -30,7 +30,8 @@ class RanCon1(RanCon, ABC):
         self.components = [{i} for i in range(1, n)]
 
     def construct(self) -> Solution:
-        edges = self.prob.initial_edges_weighted(reverse=True)
+        # edges = self.prob.initial_edges_weighted(reverse=True)
+        edges = self.prob.all_edges_weighted(reverse=True)
         ran_edges = self.random_shuffle(edges)
                 
         for (_, u, v) in ran_edges:

@@ -9,6 +9,7 @@ import traceback
 import argparse
 import time
 
+from grasper import Grasper
 from reader import Reader
 from localsearch import LocalSearch
 from annealer import Annealer
@@ -28,19 +29,16 @@ def main():
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     print(problem)
     # problem.s = 1
-    # print(problem)
-    # print(problem.weight(1, 6))
-    # print(problem.all_edges_weighted())
     # problem.draw()
 
-    con = dc.DetCon3(problem)
+    # con = dc.DetCon3(problem)
     # con = dc.DetCon2(problem)
     # con = dc.DetCon1(problem)
-    # con = rc.RanCon(problem, 10)
-    sol = con.construct()
-    print(sol.is_feasible())
-    sol.draw()
-    print(sol.get_value())
+    # con = rc.RanCon1(problem, 10)
+    # sol = con.construct()
+    # print(sol.is_feasible())
+    # sol.draw()
+    # print(sol.get_value())
 
     # nbh1 = nhs.VertexSwapNeighborhood()
     # ls1 = LocalSearch(nbh1, 1000)
@@ -58,14 +56,24 @@ def main():
     # sol2.draw()
     # print(sol2.get_value())
 
+    nbh = nhs.VertexMoveNeighborhood()
+    ls = LocalSearch(nbh, 1000)
+    con = rc.RanCon1(problem, 10)
+    gsp = Grasper(ls, con, 100)
+    sol = gsp.run()
+    print(sol.is_feasible())
+    sol.draw()
+    print(sol.get_value())
+
 
 def ran_vs_det():
     reader = Reader()
-    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
     # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
     # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
-    problem = reader.read("../inst/testing/heur039_n_361_m_13593.txt")
+    # TODO: Exception with this and detcon1
+    # problem = reader.read("../inst/testing/heur039_n_361_m_13593.txt")
 
     rcon = rc.RanCon1(problem, 10)
     rsol = rcon.construct()
