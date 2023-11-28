@@ -8,6 +8,7 @@ from problem import Problem
 
 
 class Solution:
+
     def __init__(self, prob: Problem, empty=True):
         self.prob = prob
         if empty:
@@ -81,9 +82,9 @@ class Solution:
 
     def toggle_edge(self, u: int, v: int):
         if self.has_edge(u, v):
-            return self.remove_edge(u, v)
+            self.remove_edge(u, v)
         else:
-            return self.add_edge(u, v)
+            self.add_edge(u, v)
 
     def random_edge_from_all(self) -> (int, int):
         i = np.random.randint(0, len(self.prob.all_edges))
@@ -108,13 +109,7 @@ class Solution:
         return self.graph.edges
 
     def get_edges(self, vs: set[int]):
-        # TODO: Sollte eigentlich funktionieren, tut es aber nicht.
-        # return list(self.graph.edges(nbunch))
-        edges = []
-        for (u, v) in self.graph.edges:
-            if u in vs or v in vs:
-                edges.append((u, v))
-        return edges
+        return [(u, v) for (u, v) in self.graph.edges if u in vs or v in vs]
 
     def get_components(self) -> list[set[int]]:
         if not self.components_valid:
@@ -161,7 +156,7 @@ class Solution:
         # return f
         f, n = 0, self.prob.n + 1
         for i in range(1, n):
-            for j in range(i+1, n):
+            for j in range(i + 1, n):
                 if self.edge_edited(i, j):
                     f += self.prob.weight(i, j)
         return f
@@ -178,3 +173,10 @@ class Solution:
     def draw(self):
         nx.draw(self.graph, with_labels=True, font_weight='bold')
         plt.show()
+
+    def write(self, path: str):
+        with open(f"{path}/res/{self.prob.name}.txt") as file:
+            file.write(f"{self.prob.name}\n")
+            for (u, v) in self.get_solution_edges():
+                if self.edge_edited(u, v):
+                    file.write(f"{u} {v}")
