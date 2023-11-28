@@ -95,8 +95,17 @@ class Solution:
     def edge_edited(self, u: int, v: int):
         return self.has_edge(u, v) != self.prob.has_edge(u, v)
 
+    def edge_added(self, u: int, v: int):
+        return self.has_edge(u, v) and not self.prob.has_edge(u, v)
+
+    def edge_deleted(self, u: int, v: int):
+        return not self.has_edge(u, v) and self.prob.has_edge(u, v)
+
     def get_neighbors(self, v: int):
         return self.graph.neighbors(v)
+
+    def get_solution_edges(self):
+        return self.graph.edges
 
     def get_edges(self, vs: set[int]):
         # TODO: Sollte eigentlich funktionieren, tut es aber nicht.
