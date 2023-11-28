@@ -16,7 +16,7 @@ from annealer import Annealer
 import detcon as dc
 import rancon as rc
 import neighborhoods as nhs
-import networkx as nx
+from vnd import VND
 
 
 def main():
@@ -56,11 +56,22 @@ def main():
     # sol2.draw()
     # print(sol2.get_value())
 
-    nbh = nhs.VertexMoveNeighborhood()
-    ls = LocalSearch(nbh, 1000)
-    con = rc.RanCon1(problem, 10)
-    gsp = Grasper(ls, con, 100)
-    sol = gsp.run()
+    # nbh = nhs.VertexMoveNeighborhood()
+    # ls = LocalSearch(nbh, 1000)
+    # con = rc.RanCon1(problem, 10)
+    # gsp = Grasper(ls, con, 100)
+    # sol = gsp.run()
+    # print(sol.is_feasible())
+    # sol.draw()
+    # print(sol.get_value())
+
+    nbh1 = nhs.ComponentMergeNeighborhood()
+    nbh2 = nhs.VertexMoveNeighborhood()
+    nbh3 = nhs.TwoExchangeNeighborhood()
+    vnd = VND([nbh1, nbh2, nbh3])
+    con = dc.DetCon2(problem)
+    sol = con.construct()
+    sol = vnd.run(sol)
     print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
