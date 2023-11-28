@@ -22,6 +22,23 @@ class Neighborhood(ABC):
 #                 return new_sol
 #         return sol
 
+class TwoFlipNeighborhood(Neighborhood, ABC):
+
+    # first improvement
+     def choose(self, sol: Solution) -> Solution:
+         new_sol = sol.copy()
+         for (i, j) in sol.prob.all_edges:
+             for (k, l) in sol.prob.all_edges:
+                 if i != k or j != l:
+                     new_sol = sol.copy()
+                     new_sol.toggle_edge(i, j)
+                     new_sol.toggle_edge(k, l)
+                 if new_sol.is_feasible():
+                     if new_sol.get_value() < sol.get_value():
+                         #if step_fun == "first improvement":
+                         return new_sol
+         return new_sol
+
 
 class TwoExchangeNeighborhood(Neighborhood, ABC):
 
