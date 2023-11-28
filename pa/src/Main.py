@@ -23,8 +23,9 @@ def main():
     # global args
     reader = Reader()
     # problem = reader.read(args.input)
+    problem = reader.read("../inst/testing/test.txt")
     # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-    problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    #problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
     # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     print(problem)
@@ -40,12 +41,20 @@ def main():
     sol.draw()
     print(sol.get_value())
 
-    nbh = nhs.ComponentMergeNeighborhood(10)
-    ls = LocalSearch(nbh, 1000)
+    # nbh = nhs.ComponentMergeNeighborhood(10)
+    # ls = LocalSearch(nbh, 1000)
+    # sol = ls.run(sol)
+    # print(sol.is_feasible())
+    # sol.draw()
+    # print(sol.get_value())
+    
+    nbh = nhs.TwoFlipNeighborhood(step_fun="best improvement")
+    ls = LocalSearch(nbh, 10)
     sol = ls.run(sol)
     print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
+    
 
     # nbh1 = nhs.VertexSwapNeighborhood()
     # ls1 = LocalSearch(nbh1, 1000)

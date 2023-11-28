@@ -8,7 +8,7 @@ from solution import Solution
 class Neighborhood(ABC):
 
     @abstractmethod
-    def choose(self, sol: Solution,step_fun: str) -> Solution:
+    def choose(self, sol: Solution) -> Solution:
         pass
 
 
@@ -31,10 +31,15 @@ class UnredundantNeighborhood(Neighborhood, ABC):
 
 
 class TwoFlipNeighborhood(Neighborhood, ABC):
+    
+     def __init__(self, step_fun: str = "first improvement"):
+        self.step_fun = step_fun
 
-     def choose(self, sol: Solution,step_fun: str) -> Solution:
+     def choose(self, sol: Solution) -> Solution:
          new_sol = sol.copy()
-         if step_fun == "random":
+         bi,bj,bk,bl = (0,0,0,0)
+         improvement_found = False
+         if self.step_fun == "random":
             i,j = sol.random_edge_from_all()
             k, l = sol.random_edge_from_all()
             while i == k and j == l:
@@ -46,20 +51,29 @@ class TwoFlipNeighborhood(Neighborhood, ABC):
                 return test_sol          
             else:
                 return new_sol
-         for (_, i, j) in sol.prob.all_edges_weighted():
-             for (_, k, l) in sol.prob.all_edges_weighted():
-                 if i != k or j != l:
+         for index,(_, i, j) in enumerate(sol.prob.all_edges_weighted()):
+             # print(i,j)
+             for index2,(_, k, l) in enumerate(sol.prob.all_edges_weighted()):
+                 if index2 > index:
+                 # if i != k or j != l:
                      test_sol = sol.copy()
                      test_sol.toggle_edge(i, j)
                      test_sol.toggle_edge(k, l)
                      if test_sol.is_feasible():
                          if test_sol.get_value() < new_sol.get_value():
-                             if step_fun == "best improvement":
+                             if self.step_fun == "best improvement":
                                  new_sol = test_sol.copy()
-                             if step_fun == "first improvement":
+                                 bi,bj,bk,bl = i,j,k,l
+                                 improvement_found = True
+                             if self.step_fun == "first improvement":
                                  print("first improvement found for:",i,j,k,l)
                                  new_sol = test_sol.copy()
+                                 improvement_found = True
                                  return new_sol
+         if improvement_found:
+            print("best improvement found for:",bi,bj,bk,bl) 
+         else:
+             print("no improvement found")
          return new_sol
 
 
