@@ -1,3 +1,8 @@
+import random
+from typing import Iterable
+
+import networkx as nx
+
 from problem import Problem
 from solution import Solution
 
@@ -69,3 +74,89 @@ class DetCon2:
             if not self.sol.is_feasible():
                 self.sol.remove_edge(i, j)
         return self.sol
+
+
+class DetCon3:
+
+    def __init__(self, prob: Problem):
+        self.prob = prob
+        self.sol = Solution(prob, empty=False)
+
+    # TODO: Could be used as a neighborhood structure.
+    def construct(self):
+        ies = self.prob.initial_edges_weighted()
+        nes = self.prob.non_edges_weighted()
+        i = 0
+        while not self.sol.is_feasible() and i < max(len(ies), len(nes)):
+            # if i < len(ies):
+            #     (_, u, v) = ies[i]
+            #     if self.sol.has_edge(u, v):
+            #         self.sol.graph.remove_edge(u, v)
+            # if i < len(nes):
+            #     (_, u, v) = nes[i]
+            #     self.sol.graph.add_edge(u, v)
+            i += 1
+        return self.sol
+
+        # cs = []
+        # # print(self.sol.is_feasible())
+        # queue = self.sol.get_components()
+        # while len(queue) > 0:
+        #     c = list(queue.pop())
+        #     random.shuffle(c)
+        #     # Split list in half.
+        #     ca = c[:len(c)//2]
+        #     cb = c[len(c)//2:]
+        #     for u in ca:
+        #         for v in cb:
+        #             if self.sol.has_edge(u, v):
+        #                 self.sol.remove_edge(u, v)
+        #     if len(ca) > 5:
+        #         queue.append(set(ca))
+        #     else:
+        #         cs.append(set(ca))
+        #     if len(cb) > 5:
+        #         queue.append(set(cb))
+        #     else:
+        #         cs.append(set(cb))
+
+# class DetCon3:
+#
+#     def __init__(self, prob: Problem):
+#         self.prob = prob
+#         self.sol = Solution(prob, empty=False)
+#
+#     # TODO: Could be used as a neighborhood structure.
+#     def construct(self):
+#         # x = dict(nx.all_pairs_shortest_path(self.sol.graph))
+#         x = nx.triangles(self.sol.graph)
+#         cs = self.sol.get_components()
+#         # print(self.sol.is_feasible())
+#         for c in cs:
+#             b = len(c) - self.prob.s
+#             # Nodes with too low degree.
+#             vs = {v for v in c if self.sol.degree(v) < b}
+#             ds = {v: self.sol.degree(v) - b for v in vs}
+#             # All edges in this component.
+#             ces = set(self.sol.get_edges(c))
+#             # Existing edges among these nodes.
+#             xes = set(self.sol.get_edges(vs))
+#             # Sort by weight.
+#             res = self.prob.edges_weighted(ces.difference(xes))
+#             # If both vertices are below s-plex, add
+#             # an edge between them.
+#             for (_, u, v) in res:
+#                 if ds[u] < 0 and ds[v] < 0:
+#                     self.sol.graph.add_edge(u, v)
+#                     ds[u] += 1
+#                     ds[v] += 1
+#             # If either vertex but not the other are
+#             # below s-plex, add an edge to this vertex.
+#             for (_, u, v) in res:
+#                 if ds[u] < 0:
+#                     self.sol.graph.add_edge(u, v)
+#                     ds[u] += 1
+#                 if ds[v] < 0:
+#                     self.sol.graph.add_edge(u, v)
+#                     ds[v] += 1
+#         return self.sol

@@ -1,4 +1,5 @@
 from io import StringIO
+from typing import Iterable
 
 import numpy as np
 import networkx as nx
@@ -23,6 +24,7 @@ class Problem:
         for (u, v, p, w) in edges:
             if p == 1:
                 self.graph.add_edge(u, v)
+                # self.graph.add_weighted_edges_from([(u, v, w)])
             self.weights[u - 1, v - 1] = w
 
     def __init_all_edges(self):
@@ -41,17 +43,33 @@ class Problem:
         return self.weights[m0 - 1, m1 - 1]
 
     def initial_edges_weighted(self, reverse=False):
-        edges = [(self.weight(u, v), u, v) for (u, v) in self.edges]
-        return sorted(edges, reverse=reverse)
+        return self.edges_weighted(self.edges, reverse)
+
+    def non_edges_weighted(self, reverse=False):
+        others = set(self.all_edges).difference(self.edges)
+        return self.edges_weighted(others, reverse)
 
     def all_edges_weighted(self, reverse=False):
+        return self.edges_weighted(self.all_edges, reverse)
+        # edges = []
+        # for (i, j) in self.all_edges:
+        #     w = self.weight(i, j)
+        #     # If it is an initial edge take the negated weight.
+        #     w = -w if self.has_edge(i, j) else w
+        #     edges.append((w, i, j))
+        # return sorted(edges, reverse=reverse)
+
+    def edges_weighted(self, es: Iterable, reverse=False):
         edges = []
-        for (i, j) in self.all_edges:
+        for (i, j) in es:
             w = self.weight(i, j)
             # If it is an initial edge take the negated weight.
             w = -w if self.has_edge(i, j) else w
             edges.append((w, i, j))
         return sorted(edges, reverse=reverse)
+
+    def non_edges(self):
+        return nx.non_edges(self.graph)
 
     def worst_value(self):
         f = 0
@@ -64,6 +82,7 @@ class Problem:
         s.write(f"Name: {self.name}\n")
         s.write(f"s-plex number: {self.s}\n")
         s.write(f"Number of nodes: {self.n}\n")
+        s.write(f"Worst value: {self.worst_value()}\n")
         # s.write("Adjacency matrix A:\n")
         # s.write(self.__initial_adjacency_matrix.__str__())
         # s.write("\n")

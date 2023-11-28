@@ -149,6 +149,7 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
 #                 new_sol.add_edge(u, v1)
 #         return new_sol
 
+
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
     def choose(self, sol: Solution) -> Solution:

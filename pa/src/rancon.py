@@ -78,5 +78,17 @@ class RanCon:
         return set()
 
 
-
-
+# class RanCon2:
+#
+#     def __init__(self, prob: Problem):
+#         self.prob = prob
+#         self.sol = Solution(prob)
+#         # For the initial empty solution, every vertex
+#         # is a singular component.
+#         n = self.prob.n + 1
+#         self.components = [{i} for i in range(1, n)]
+#
+#     def construct(self):
+#         edges = self.prob.initial_edges_weighted(reverse=True)
+#
+#         for (_, u, v) in edges:

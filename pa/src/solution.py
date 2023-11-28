@@ -8,10 +8,13 @@ from problem import Problem
 
 
 class Solution:
-    def __init__(self, prob: Problem):
+    def __init__(self, prob: Problem, empty=True):
         self.prob = prob
-        self.graph = nx.Graph()
-        self.graph.add_nodes_from(range(1, prob.n))
+        if empty:
+            self.graph = nx.Graph()
+            self.graph.add_nodes_from(range(1, prob.n))
+        else:
+            self.graph = prob.graph.copy()
         # An empty solution has all initial edges deleted.
         # self.changeset = set(prob.edges)
         # print(self.changeset)

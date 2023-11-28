@@ -10,11 +10,12 @@ import argparse
 import time
 
 from reader import Reader
-from detcon import DetCon1, DetCon2
-from rancon import RanCon
 from localsearch import LocalSearch
 from annealer import Annealer
+import detcon as dc
+import rancon as rc
 import neighborhoods as nhs
+import networkx as nx
 
 
 def main():
@@ -22,7 +23,7 @@ def main():
     reader = Reader()
     # problem = reader.read(args.input)
     # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-    # problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
+    problem = reader.read("../inst/testing/heur003_n_120_m_2588.txt")
     # problem = reader.read("../inst/testing/heur004_n_140_m_3014.txt")
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     print(problem)
@@ -32,22 +33,23 @@ def main():
     # print(problem.all_edges_weighted())
     # problem.draw()
 
-    con = DetCon1(problem)
-    # con = DetCon2(problem)
-    # con = RanCon(problem, 10)
+    con = dc.DetCon3(problem)
+    # con = dc.DetCon2(problem)
+    # con = dc.DetCon1(problem)
+    # con = rc.RanCon(problem, 10)
     sol = con.construct()
     print(sol.is_feasible())
     sol.draw()
     print(sol.get_value())
 
-    nbh1 = nhs.VertexSwapNeighborhood()
-    ls1 = LocalSearch(sol, nbh1, 1000)
-    sol1 = ls1.run()
-    # an = Annealer(sol, nbh1, 50, 0.75)
-    # sol1 = an.run()
-    print(sol1.is_feasible())
-    sol1.draw()
-    print(sol1.get_value())
+    # nbh1 = nhs.VertexSwapNeighborhood()
+    # ls1 = LocalSearch(sol, nbh1, 1000)
+    # sol1 = ls1.run()
+    # # an = Annealer(sol, nbh1, 50, 0.75)
+    # # sol1 = an.run()
+    # print(sol1.is_feasible())
+    # sol1.draw()
+    # print(sol1.get_value())
     #
     # nbh2 = nhs.SingleComponentMultiExchangeNeighborhood()
     # ls2 = LocalSearch(sol1, nbh2, 1000)
@@ -65,13 +67,13 @@ def ran_vs_det():
     # problem = reader.read("../inst/testing/heur005_n_160_m_4015.txt")
     problem = reader.read("../inst/testing/heur039_n_361_m_13593.txt")
 
-    rcon = RanCon(problem, 10)
+    rcon = rc.RanCon(problem, 10)
     rsol = rcon.construct()
     print(rsol.is_feasible())
     rsol.draw()
     print(rsol.get_value())
 
-    dcon = DetCon1(problem)
+    dcon = dc.DetCon1(problem)
     dsol = dcon.construct()
     print(dsol.is_feasible())
     dsol.draw()
