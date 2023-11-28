@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import time
+from concurrent.futures import ProcessPoolExecutor, Future
 from io import StringIO
 
 import numpy as np
@@ -90,3 +91,37 @@ class Testbench:
                     elapsed_time = time.time() - start_time
                     result.add_solution(solution, elapsed_time)
         return results
+
+
+class ParallelTestbench:
+
+    def __init__(self, n: int = 30):
+        self.n = n
+        self.executor = ProcessPoolExecutor()
+        self.reader = Reader()
+        self.filenames: list[str] = []
+        self.benchmarks: list[Benchmark] = []
+
+    def add_filename(self, filename: str):
+        self.filenames.append(filename)
+
+    def add_benchmark(self, benchmark: Benchmark):
+        self.benchmarks.append(benchmark)
+
+    def run(self) -> list[Result]:
+        results: list[Result] = []
+        for filename in self.filenames:
+            problem = self.reader.read(filename)
+            for benchmark in self.benchmarks:
+                result = Result(problem, benchmark)
+                for i in range(1, self.n+1):
+                    task = self.executor.submit(self.run_one, problem, benchmark)
+                    solution, elapsed_time = task.result()
+                    result.add_solution(solution, elapsed_time)
+        return results
+
+    def run_one(self, problem: Problem, benchmark: Benchmark):
+        start_time = time.time()
+        solution = benchmark.run(problem)
+        elapsed_time = time.time() - start_time
+        return solution, elapsed_time
