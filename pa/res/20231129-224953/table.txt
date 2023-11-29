@@ -1,0 +1,246 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+& SA 1 \\ \hline
+ heur001\_n\_10\_m\_31 & 90 \\ \hline
+ heur002\_n\_100\_m\_3274 & 9749 \\ \hline
+ heur003\_n\_120\_m\_2588 & 7565 \\ \hline
+ heur004\_n\_140\_m\_3014 & 8987 \\ \hline
+ heur005\_n\_160\_m\_4015 & 11652 \\ \hline
+ heur006\_n\_180\_m\_6067 & 17742 \\ \hline
+ heur007\_n\_200\_m\_6731 & 19936 \\ \hline
+ heur008\_n\_250\_m\_1045 & 3038 \\ \hline
+ heur009\_n\_250\_m\_1450 & 4169 \\ \hline
+ heur010\_n\_250\_m\_4507 & 13131 \\ \hline
+ heur011\_n\_250\_m\_6574 & 19034 \\ \hline
+ heur012\_n\_250\_m\_20035 & 57998 \\ \hline
+ heur013\_n\_250\_m\_22395 & 65658 \\ \hline
+ heur014\_n\_300\_m\_14191 & 41341 \\ \hline
+ heur015\_n\_300\_m\_15035 & 44064 \\ \hline
+ heur016\_n\_300\_m\_15456 & 45237 \\ \hline
+ heur017\_n\_300\_m\_15641 & 45650 \\ \hline
+ heur018\_n\_300\_m\_25919 & 75603 \\ \hline
+ heur019\_n\_300\_m\_28765 & 83656 \\ \hline
+ heur020\_n\_320\_m\_5905 & 17455 \\ \hline
+ heur021\_n\_320\_m\_13507 & 39676 \\ \hline
+ heur022\_n\_322\_m\_14226 & 41169 \\ \hline
+ heur023\_n\_329\_m\_16183 & 46824 \\ \hline
+ heur024\_n\_329\_m\_27115 & 79172 \\ \hline
+ heur025\_n\_329\_m\_32168 & 93611 \\ \hline
+ heur026\_n\_330\_m\_1370 & 4113 \\ \hline
+ heur027\_n\_330\_m\_2256 & 6687 \\ \hline
+ heur028\_n\_330\_m\_3253 & 9418 \\ \hline
+ heur029\_n\_330\_m\_4329 & 12653 \\ \hline
+ heur030\_n\_330\_m\_5613 & 16270 \\ \hline
+ heur031\_n\_330\_m\_7270 & 21281 \\ \hline
+ heur032\_n\_330\_m\_9770 & 28439 \\ \hline
+ heur033\_n\_330\_m\_13861 & 40355 \\ \hline
+ heur034\_n\_345\_m\_6830 & 19956 \\ \hline
+ heur035\_n\_345\_m\_17798 & 51681 \\ \hline
+ heur036\_n\_347\_m\_17983 & 52476 \\ \hline
+ heur037\_n\_347\_m\_31752 & 92590 \\ \hline
+ heur038\_n\_361\_m\_7987 & 23414 \\ \hline
+ heur039\_n\_361\_m\_13593 & 39656 \\ \hline
+ heur049\_n\_300\_m\_17695 & 51398 \\ \hline
+ heur050\_n\_300\_m\_19207 & 55844 \\ \hline
+ heur051\_n\_300\_m\_20122 & 58632 \\ \hline
+ test & 24 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+& SA 1 \\ \hline
+ heur001\_n\_10\_m\_31 & 90.00 \\ \hline
+ heur002\_n\_100\_m\_3274 & 9752.40 \\ \hline
+ heur003\_n\_120\_m\_2588 & 7566.20 \\ \hline
+ heur004\_n\_140\_m\_3014 & 8992.40 \\ \hline
+ heur005\_n\_160\_m\_4015 & 11663.40 \\ \hline
+ heur006\_n\_180\_m\_6067 & 17747.00 \\ \hline
+ heur007\_n\_200\_m\_6731 & 19951.60 \\ \hline
+ heur008\_n\_250\_m\_1045 & 3065.60 \\ \hline
+ heur009\_n\_250\_m\_1450 & 4170.60 \\ \hline
+ heur010\_n\_250\_m\_4507 & 13157.00 \\ \hline
+ heur011\_n\_250\_m\_6574 & 19036.20 \\ \hline
+ heur012\_n\_250\_m\_20035 & 58029.40 \\ \hline
+ heur013\_n\_250\_m\_22395 & 65661.00 \\ \hline
+ heur014\_n\_300\_m\_14191 & 41351.00 \\ \hline
+ heur015\_n\_300\_m\_15035 & 44068.00 \\ \hline
+ heur016\_n\_300\_m\_15456 & 45249.40 \\ \hline
+ heur017\_n\_300\_m\_15641 & 45668.00 \\ \hline
+ heur018\_n\_300\_m\_25919 & 75604.60 \\ \hline
+ heur019\_n\_300\_m\_28765 & 83669.00 \\ \hline
+ heur020\_n\_320\_m\_5905 & 17457.00 \\ \hline
+ heur021\_n\_320\_m\_13507 & 39702.40 \\ \hline
+ heur022\_n\_322\_m\_14226 & 41175.60 \\ \hline
+ heur023\_n\_329\_m\_16183 & 46831.20 \\ \hline
+ heur024\_n\_329\_m\_27115 & 79178.20 \\ \hline
+ heur025\_n\_329\_m\_32168 & 93626.40 \\ \hline
+ heur026\_n\_330\_m\_1370 & 4115.00 \\ \hline
+ heur027\_n\_330\_m\_2256 & 6689.00 \\ \hline
+ heur028\_n\_330\_m\_3253 & 9430.20 \\ \hline
+ heur029\_n\_330\_m\_4329 & 12657.40 \\ \hline
+ heur030\_n\_330\_m\_5613 & 16280.20 \\ \hline
+ heur031\_n\_330\_m\_7270 & 21298.80 \\ \hline
+ heur032\_n\_330\_m\_9770 & 28443.00 \\ \hline
+ heur033\_n\_330\_m\_13861 & 40362.20 \\ \hline
+ heur034\_n\_345\_m\_6830 & 19962.40 \\ \hline
+ heur035\_n\_345\_m\_17798 & 51692.20 \\ \hline
+ heur036\_n\_347\_m\_17983 & 52492.40 \\ \hline
+ heur037\_n\_347\_m\_31752 & 92598.00 \\ \hline
+ heur038\_n\_361\_m\_7987 & 23417.80 \\ \hline
+ heur039\_n\_361\_m\_13593 & 39661.20 \\ \hline
+ heur049\_n\_300\_m\_17695 & 51398.00 \\ \hline
+ heur050\_n\_300\_m\_19207 & 55844.00 \\ \hline
+ heur051\_n\_300\_m\_20122 & 58632.00 \\ \hline
+ test & 26.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+& SA 1 \\ \hline
+ heur001\_n\_10\_m\_31 & 0.00 \\ \hline
+ heur002\_n\_100\_m\_3274 & 6.80 \\ \hline
+ heur003\_n\_120\_m\_2588 & 2.40 \\ \hline
+ heur004\_n\_140\_m\_3014 & 7.20 \\ \hline
+ heur005\_n\_160\_m\_4015 & 5.82 \\ \hline
+ heur006\_n\_180\_m\_6067 & 3.69 \\ \hline
+ heur007\_n\_200\_m\_6731 & 12.27 \\ \hline
+ heur008\_n\_250\_m\_1045 & 13.87 \\ \hline
+ heur009\_n\_250\_m\_1450 & 3.20 \\ \hline
+ heur010\_n\_250\_m\_4507 & 17.17 \\ \hline
+ heur011\_n\_250\_m\_6574 & 1.72 \\ \hline
+ heur012\_n\_250\_m\_20035 & 19.54 \\ \hline
+ heur013\_n\_250\_m\_22395 & 4.15 \\ \hline
+ heur014\_n\_300\_m\_14191 & 6.07 \\ \hline
+ heur015\_n\_300\_m\_15035 & 2.76 \\ \hline
+ heur016\_n\_300\_m\_15456 & 7.61 \\ \hline
+ heur017\_n\_300\_m\_15641 & 10.26 \\ \hline
+ heur018\_n\_300\_m\_25919 & 1.36 \\ \hline
+ heur019\_n\_300\_m\_28765 & 11.26 \\ \hline
+ heur020\_n\_320\_m\_5905 & 1.79 \\ \hline
+ heur021\_n\_320\_m\_13507 & 14.57 \\ \hline
+ heur022\_n\_322\_m\_14226 & 4.08 \\ \hline
+ heur023\_n\_329\_m\_16183 & 4.79 \\ \hline
+ heur024\_n\_329\_m\_27115 & 6.68 \\ \hline
+ heur025\_n\_329\_m\_32168 & 9.89 \\ \hline
+ heur026\_n\_330\_m\_1370 & 1.10 \\ \hline
+ heur027\_n\_330\_m\_2256 & 2.45 \\ \hline
+ heur028\_n\_330\_m\_3253 & 10.36 \\ \hline
+ heur029\_n\_330\_m\_4329 & 3.20 \\ \hline
+ heur030\_n\_330\_m\_5613 & 5.64 \\ \hline
+ heur031\_n\_330\_m\_7270 & 11.00 \\ \hline
+ heur032\_n\_330\_m\_9770 & 2.90 \\ \hline
+ heur033\_n\_330\_m\_13861 & 5.64 \\ \hline
+ heur034\_n\_345\_m\_6830 & 3.83 \\ \hline
+ heur035\_n\_345\_m\_17798 & 9.13 \\ \hline
+ heur036\_n\_347\_m\_17983 & 8.55 \\ \hline
+ heur037\_n\_347\_m\_31752 & 4.60 \\ \hline
+ heur038\_n\_361\_m\_7987 & 2.04 \\ \hline
+ heur039\_n\_361\_m\_13593 & 3.31 \\ \hline
+ heur049\_n\_300\_m\_17695 & 0.00 \\ \hline
+ heur050\_n\_300\_m\_19207 & 0.00 \\ \hline
+ heur051\_n\_300\_m\_20122 & 0.00 \\ \hline
+ test & 4.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+& SA 1 \\ \hline
+ heur001\_n\_10\_m\_31 & 25 ms \\ \hline
+ heur002\_n\_100\_m\_3274 & 1235 ms \\ \hline
+ heur003\_n\_120\_m\_2588 & 1437 ms \\ \hline
+ heur004\_n\_140\_m\_3014 & 2043 ms \\ \hline
+ heur005\_n\_160\_m\_4015 & 2550 ms \\ \hline
+ heur006\_n\_180\_m\_6067 & 3844 ms \\ \hline
+ heur007\_n\_200\_m\_6731 & 4239 ms \\ \hline
+ heur008\_n\_250\_m\_1045 & 5210 ms \\ \hline
+ heur009\_n\_250\_m\_1450 & 4845 ms \\ \hline
+ heur010\_n\_250\_m\_4507 & 5636 ms \\ \hline
+ heur011\_n\_250\_m\_6574 & 5551 ms \\ \hline
+ heur012\_n\_250\_m\_20035 & 8941 ms \\ \hline
+ heur013\_n\_250\_m\_22395 & 8679 ms \\ \hline
+ heur014\_n\_300\_m\_14191 & 9360 ms \\ \hline
+ heur015\_n\_300\_m\_15035 & 9195 ms \\ \hline
+ heur016\_n\_300\_m\_15456 & 9412 ms \\ \hline
+ heur017\_n\_300\_m\_15641 & 9593 ms \\ \hline
+ heur018\_n\_300\_m\_25919 & 11428 ms \\ \hline
+ heur019\_n\_300\_m\_28765 & 13164 ms \\ \hline
+ heur020\_n\_320\_m\_5905 & 8422 ms \\ \hline
+ heur021\_n\_320\_m\_13507 & 10398 ms \\ \hline
+ heur022\_n\_322\_m\_14226 & 10135 ms \\ \hline
+ heur023\_n\_329\_m\_16183 & 10997 ms \\ \hline
+ heur024\_n\_329\_m\_27115 & 13270 ms \\ \hline
+ heur025\_n\_329\_m\_32168 & 14330 ms \\ \hline
+ heur026\_n\_330\_m\_1370 & 7760 ms \\ \hline
+ heur027\_n\_330\_m\_2256 & 7899 ms \\ \hline
+ heur028\_n\_330\_m\_3253 & 8738 ms \\ \hline
+ heur029\_n\_330\_m\_4329 & 8724 ms \\ \hline
+ heur030\_n\_330\_m\_5613 & 9006 ms \\ \hline
+ heur031\_n\_330\_m\_7270 & 9255 ms \\ \hline
+ heur032\_n\_330\_m\_9770 & 9331 ms \\ \hline
+ heur033\_n\_330\_m\_13861 & 10934 ms \\ \hline
+ heur034\_n\_345\_m\_6830 & 9682 ms \\ \hline
+ heur035\_n\_345\_m\_17798 & 12314 ms \\ \hline
+ heur036\_n\_347\_m\_17983 & 12485 ms \\ \hline
+ heur037\_n\_347\_m\_31752 & 15192 ms \\ \hline
+ heur038\_n\_361\_m\_7987 & 10776 ms \\ \hline
+ heur039\_n\_361\_m\_13593 & 12259 ms \\ \hline
+ heur049\_n\_300\_m\_17695 & 10188 ms \\ \hline
+ heur050\_n\_300\_m\_19207 & 10267 ms \\ \hline
+ heur051\_n\_300\_m\_20122 & 10520 ms \\ \hline
+ test & 20 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+& SA 1 \\ \hline
+ heur001\_n\_10\_m\_31 & 0 ms \\ \hline
+ heur002\_n\_100\_m\_3274 & 36 ms \\ \hline
+ heur003\_n\_120\_m\_2588 & 40 ms \\ \hline
+ heur004\_n\_140\_m\_3014 & 45 ms \\ \hline
+ heur005\_n\_160\_m\_4015 & 48 ms \\ \hline
+ heur006\_n\_180\_m\_6067 & 37 ms \\ \hline
+ heur007\_n\_200\_m\_6731 & 86 ms \\ \hline
+ heur008\_n\_250\_m\_1045 & 70 ms \\ \hline
+ heur009\_n\_250\_m\_1450 & 93 ms \\ \hline
+ heur010\_n\_250\_m\_4507 & 87 ms \\ \hline
+ heur011\_n\_250\_m\_6574 & 48 ms \\ \hline
+ heur012\_n\_250\_m\_20035 & 160 ms \\ \hline
+ heur013\_n\_250\_m\_22395 & 117 ms \\ \hline
+ heur014\_n\_300\_m\_14191 & 133 ms \\ \hline
+ heur015\_n\_300\_m\_15035 & 102 ms \\ \hline
+ heur016\_n\_300\_m\_15456 & 88 ms \\ \hline
+ heur017\_n\_300\_m\_15641 & 145 ms \\ \hline
+ heur018\_n\_300\_m\_25919 & 107 ms \\ \hline
+ heur019\_n\_300\_m\_28765 & 113 ms \\ \hline
+ heur020\_n\_320\_m\_5905 & 122 ms \\ \hline
+ heur021\_n\_320\_m\_13507 & 122 ms \\ \hline
+ heur022\_n\_322\_m\_14226 & 146 ms \\ \hline
+ heur023\_n\_329\_m\_16183 & 160 ms \\ \hline
+ heur024\_n\_329\_m\_27115 & 250 ms \\ \hline
+ heur025\_n\_329\_m\_32168 & 309 ms \\ \hline
+ heur026\_n\_330\_m\_1370 & 198 ms \\ \hline
+ heur027\_n\_330\_m\_2256 & 148 ms \\ \hline
+ heur028\_n\_330\_m\_3253 & 232 ms \\ \hline
+ heur029\_n\_330\_m\_4329 & 254 ms \\ \hline
+ heur030\_n\_330\_m\_5613 & 221 ms \\ \hline
+ heur031\_n\_330\_m\_7270 & 146 ms \\ \hline
+ heur032\_n\_330\_m\_9770 & 168 ms \\ \hline
+ heur033\_n\_330\_m\_13861 & 225 ms \\ \hline
+ heur034\_n\_345\_m\_6830 & 272 ms \\ \hline
+ heur035\_n\_345\_m\_17798 & 276 ms \\ \hline
+ heur036\_n\_347\_m\_17983 & 238 ms \\ \hline
+ heur037\_n\_347\_m\_31752 & 268 ms \\ \hline
+ heur038\_n\_361\_m\_7987 & 268 ms \\ \hline
+ heur039\_n\_361\_m\_13593 & 340 ms \\ \hline
+ heur049\_n\_300\_m\_17695 & 22 ms \\ \hline
+ heur050\_n\_300\_m\_19207 & 25 ms \\ \hline
+ heur051\_n\_300\_m\_20122 & 24 ms \\ \hline
+ test & 2 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}
