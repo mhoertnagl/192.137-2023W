@@ -108,6 +108,17 @@ class Solution:
     def get_neighbors(self, v: int):
         return self.graph.neighbors(v)
 
+    def get_neighbors_weighted(self, v: int):
+        nv = self.graph.neighbors(v)
+        w = [self.weight(n, v) for n in nv]
+        wn = [x for _,x in sorted(zip(w,nv))]
+        return wn
+
+    def get_edges_weighted(self, v: int, u: list):
+        w = [self.weight(v, n) for n in u]
+        wn = [x for _,x in sorted(zip(w,u))]
+        return wn
+    
     def get_solution_edges(self):
         return self.graph.edges
 

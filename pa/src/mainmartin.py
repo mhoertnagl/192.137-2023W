@@ -15,18 +15,41 @@ from reader import Reader
 from detcon import DetCon1, DetCon2
 from rancon import RanCon
 
-reader = Reader()
-problem = reader.read('test.txt')
+from abc import ABC
 
+import testbench as tb
+from problem import Problem
+from solution import Solution
+import detcon as dc
+import rancon as rc
+import neighborhoods as nhs
+import annealer
+import grasper
+import localsearch
+import vnd
+import termination
+
+reader = Reader()
+problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
 problem.draw()
 
-con = DetCon1(problem)
-ran_con = RanCon(problem, 3)
-# con = DetCon2(problem)
-ran_solution = ran_con.construct()
-ran_solution.draw()
-print(ran_solution.evaluate())
-print(ran_solution.components)
+#con = DetCon1(problem)
+#ran_con = RanCon(problem, 3)
+con = DetCon2(problem)
+sol = con.construct()
+sol.draw()
+print(sol.get_value())
+print(sol.get_components())
 
 
-solution = con.construct()
+nbh = nhs.VertexMoveNeighborhood(nhs.Improvement.FIRST)
+ls_ter = termination.IterationTermination(10)
+# ls_ter = termination.ImprovementTermination(1)
+ls = localsearch.LocalSearch(nbh, ls_ter)
+sol = ls.run(sol)
+sol.draw()
+print(sol.get_value())
+print(sol.get_components())
+
+
+
