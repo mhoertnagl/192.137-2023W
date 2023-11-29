@@ -91,6 +91,8 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
 
     def choose_random(self, sol: Solution) -> Solution:
         cs = [c for c in sol.get_components() if len(c) >= 4]
+        if len(cs) < 1:
+            return  sol
         c = cs[np.random.randint(0, len(cs))]
         es = sol.get_edges(c)
         random.shuffle(es)

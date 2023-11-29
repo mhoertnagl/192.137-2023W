@@ -1,3 +1,4 @@
+import operator
 import os
 from abc import ABC, abstractmethod
 
@@ -107,6 +108,7 @@ class ParallelTestbench:
         print(f"Testbench '{run_dir}' (n = {self.n})")
         start_time = time.time()
         table = Table(self.benchmarks)
+        self.filenames.sort()
         for filename in self.filenames:
             problem = self.reader.read(filename)
             print("=" * 60)
@@ -172,6 +174,7 @@ class Table:
         self.results[(problem.name, benchmark.name())] = result
 
     def write(self, out_dir: str):
+        self.problems.sort(key=operator.attrgetter('name'))
         filename = os.path.join(out_dir, f"table.txt")
         os.makedirs(out_dir, exist_ok=True)
         with open(filename, "w") as file:
