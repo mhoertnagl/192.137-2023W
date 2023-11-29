@@ -2,7 +2,7 @@ import os
 from abc import ABC, abstractmethod
 
 import time
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 from io import StringIO
 import numpy as np
 
@@ -12,6 +12,9 @@ from solution import Solution
 
 
 class Benchmark(ABC):
+
+    def __init__(self, is_deterministic=False):
+        self.is_deterministic = is_deterministic
 
     @abstractmethod
     def name(self) -> str:
@@ -58,11 +61,12 @@ class Result:
     def __str__(self):
         s = StringIO()
         s.write(f"Problem:         {self.problem.name}\n")
+        s.write(f"Problem Worst:   {self.problem.worst_value()}\n")
         s.write(f"Best Value:      {self.best_solution.get_value()}\n")
         s.write(f"Avg Value:       {self.get_average_value()}\n")
         s.write(f"Std Dev Value:   {self.get_std_deviation_value()}\n")
-        s.write(f"Avg Runtime:     {self.get_average_runtime() * 1000:.0f}\n")
-        s.write(f"Std Dev Runtime: {self.get_std_deviation_runtime() * 1000:.0f}\n")
+        s.write(f"Avg Runtime:     {self.get_average_runtime() * 1000:.0f} ms\n")
+        s.write(f"Std Dev Runtime: {self.get_std_deviation_runtime() * 1000:.0f} ms")
         return s.getvalue()
 
     def write(self, out_dir: str):
@@ -96,26 +100,28 @@ class Testbench:
     def run(self) -> list[Result]:
         run_dir = time.strftime("%Y%m%d-%H%M%S")
         out_dir = os.path.join(self.out_dir, run_dir)
-        print(f"Running testbench '{run_dir}' (n = {self.n})")
-        print("=" * 74)
+        print(f"Testbench '{run_dir}' (n = {self.n})")
         results: list[Result] = []
         start_time = time.time()
         for filename in self.filenames:
             problem = self.reader.read(filename)
+            print("=" * 60)
             print(f"Problem '{problem.name}'")
-            print("-" * 74)
+            print("=" * 60)
             for benchmark in self.benchmarks:
                 result = self.run_benchmark(problem, benchmark)
                 results.append(result)
                 self.__write(out_dir, result)
                 print(result)
+                print("-" * 60)
         elapsed_time = time.time() - start_time
-        print("=" * 74)
-        print(f"Testbench run in {elapsed_time * 1000:.0f}\n")
+        print("=" * 60)
+        print(f"Testbench run in {elapsed_time * 1000:.0f} ms\n")
         return results
 
     def run_benchmark(self, problem: Problem, benchmark: Benchmark) -> Result:
         print(f"Benchmark '{benchmark.name()}'")
+        print("-" * 60)
         result = Result(problem, benchmark)
         for i in range(1, self.n+1):
             start_time = time.time()
@@ -156,28 +162,53 @@ class ParallelTestbench:
     def run(self) -> list[Result]:
         run_dir = time.strftime("%Y%m%d-%H%M%S")
         out_dir = os.path.join(self.out_dir, run_dir)
+        print(f"Testbench '{run_dir}' (n = {self.n})")
         results: list[Result] = []
+        start_time = time.time()
         for filename in self.filenames:
             problem = self.reader.read(filename)
+            print("=" * 60)
+            print(f"Problem '{problem.name}'")
+            print("=" * 60)
             for benchmark in self.benchmarks:
-                result = Result(problem, benchmark)
-                for i in range(1, self.n+1):
-                    task = self.executor.submit(self.run_one, problem, benchmark)
-                    solution, elapsed_time = task.result()
-                    result.add_solution(solution, elapsed_time)
+                result = self.run_benchmark(problem, benchmark)
                 results.append(result)
                 self.__write(out_dir, result)
                 print(result)
+                print("-" * 60)
+        elapsed_time = time.time() - start_time
+        print("=" * 60)
+        print(f"Testbench run in {elapsed_time * 1000:.0f} ms\n")
+        self.executor.shutdown(cancel_futures=True)
         return results
 
-    def run_one(self, problem: Problem, benchmark: Benchmark):
-        start_time = time.time()
-        solution = benchmark.run(problem)
-        elapsed_time = time.time() - start_time
-        return solution, elapsed_time
+    def run_benchmark(self, problem: Problem, benchmark: Benchmark) -> Result:
+        print(f"Benchmark '{benchmark.name()}'")
+        print("-" * 60)
+        result = Result(problem, benchmark)
+        tasks = []
+        # Run deterministic test benches only once.
+        n = 1 if benchmark.is_deterministic else self.n
+        for _ in range(0, n):
+            task = self.executor.submit(run_benchmark_as_task, problem, benchmark)
+            tasks.append(task)
+        done, not_done = wait(tasks, return_when=ALL_COMPLETED, timeout=15*60)
+        for task in done:
+            solution, elapsed_time = task.result()
+            result.add_solution(solution, elapsed_time)
+        if len(not_done) > 0:
+            print(f"Could not complete {len(not_done)} runs within 15 min.")
+        return result
 
     def __write(self, out_dir: str, result: Result):
         bm_dir = os.path.join(out_dir, f"{result.benchmark.name()}")
         os.makedirs(bm_dir, exist_ok=True)
         result.best_solution.write(bm_dir)
         result.write(bm_dir)
+
+
+def run_benchmark_as_task(problem: Problem, benchmark: Benchmark):
+    start_time = time.time()
+    solution = benchmark.run(problem)
+    elapsed_time = time.time() - start_time
+    return solution, elapsed_time

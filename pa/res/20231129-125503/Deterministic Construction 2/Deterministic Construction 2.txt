@@ -1,0 +1,7 @@
+Problem:         heur050_n_300_m_19207
+Problem Worst:   130682
+Best Value:      54595
+Avg Value:       54595.0
+Std Dev Value:   0.0
+Avg Runtime:     6986 ms
+Std Dev Runtime: 0 ms
