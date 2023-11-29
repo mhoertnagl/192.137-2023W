@@ -182,6 +182,8 @@ class Table:
             self.__write_std_runtime(file)
 
     def __write_best_values(self, file: TextIO):
+        file.write("\\begin{figure}\n")
+        file.write("\\centering\n")
         file.write("\\begin{tabular}{|l")
         file.write("|c" * len(self.benchmarks))
         file.write("|}\n")
@@ -197,8 +199,12 @@ class Table:
                 file.write(f"& {result.best_solution.get_value()} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
+        file.write("\\caption{Best value}")
+        file.write("\\end{figure}")
 
     def __write_average_values(self, file: TextIO):
+        file.write("\\begin{figure}\n")
+        file.write("\\centering\n")
         file.write("\\begin{tabular}{|l")
         file.write("|c" * len(self.benchmarks))
         file.write("|}\n")
@@ -214,8 +220,12 @@ class Table:
                 file.write(f"& {result.get_average_value():.2f} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
+        file.write("\\caption{Average values.}")
+        file.write("\\end{figure}")
 
     def __write_std_values(self, file: TextIO):
+        file.write("\\begin{figure}\n")
+        file.write("\\centering\n")
         file.write("\\begin{tabular}{|l")
         file.write("|c" * len(self.benchmarks))
         file.write("|}\n")
@@ -231,8 +241,12 @@ class Table:
                 file.write(f"& {result.get_std_deviation_value():.2f} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
+        file.write("\\caption{Standard deviation values.}")
+        file.write("\\end{figure}")
 
     def __write_average_runtime(self, file: TextIO):
+        file.write("\\begin{figure}\n")
+        file.write("\\centering\n")
         file.write("\\begin{tabular}{|l")
         file.write("|c" * len(self.benchmarks))
         file.write("|}\n")
@@ -248,8 +262,12 @@ class Table:
                 file.write(f"& {result.get_average_runtime() * 1000:.0f} ms ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
+        file.write("\\caption{Average runtime.}")
+        file.write("\\end{figure}")
 
     def __write_std_runtime(self, file: TextIO):
+        file.write("\\begin{figure}\n")
+        file.write("\\centering\n")
         file.write("\\begin{tabular}{|l")
         file.write("|c" * len(self.benchmarks))
         file.write("|}\n")
@@ -265,3 +283,5 @@ class Table:
                 file.write(f"& {result.get_std_deviation_runtime() * 1000:.0f} ms ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
+        file.write("\\caption{Standard deviation runtime.}")
+        file.write("\\end{figure}")
