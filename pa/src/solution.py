@@ -19,13 +19,7 @@ class Solution:
             self.graph.add_nodes_from(range(1, prob.n+1))
         else:
             self.graph = prob.graph.copy()
-        # An empty solution has all initial edges deleted.
-        # self.changeset = set(prob.edges)
-        # print(self.changeset)
-        # print(prob.all_edges)
-        self.value_valid = False
-        # self.value = self.evaluate()
-        self.__value = self.get_value()
+        self.__value = self.__get_value()
         self.components_valid = False
         self.__components = self.get_components()
 
@@ -38,50 +32,22 @@ class Solution:
         return self.prob.n
 
     def add_edge(self, u: int, v: int):
-        self.value_valid = False
-        self.components_valid = False
-        # Add edge.
-        self.graph.add_edge(u, v)
-        # if not self.graph.has_edge(u, v):
-        #     # Update changeset.
-        #     if self.prob.has_edge(u, v):
-        #         # Add an initial vertex.
-        #         if (u, v) in self.changeset:
-        #             self.changeset.remove((u, v))
-        #             self.value -= self.prob.weight(u, v)
-        #     else:
-        #         # Add an additional vertex.
-        #         if not (u, v) in self.changeset:
-        #             self.changeset.add((u, v))
-        #             self.value += self.prob.weight(u, v)
-        #     # Invalidate computed values.
-        #     # self.value_valid = False
-        #     self.components_valid = False
-        #     # Add edge.
-        #     self.graph.add_edge(u, v)
+        if not self.graph.has_edge(u, v):
+            if self.prob.has_edge(u, v):
+                self.__value -= self.prob.weight(u, v)
+            else:
+                self.__value += self.prob.weight(u, v)
+            self.components_valid = False
+            self.graph.add_edge(u, v)
 
     def remove_edge(self, u: int, v: int):
-        self.value_valid = False
-        self.components_valid = False
-        # Remove edge.
-        self.graph.remove_edge(u, v)
-        # if self.graph.has_edge(u, v):
-        #     # Update changeset.
-        #     if self.prob.has_edge(u, v):
-        #         # Remove an initial edge.
-        #         if not (u, v) in self.changeset:
-        #             self.changeset.add((u, v))
-        #             self.value += self.prob.weight(u, v)
-        #     else:
-        #         # Remove an additional edge.
-        #         if (u, v) in self.changeset:
-        #             self.changeset.remove((u, v))
-        #             self.value -= self.prob.weight(u, v)
-        #     # Invalidate computed values.
-        #     # self.value_valid = False
-        #     self.components_valid = False
-        #     # Remove edge.
-        #     self.graph.remove_edge(u, v)
+        if self.graph.has_edge(u, v):
+            if self.prob.has_edge(u, v):
+                self.__value += self.prob.weight(u, v)
+            else:
+                self.__value -= self.prob.weight(u, v)
+            self.components_valid = False
+            self.graph.remove_edge(u, v)
 
     def toggle_edge(self, u: int, v: int):
         if self.has_edge(u, v):
@@ -157,17 +123,9 @@ class Solution:
         return False
 
     def get_value(self):
-        if not self.value_valid:
-            self.__value = self.__get_value()
-            self.value_valid = True
         return self.__value
 
     def __get_value(self):
-        # return sum([self.prob.weight(i, j) for (i, j) in self.changeset])
-        # f = 0
-        # for (i, j) in self.changeset:
-        #     f += self.prob.weight(i, j)
-        # return f
         f, n = 0, self.prob.n + 1
         for i in range(1, n):
             for j in range(i + 1, n):
