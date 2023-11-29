@@ -45,7 +45,7 @@ class DetCon1(DetCon, ABC):
             min_required_degree = len(cn) - self.prob.s
             # s-plex property is met if the minimum degree of
             # unified component is greater than the required
-            # degree. TODO: Sure?
+            # degree.
             if min_component_degree > min_required_degree:
                 self.sol.add_edge(u, v)
                 # Update the connected components.

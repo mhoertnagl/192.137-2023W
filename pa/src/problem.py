@@ -24,7 +24,6 @@ class Problem:
         for (u, v, p, w) in edges:
             if p == 1:
                 self.graph.add_edge(u, v)
-                # self.graph.add_weighted_edges_from([(u, v, w)])
             self.weights[u - 1, v - 1] = w
 
     def __init_all_edges(self):
@@ -51,13 +50,6 @@ class Problem:
 
     def all_edges_weighted(self, reverse=False):
         return self.edges_weighted(self.all_edges, reverse)
-        # edges = []
-        # for (i, j) in self.all_edges:
-        #     w = self.weight(i, j)
-        #     # If it is an initial edge take the negated weight.
-        #     w = -w if self.has_edge(i, j) else w
-        #     edges.append((w, i, j))
-        # return sorted(edges, reverse=reverse)
 
     def edges_weighted(self, es: Iterable, reverse=False):
         edges = []
@@ -83,12 +75,6 @@ class Problem:
         s.write(f"s-plex number: {self.s}\n")
         s.write(f"Number of nodes: {self.n}\n")
         s.write(f"Worst value: {self.worst_value()}\n")
-        # s.write("Adjacency matrix A:\n")
-        # s.write(self.__initial_adjacency_matrix.__str__())
-        # s.write("\n")
-        # s.write("Weights matrix W:\n")
-        # s.write(self.weights.__str__())
-        # s.write("\n")
         return s.getvalue()
 
     def draw(self):

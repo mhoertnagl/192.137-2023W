@@ -20,7 +20,7 @@ class RanCon(ABC):
 
 class RanCon1(RanCon, ABC):
 
-    def __init__(self, prob: Problem, k: int):
+    def __init__(self, prob: Problem, k: int = 5):
         self.prob = prob
         self.k = k
         self.sol = Solution(prob)

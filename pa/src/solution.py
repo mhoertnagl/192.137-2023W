@@ -1,3 +1,6 @@
+import os
+from io import StringIO
+
 import pandas as pd
 import numpy as np
 import pymhlib as mh
@@ -13,7 +16,7 @@ class Solution:
         self.prob = prob
         if empty:
             self.graph = nx.Graph()
-            self.graph.add_nodes_from(range(1, prob.n))
+            self.graph.add_nodes_from(range(1, prob.n+1))
         else:
             self.graph = prob.graph.copy()
         # An empty solution has all initial edges deleted.
@@ -174,9 +177,16 @@ class Solution:
         nx.draw(self.graph, with_labels=True, font_weight='bold')
         plt.show()
 
-    def write(self, path: str):
-        with open(f"{path}/res/{self.prob.name}.txt") as file:
-            file.write(f"{self.prob.name}\n")
-            for (u, v) in self.get_solution_edges():
-                if self.edge_edited(u, v):
-                    file.write(f"{u} {v}")
+    def __str__(self):
+        s = StringIO()
+        s.write(f"{self.prob.name}\n")
+        for (u, v) in self.get_solution_edges():
+            if self.edge_edited(u, v):
+                s.write(f"{u} {v}\n")
+        return s.getvalue()
+
+    def write(self, out_dir: str):
+        os.makedirs(out_dir, exist_ok=True)
+        filename = os.path.join(out_dir, f"{self.prob.name}.txt")
+        with open(filename, "w") as file:
+            file.write(self.__str__())
