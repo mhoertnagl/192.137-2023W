@@ -325,3 +325,28 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
                 if new_sol.get_value() < sol.get_value():
                     sol = new_sol
         return sol
+
+
+class RandomUnionNeighborhood(Neighborhood, ABC):
+
+    def __init__(self, improve: Improvement = Improvement.RANDOM, k_max: int = 10):
+        super().__init__(improve)
+        self.nbhs = [
+            ComponentMergeNeighborhood(improve, k_max),
+            VertexMoveNeighborhood(improve),
+            TwoFlipNeighborhood(improve),
+        ]
+        self.improve = improve
+        self.k_max = k_max
+
+    def choose_random(self, sol: Solution) -> Solution:
+        random.shuffle(self.nbhs)
+        return self.nbhs[0].choose(sol)
+
+    def choose_first(self, sol: Solution) -> Solution:
+        random.shuffle(self.nbhs)
+        return self.nbhs[0].choose(sol)
+
+    def choose_best(self, sol: Solution) -> Solution:
+        random.shuffle(self.nbhs)
+        return self.nbhs[0].choose(sol)

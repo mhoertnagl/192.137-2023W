@@ -41,42 +41,60 @@ def main():
     # vnd_bench.add_benchmark(VndBest1Benchmark())
     # vnd_bench.run()
 
-    sa_bench = tb.ParallelTestbench(n=5)
-    sa_bench.add_directory("../inst/testing")
-    # sa_bench.add_directory("../inst/competition")
-    sa_bench.add_benchmark(SAComponentMergeRandomBenchmark())
-    sa_bench.add_benchmark(SAVertexMoveRandomBenchmark())
-    sa_bench.add_benchmark(SAVertexSwapRandomBenchmark())
-    sa_bench.add_benchmark(SATwoExchangeRandomBenchmark())
-    sa_bench.add_benchmark(SATwoFlipRandomBenchmark())
-    # sa_bench.add_benchmark(SAFirstBenchmark())
-    sa_bench.run()
+    # sa_bench = tb.ParallelTestbench(n=5)
+    # sa_bench.add_directory("../inst/testing")
+    # # sa_bench.add_directory("../inst/competition")
+    # sa_bench.add_benchmark(SAComponentMergeRandomBenchmark())
+    # sa_bench.add_benchmark(SAVertexMoveRandomBenchmark())
+    # sa_bench.add_benchmark(SAVertexSwapRandomBenchmark())
+    # sa_bench.add_benchmark(SATwoExchangeRandomBenchmark())
+    # sa_bench.add_benchmark(SATwoFlipRandomBenchmark())
+    # # sa_bench.add_benchmark(SAFirstBenchmark())
+    # sa_bench.run()
 
     ls_bench = tb.ParallelTestbench(n=5)
-    ls_bench.add_filename("../testing/test.txt")
-    ls_bench.add_filename("../testing/heur001_n_10_m_31.txt.txt")
-    # ls_bench.add_directory("../inst/testing")
-    # ls_bench.add_directory("../inst/competition")
-
+    ls_bench.add_directory("../inst/testing")
+    ls_bench.add_directory("../inst/competition")
+    ls_bench.add_benchmark(LSRURBenchmark())
     ls_bench.add_benchmark(LSVMRBenchmark())
-    ls_bench.add_benchmark(LSVSRBenchmark())
     ls_bench.add_benchmark(LSCMRBenchmark())
     ls_bench.add_benchmark(LSTFRBenchmark())
-    ls_bench.add_benchmark(LSTERBenchmark())
+    ls_bench.run()
 
+    ls_bench = tb.ParallelTestbench(n=5)
+    ls_bench.add_directory("../inst/testing")
+    ls_bench.add_directory("../inst/competition")
+    ls_bench.add_benchmark(LSRUFBenchmark())
     ls_bench.add_benchmark(LSVMFBenchmark())
-    ls_bench.add_benchmark(LSVSFBenchmark())
     ls_bench.add_benchmark(LSCMFBenchmark())
     ls_bench.add_benchmark(LSTFFBenchmark())
-    ls_bench.add_benchmark(LSTEFBenchmark())
+    ls_bench.run()
 
+    ls_bench = tb.ParallelTestbench(n=5)
+    ls_bench.add_directory("../inst/testing")
+    ls_bench.add_directory("../inst/competition")
+    ls_bench.add_benchmark(LSRUBBenchmark())
     ls_bench.add_benchmark(LSVMBBenchmark())
-    ls_bench.add_benchmark(LSVSBBenchmark())
     ls_bench.add_benchmark(LSCMBBenchmark())
     ls_bench.add_benchmark(LSTFBBenchmark())
-    ls_bench.add_benchmark(LSTEBBenchmark())
-
     ls_bench.run()
+
+
+class LSRURBenchmark(tb.Benchmark, ABC):
+
+    def __init__(self):
+        super().__init__(False)
+
+    def name(self) -> str:
+        return "LS RU R"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        ter = termination.IterationTermination(1000)
+        nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.RANDOM)
+        ls = localsearch.LocalSearch(nbh1, ter)
+        sol = con.construct()
+        return ls.run(sol)
 
 
 class LSVMRBenchmark(tb.Benchmark, ABC):
@@ -164,13 +182,30 @@ class LSTERBenchmark(tb.Benchmark, ABC):
         return ls.run(sol)
 
 
+class LSRUFBenchmark(tb.Benchmark, ABC):
+
+    def __init__(self):
+        super().__init__(False)
+
+    def name(self) -> str:
+        return "LS RU R"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        ter = termination.IterationTermination(1000)
+        nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.FIRST)
+        ls = localsearch.LocalSearch(nbh1, ter)
+        sol = con.construct()
+        return ls.run(sol)
+
+
 class LSVMFBenchmark(tb.Benchmark, ABC):
 
     def __init__(self):
         super().__init__(True)
 
     def name(self) -> str:
-        return "LS VM S"
+        return "LS VM F"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
@@ -245,6 +280,23 @@ class LSTEFBenchmark(tb.Benchmark, ABC):
         ter = termination.IterationTermination(1000)
         nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.FIRST)
         ls = localsearch.LocalSearch(nbh5, ter)
+        sol = con.construct()
+        return ls.run(sol)
+
+
+class LSRUBBenchmark(tb.Benchmark, ABC):
+
+    def __init__(self):
+        super().__init__(False)
+
+    def name(self) -> str:
+        return "LS RU R"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        ter = termination.IterationTermination(1000)
+        nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.BEST)
+        ls = localsearch.LocalSearch(nbh1, ter)
         sol = con.construct()
         return ls.run(sol)
 
