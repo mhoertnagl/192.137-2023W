@@ -2,35 +2,35 @@
 # -*- coding: utf8 -*-
 from abc import ABC
 
-import grasper
-import localsearch
-import termination
+import testbench as tb
 from problem import Problem
-from reader import Reader
+from solution import Solution
 import detcon as dc
 import rancon as rc
 import neighborhoods as nhs
-from annealer import Annealer
-from localsearch import LocalSearch
-from grasper import Grasper
-from solution import Solution
-from vnd import VND
-import testbench as tb
+import annealer
+import grasper
+import localsearch
+import vnd
+import termination
 
 
 def main():
-    con_bench = tb.ParallelTestbench()
-    # con_bench.add_filename("../inst/testing/test.txt")
-    # con_bench.add_filename("../inst/testing/heur002_n_100_m_3274.txt")
-    # con_bench.add_filename("../inst/testing/heur003_n_120_m_2588.txt")
-    # con_bench.add_filename("../inst/testing/heur004_n_140_m_3014.txt")
-    # con_bench.add_filename("../inst/testing/heur005_n_160_m_4015.txt")
-    con_bench.add_directory("../inst/competition")
-    con_bench.add_benchmark(DetCon1Benchmark())
-    con_bench.add_benchmark(DetCon2Benchmark())
-    con_bench.add_benchmark(RanCon1Benchmark())
-    con_bench.add_benchmark(GraspBenchmark())
-    con_bench.run()
+    # con_bench = tb.ParallelTestbench()
+    # con_bench.add_directory("../inst/competition")
+    # con_bench.add_benchmark(DetCon1Benchmark())
+    # con_bench.add_benchmark(DetCon2Benchmark())
+    # con_bench.add_benchmark(RanCon1Benchmark())
+    # con_bench.add_benchmark(GraspBenchmark())
+    # con_bench.run()
+
+    vnd_bench = tb.ParallelTestbench()
+    vnd_bench.add_directory("../inst/competition")
+    vnd_bench.add_benchmark(VndRandom134Benchmark())
+    vnd_bench.add_benchmark(VndRandom143Benchmark())
+    vnd_bench.add_benchmark(VndRandom314Benchmark())
+    vnd_bench.add_benchmark(VndRandom341Benchmark())
+    vnd_bench.run()
 
 
 class DetCon1Benchmark(tb.Benchmark, ABC):
@@ -84,6 +84,74 @@ class GraspBenchmark(tb.Benchmark, ABC):
         # gr_ter = termination.ImprovementTermination(1)
         grasp = grasper.Grasper(con, ls, gr_ter)
         return grasp.run()
+
+
+class VndRandom134Benchmark(tb.Benchmark, ABC):
+
+    def name(self) -> str:
+        return "VND Random 134"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
+        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
+        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
+        vn = vnd.VND([nbh1, nbh3, nbh4])
+        sol = con.construct()
+        return vn.run(sol)
+
+
+class VndRandom143Benchmark(tb.Benchmark, ABC):
+
+    def name(self) -> str:
+        return "VND Random 143"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
+        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
+        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
+        vn = vnd.VND([nbh1, nbh4, nbh3])
+        sol = con.construct()
+        return vn.run(sol)
+
+
+class VndRandom314Benchmark(tb.Benchmark, ABC):
+
+    def name(self) -> str:
+        return "VND Random 314"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
+        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
+        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
+        vn = vnd.VND([nbh3, nbh1, nbh4])
+        sol = con.construct()
+        return vn.run(sol)
+
+
+class VndRandom341Benchmark(tb.Benchmark, ABC):
+
+    def name(self) -> str:
+        return "VND Random 341"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
+        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
+        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
+        vn = vnd.VND([nbh3, nbh4, nbh1])
+        sol = con.construct()
+        return vn.run(sol)
 
 
 if __name__ == '__main__':

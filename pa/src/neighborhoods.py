@@ -49,7 +49,7 @@ class TwoFlipNeighborhood(Neighborhood, ABC):
 
     def choose_random(self, sol: Solution) -> Solution:
         new_sol = sol.copy()
-        edges = sol.prob.all_edges()
+        edges = sol.prob.all_edges
         random.shuffle(edges)
         (i, j), (k, l) = edges[0], edges[1]
         new_sol.toggle_edge(i, j)

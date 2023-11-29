@@ -76,67 +76,6 @@ class Result:
             file.write(self.__str__())
 
 
-class Testbench:
-
-    def __init__(self, out_dir: str = "../res", n: int = 30):
-        self.out_dir = out_dir
-        self.n = n
-        self.reader = Reader()
-        self.filenames: list[str] = []
-        self.benchmarks: list[Benchmark] = []
-
-    def add_filename(self, filename: str):
-        self.filenames.append(filename)
-
-    def add_directory(self, path: str):
-        for item in os.listdir(path):
-            filename = os.path.join(path, item)
-            if os.path.isfile(filename):
-                self.add_filename(filename)
-
-    def add_benchmark(self, benchmark: Benchmark):
-        self.benchmarks.append(benchmark)
-
-    def run(self) -> list[Result]:
-        run_dir = time.strftime("%Y%m%d-%H%M%S")
-        out_dir = os.path.join(self.out_dir, run_dir)
-        print(f"Testbench '{run_dir}' (n = {self.n})")
-        results: list[Result] = []
-        start_time = time.time()
-        for filename in self.filenames:
-            problem = self.reader.read(filename)
-            print("=" * 60)
-            print(f"Problem '{problem.name}'")
-            print("=" * 60)
-            for benchmark in self.benchmarks:
-                result = self.run_benchmark(problem, benchmark)
-                results.append(result)
-                self.__write(out_dir, result)
-                print(result)
-                print("-" * 60)
-        elapsed_time = time.time() - start_time
-        print("=" * 60)
-        print(f"Testbench run in {elapsed_time * 1000:.0f} ms\n")
-        return results
-
-    def run_benchmark(self, problem: Problem, benchmark: Benchmark) -> Result:
-        print(f"Benchmark '{benchmark.name()}'")
-        print("-" * 60)
-        result = Result(problem, benchmark)
-        for i in range(1, self.n+1):
-            start_time = time.time()
-            solution = benchmark.run(problem)
-            elapsed_time = time.time() - start_time
-            result.add_solution(solution, elapsed_time)
-        return result
-
-    def __write(self, out_dir: str, result: Result):
-        bm_dir = os.path.join(out_dir, f"{result.benchmark.name()}")
-        os.makedirs(bm_dir, exist_ok=True)
-        result.best_solution.write(bm_dir)
-        result.write(bm_dir)
-
-
 class ParallelTestbench:
 
     def __init__(self, out_dir: str = "../res", n: int = 30):
@@ -159,11 +98,11 @@ class ParallelTestbench:
     def add_benchmark(self, benchmark: Benchmark):
         self.benchmarks.append(benchmark)
 
-    def run(self) -> list[Result]:
+    def run(self):
         run_dir = time.strftime("%Y%m%d-%H%M%S")
         out_dir = os.path.join(self.out_dir, run_dir)
         print(f"Testbench '{run_dir}' (n = {self.n})")
-        results: list[Result] = []
+        # results: list[Result] = []
         start_time = time.time()
         for filename in self.filenames:
             problem = self.reader.read(filename)
@@ -172,7 +111,7 @@ class ParallelTestbench:
             print("=" * 60)
             for benchmark in self.benchmarks:
                 result = self.run_benchmark(problem, benchmark)
-                results.append(result)
+                # results.append(result)
                 self.__write(out_dir, result)
                 print(result)
                 print("-" * 60)
@@ -180,7 +119,6 @@ class ParallelTestbench:
         print("=" * 60)
         print(f"Testbench run in {elapsed_time * 1000:.0f} ms\n")
         self.executor.shutdown(cancel_futures=True)
-        return results
 
     def run_benchmark(self, problem: Problem, benchmark: Benchmark) -> Result:
         print(f"Benchmark '{benchmark.name()}'")
@@ -204,7 +142,14 @@ class ParallelTestbench:
         bm_dir = os.path.join(out_dir, f"{result.benchmark.name()}")
         os.makedirs(bm_dir, exist_ok=True)
         result.best_solution.write(bm_dir)
-        result.write(bm_dir)
+
+    # def __write_results(self, out_dir: str, benchmark: Benchmark, results: list[Result]):
+    #     root_dir = os.path.join(out_dir, f"{benchmark.name()}")
+    #     filename = os.path.join(root_dir, f"{benchmark.name()}.txt")
+    #     os.makedirs(out_dir, exist_ok=True)
+    #     with open(filename, "w") as file:
+    #         for result in results:
+    #             file.write(result.__str__())
 
 
 def run_benchmark_as_task(problem: Problem, benchmark: Benchmark):

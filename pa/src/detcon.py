@@ -84,51 +84,7 @@ class DetCon2(DetCon, ABC):
         return self.sol
 
 
-class DetCon3(DetCon, ABC):
-
-    def __init__(self, prob: Problem):
-        self.prob = prob
-        self.sol = Solution(prob, empty=False)
-
-    # TODO: Could be used as a neighborhood structure.
-    def construct(self) -> Solution:
-        ies = self.prob.initial_edges_weighted()
-        nes = self.prob.non_edges_weighted()
-        i = 0
-        while not self.sol.is_feasible() and i < max(len(ies), len(nes)):
-            # if i < len(ies):
-            #     (_, u, v) = ies[i]
-            #     if self.sol.has_edge(u, v):
-            #         self.sol.graph.remove_edge(u, v)
-            # if i < len(nes):
-            #     (_, u, v) = nes[i]
-            #     self.sol.graph.add_edge(u, v)
-            i += 1
-        return self.sol
-
-        # cs = []
-        # # print(self.sol.is_feasible())
-        # queue = self.sol.get_components()
-        # while len(queue) > 0:
-        #     c = list(queue.pop())
-        #     random.shuffle(c)
-        #     # Split list in half.
-        #     ca = c[:len(c)//2]
-        #     cb = c[len(c)//2:]
-        #     for u in ca:
-        #         for v in cb:
-        #             if self.sol.has_edge(u, v):
-        #                 self.sol.remove_edge(u, v)
-        #     if len(ca) > 5:
-        #         queue.append(set(ca))
-        #     else:
-        #         cs.append(set(ca))
-        #     if len(cb) > 5:
-        #         queue.append(set(cb))
-        #     else:
-        #         cs.append(set(cb))
-
-# class DetCon3:
+# class DetCon3(DetCon, ABC):
 #
 #     def __init__(self, prob: Problem):
 #         self.prob = prob
