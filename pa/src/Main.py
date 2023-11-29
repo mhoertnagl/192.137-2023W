@@ -28,8 +28,8 @@ def main():
     vnd_bench.add_directory("../inst/competition")
     vnd_bench.add_benchmark(VndRandom134Benchmark())
     vnd_bench.add_benchmark(VndRandom143Benchmark())
-    vnd_bench.add_benchmark(VndRandom314Benchmark())
-    vnd_bench.add_benchmark(VndRandom341Benchmark())
+    # vnd_bench.add_benchmark(VndRandom314Benchmark())
+    # vnd_bench.add_benchmark(VndRandom341Benchmark())
     vnd_bench.run()
 
 

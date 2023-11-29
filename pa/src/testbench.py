@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 import time
 from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 from io import StringIO
+from typing import TextIO
+
 import numpy as np
 
 from problem import Problem
@@ -15,6 +17,7 @@ class Benchmark(ABC):
 
     def __init__(self, is_deterministic=False):
         self.is_deterministic = is_deterministic
+        self.results: list[Result] = []
 
     @abstractmethod
     def name(self) -> str:
@@ -102,20 +105,23 @@ class ParallelTestbench:
         run_dir = time.strftime("%Y%m%d-%H%M%S")
         out_dir = os.path.join(self.out_dir, run_dir)
         print(f"Testbench '{run_dir}' (n = {self.n})")
-        # results: list[Result] = []
         start_time = time.time()
+        table = Table(self.benchmarks)
         for filename in self.filenames:
             problem = self.reader.read(filename)
             print("=" * 60)
             print(f"Problem '{problem.name}'")
             print("=" * 60)
+            table.add_problem(problem)
             for benchmark in self.benchmarks:
                 result = self.run_benchmark(problem, benchmark)
-                # results.append(result)
+                benchmark.results.append(result)
                 self.__write(out_dir, result)
+                table.add_result(problem, benchmark, result)
                 print(result)
                 print("-" * 60)
         elapsed_time = time.time() - start_time
+        table.write(out_dir)
         print("=" * 60)
         print(f"Testbench run in {elapsed_time * 1000:.0f} ms\n")
         self.executor.shutdown(cancel_futures=True)
@@ -143,17 +149,119 @@ class ParallelTestbench:
         os.makedirs(bm_dir, exist_ok=True)
         result.best_solution.write(bm_dir)
 
-    # def __write_results(self, out_dir: str, benchmark: Benchmark, results: list[Result]):
-    #     root_dir = os.path.join(out_dir, f"{benchmark.name()}")
-    #     filename = os.path.join(root_dir, f"{benchmark.name()}.txt")
-    #     os.makedirs(out_dir, exist_ok=True)
-    #     with open(filename, "w") as file:
-    #         for result in results:
-    #             file.write(result.__str__())
-
 
 def run_benchmark_as_task(problem: Problem, benchmark: Benchmark):
     start_time = time.time()
     solution = benchmark.run(problem)
     elapsed_time = time.time() - start_time
     return solution, elapsed_time
+
+
+class Table:
+
+    def __init__(self, benchmarks: list[Benchmark]):
+        self.n = 0
+        self.problems: list[Problem] = []
+        self.benchmarks = benchmarks
+        self.results: dict[(str, str), Result] = dict()
+
+    def add_problem(self, problem: Problem):
+        self.problems.append(problem)
+
+    def add_result(self, problem: Problem, benchmark: Benchmark, result: Result):
+        self.results[(problem.name, benchmark.name())] = result
+
+    def write(self, out_dir: str):
+        filename = os.path.join(out_dir, f"table.txt")
+        os.makedirs(out_dir, exist_ok=True)
+        with open(filename, "w") as file:
+            self.__write_best_values(file)
+            self.__write_average_values(file)
+            self.__write_std_values(file)
+            self.__write_average_runtime(file)
+            self.__write_std_runtime(file)
+
+    def __write_best_values(self, file: TextIO):
+        file.write("\\begin{tabular}{|l")
+        file.write("|c" * len(self.benchmarks))
+        file.write("|}\n")
+        file.write("\\hline\n")
+        for benchmark in self.benchmarks:
+            file.write(f"& {benchmark.name()} ")
+        file.write("\\\\ \\hline\n")
+        for problem in self.problems:
+            name = problem.name.replace('_', '\\_')
+            file.write(f" {name} ")
+            for benchmark in self.benchmarks:
+                result = self.results[(problem.name, benchmark.name())]
+                file.write(f"& {result.best_solution.get_value()} ")
+            file.write("\\\\ \\hline\n")
+        file.write("\\end{tabular}\n")
+
+    def __write_average_values(self, file: TextIO):
+        file.write("\\begin{tabular}{|l")
+        file.write("|c" * len(self.benchmarks))
+        file.write("|}\n")
+        file.write("\\hline\n")
+        for benchmark in self.benchmarks:
+            file.write(f"& {benchmark.name()} ")
+        file.write("\\\\ \\hline\n")
+        for problem in self.problems:
+            name = problem.name.replace('_', '\\_')
+            file.write(f" {name} ")
+            for benchmark in self.benchmarks:
+                result = self.results[(problem.name, benchmark.name())]
+                file.write(f"& {result.get_average_value():.2f} ")
+            file.write("\\\\ \\hline\n")
+        file.write("\\end{tabular}\n")
+
+    def __write_std_values(self, file: TextIO):
+        file.write("\\begin{tabular}{|l")
+        file.write("|c" * len(self.benchmarks))
+        file.write("|}\n")
+        file.write("\\hline\n")
+        for benchmark in self.benchmarks:
+            file.write(f"& {benchmark.name()} ")
+        file.write("\\\\ \\hline\n")
+        for problem in self.problems:
+            name = problem.name.replace('_', '\\_')
+            file.write(f" {name} ")
+            for benchmark in self.benchmarks:
+                result = self.results[(problem.name, benchmark.name())]
+                file.write(f"& {result.get_std_deviation_value():.2f} ")
+            file.write("\\\\ \\hline\n")
+        file.write("\\end{tabular}\n")
+
+    def __write_average_runtime(self, file: TextIO):
+        file.write("\\begin{tabular}{|l")
+        file.write("|c" * len(self.benchmarks))
+        file.write("|}\n")
+        file.write("\\hline\n")
+        for benchmark in self.benchmarks:
+            file.write(f"& {benchmark.name()} ")
+        file.write("\\\\ \\hline\n")
+        for problem in self.problems:
+            name = problem.name.replace('_', '\\_')
+            file.write(f" {name} ")
+            for benchmark in self.benchmarks:
+                result = self.results[(problem.name, benchmark.name())]
+                file.write(f"& {result.get_average_runtime() * 1000:.0f} ms ")
+            file.write("\\\\ \\hline\n")
+        file.write("\\end{tabular}\n")
+
+    def __write_std_runtime(self, file: TextIO):
+        file.write("\\begin{tabular}{|l")
+        file.write("|c" * len(self.benchmarks))
+        file.write("|}\n")
+        file.write("\\hline\n")
+        for benchmark in self.benchmarks:
+            file.write(f"& {benchmark.name()} ")
+        file.write("\\\\ \\hline\n")
+        for problem in self.problems:
+            name = problem.name.replace('_', '\\_')
+            file.write(f" {name} ")
+            for benchmark in self.benchmarks:
+                result = self.results[(problem.name, benchmark.name())]
+                file.write(f"& {result.get_std_deviation_runtime() * 1000:.0f} ms ")
+            file.write("\\\\ \\hline\n")
+        file.write("\\end{tabular}\n")
