@@ -16,21 +16,23 @@ import termination
 
 
 def main():
-    # con_bench = tb.ParallelTestbench()
-    # con_bench.add_directory("../inst/competition")
-    # con_bench.add_benchmark(DetCon1Benchmark())
-    # con_bench.add_benchmark(DetCon2Benchmark())
-    # con_bench.add_benchmark(RanCon1Benchmark())
-    # con_bench.add_benchmark(GraspBenchmark())
-    # con_bench.run()
+    con_bench = tb.ParallelTestbench()
+    con_bench.add_directory("../inst/testing")
+    # con_bench.add_directory("../inst/tuning")
+    con_bench.add_directory("../inst/competition")
+    con_bench.add_benchmark(DetCon1Benchmark())
+    con_bench.add_benchmark(DetCon2Benchmark())
+    con_bench.add_benchmark(RanCon1Benchmark())
+    con_bench.add_benchmark(GraspBenchmark())
+    con_bench.run()
 
-    vnd_bench = tb.ParallelTestbench()
-    vnd_bench.add_directory("../inst/competition")
-    vnd_bench.add_benchmark(VndRandom134Benchmark())
-    vnd_bench.add_benchmark(VndRandom143Benchmark())
-    # vnd_bench.add_benchmark(VndRandom314Benchmark())
-    # vnd_bench.add_benchmark(VndRandom341Benchmark())
-    vnd_bench.run()
+    # vnd_bench = tb.ParallelTestbench()
+    # vnd_bench.add_directory("../inst/competition")
+    # vnd_bench.add_benchmark(VndRandom134Benchmark())
+    # vnd_bench.add_benchmark(VndRandom143Benchmark())
+    # # vnd_bench.add_benchmark(VndRandom314Benchmark())
+    # # vnd_bench.add_benchmark(VndRandom341Benchmark())
+    # vnd_bench.run()
 
 
 class DetCon1Benchmark(tb.Benchmark, ABC):
