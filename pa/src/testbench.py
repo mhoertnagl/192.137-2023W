@@ -138,7 +138,8 @@ class ParallelTestbench:
         for _ in range(0, n):
             task = self.executor.submit(run_benchmark_as_task, problem, benchmark)
             tasks.append(task)
-        done, not_done = wait(tasks, return_when=ALL_COMPLETED, timeout=15*60)
+        # done, not_done = wait(tasks, return_when=ALL_COMPLETED, timeout=15*60)
+        done, not_done = wait(tasks, return_when=ALL_COMPLETED)
         for task in done:
             solution, elapsed_time = task.result()
             result.add_solution(solution, elapsed_time)
@@ -149,7 +150,8 @@ class ParallelTestbench:
     def __write(self, out_dir: str, result: Result):
         bm_dir = os.path.join(out_dir, f"{result.benchmark.name()}")
         os.makedirs(bm_dir, exist_ok=True)
-        result.best_solution.write(bm_dir)
+        if result.best_solution:
+            result.best_solution.write(bm_dir)
 
 
 def run_benchmark_as_task(problem: Problem, benchmark: Benchmark):
@@ -199,7 +201,8 @@ class Table:
             file.write(f" {name} ")
             for benchmark in self.benchmarks:
                 result = self.results[(problem.name, benchmark.name())]
-                file.write(f"& {result.best_solution.get_value()} ")
+                if result.best_solution:
+                    file.write(f"& {result.best_solution.get_value()} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
         file.write("\\caption{Best value}")
