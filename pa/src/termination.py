@@ -31,3 +31,22 @@ class ImprovementTermination(Termination, ABC):
     def done(self, sol: Solution, new_sol: Solution) -> bool:
         f1, f0 = new_sol.get_value(), sol.get_value()
         return 1 - (f1 / f0) < self.limit
+
+
+class IterationAndImprovementTermination(Termination, ABC):
+
+    def __init__(self, n: int = 1000, percent: float = 3):
+        self.i = 0
+        self.n = n
+        self.limit = percent / 100
+
+    def done(self, sol: Solution, new_sol: Solution) -> bool:                
+        if self.i >= self.n:
+            return True        
+        f1, f0 = new_sol.get_value(), sol.get_value()
+        if 1 - (f1 / f0) < self.limit:
+            self.i += 1
+        else:
+            self.i = 0
+        
+        return False
