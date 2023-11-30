@@ -26,6 +26,7 @@ class Solution:
     def copy(self):
         sol = Solution(self.prob)
         sol.graph = self.graph.copy()
+        sol.__value = self.__get_value()
         return sol
 
     def num_of_vertices(self):
