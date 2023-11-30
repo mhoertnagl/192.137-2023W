@@ -53,8 +53,8 @@ def main():
     # sa_bench.run()
 
     ls_bench = tb.ParallelTestbench(n=5)
-    ls_bench.add_directory("../inst/testing")
     ls_bench.add_directory("../inst/competition")
+    ls_bench.add_directory("../inst/testing")
     ls_bench.add_benchmark(LSRURBenchmark())
     ls_bench.add_benchmark(LSVMRBenchmark())
     ls_bench.add_benchmark(LSCMRBenchmark())
@@ -62,8 +62,8 @@ def main():
     ls_bench.run()
 
     ls_bench = tb.ParallelTestbench(n=5)
-    ls_bench.add_directory("../inst/testing")
     ls_bench.add_directory("../inst/competition")
+    ls_bench.add_directory("../inst/testing")
     ls_bench.add_benchmark(LSRUFBenchmark())
     ls_bench.add_benchmark(LSVMFBenchmark())
     ls_bench.add_benchmark(LSCMFBenchmark())
@@ -71,8 +71,8 @@ def main():
     ls_bench.run()
 
     ls_bench = tb.ParallelTestbench(n=5)
-    ls_bench.add_directory("../inst/testing")
     ls_bench.add_directory("../inst/competition")
+    ls_bench.add_directory("../inst/testing")
     ls_bench.add_benchmark(LSRUBBenchmark())
     ls_bench.add_benchmark(LSVMBBenchmark())
     ls_bench.add_benchmark(LSCMBBenchmark())
@@ -188,7 +188,7 @@ class LSRUFBenchmark(tb.Benchmark, ABC):
         super().__init__(False)
 
     def name(self) -> str:
-        return "LS RU R"
+        return "LS RU F"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
