@@ -51,33 +51,34 @@ class OneFlipNeighborhood(Neighborhood, ABC):
         new_sol = sol.copy()
         edges = sol.prob.all_edges
         random.shuffle(edges)
-        (i, j)  = edges[0]
+        (i, j) = edges[0]
         new_sol.toggle_edge(i, j)
         return new_sol if new_sol.is_feasible() else sol
 
     def choose_first(self, sol: Solution) -> Solution:
         edges = sol.prob.all_edges_weighted()
         for x in range(0, len(edges)):
-            (_, i, j)= edges[x]
+            (_, i, j) = edges[x]
             new_sol = sol.copy()
             new_sol.toggle_edge(i, j)
             if new_sol.is_feasible():
-                    if new_sol.get_value() < sol.get_value():
-                        return new_sol
+                if new_sol.get_value() < sol.get_value():
+                    return new_sol
         return sol
 
     def choose_best(self, sol: Solution) -> Solution:
         new_sol = sol.copy()
         edges = sol.prob.all_edges_weighted()
         for x in range(0, len(edges)):
-            (_, i, j)= edges[x]
+            (_, i, j) = edges[x]
             test_sol = sol.copy()
             test_sol.toggle_edge(i, j)
             if test_sol.is_feasible():
-                    if test_sol.get_value() < new_sol.get_value():
-                        new_sol = test_sol.copy()
+                if test_sol.get_value() < new_sol.get_value():
+                    new_sol = test_sol.copy()
         return new_sol
-    
+
+
 class TwoFlipNeighborhood(Neighborhood, ABC):
 
     def __init__(self, improve: Improvement = Improvement.RANDOM):
@@ -181,9 +182,12 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
 
 class VertexMoveNeighborhood(Neighborhood, ABC):
 
-    def __init__(self, improve: Improvement = Improvement.RANDOM):
+    def __init__(self,
+                 improve: Improvement = Improvement.RANDOM,
+                 max_iterations: int = 1000):
         super().__init__(improve)
         self.improve = improve
+        self.max_iterations = max_iterations
 
     def choose_random(self, sol: Solution) -> Solution:
         c1 = list(sol.get_random_component())
@@ -201,8 +205,13 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
 
     def choose_first(self, sol: Solution) -> Solution:
         cs = [list(c) for c in sol.get_components()]
+        random.shuffle(cs)
+        counter = 0
         for x in range(0, len(cs)):
             for y in range(0, len(cs)):
+                # Early exit.
+                if counter > self.max_iterations:
+                    return sol
                 if y != x:
                     c1, c2 = cs[x], cs[y]
                     for v in c1:
@@ -216,21 +225,27 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                         for u in cheap_edges:
                             if u != v:
                                 new_sol.add_edge(u, v)
-                        for u in exp_edges:                        
+                        for u in exp_edges:
                             if not new_sol.is_vertex_feasible(u):
                                 weighted_edges = sol.get_edges_weighted(u, cheap_edges)
                                 for i in range(len(weighted_edges)):
-                                    new_sol.add_edge(u, weighted_edges[i])    
+                                    new_sol.add_edge(u, weighted_edges[i])
                                     if new_sol.is_vertex_feasible(u):
                                         break
                         if new_sol.get_value() < sol.get_value():
                             return new_sol
+                    counter += 1
         return sol
 
     def choose_best(self, sol: Solution) -> Solution:
         cs = [list(c) for c in sol.get_components()]
+        random.shuffle(cs)
+        counter = 0
         for x in range(0, len(cs)):
             for y in range(x+1, len(cs)):
+                # Early exit.
+                if counter > self.max_iterations:
+                    return sol
                 c1, c2 = cs[x], cs[y]
                 for v in c1:
                     new_sol = sol.copy()
@@ -241,6 +256,7 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                             new_sol.add_edge(u, v)
                     if new_sol.get_value() < sol.get_value():
                         sol = new_sol
+                counter += 1
         return sol
 
 
@@ -321,7 +337,9 @@ class VertexSwapNeighborhood(Neighborhood, ABC):
 
 class ComponentMergeNeighborhood(Neighborhood, ABC):
 
-    def __init__(self, improve: Improvement = Improvement.RANDOM, k_max: int = 10):
+    def __init__(self,
+                 improve: Improvement = Improvement.RANDOM,
+                 k_max: int = 10):
         super().__init__(improve)
         self.improve = improve
         self.k_max = k_max

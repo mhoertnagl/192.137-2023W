@@ -26,14 +26,14 @@ def main():
     # con_bench.add_benchmark(GraspBenchmark())
     # con_bench.run()
 
-    # vnd_bench = tb.ParallelTestbench()
-    # vnd_bench.add_directory("../inst/testing")
-    # vnd_bench.add_directory("../inst/competition")
-    # vnd_bench.add_benchmark(VndRandom134Benchmark())
-    # vnd_bench.add_benchmark(VndRandom143Benchmark())
-    # vnd_bench.add_benchmark(VndRandom314Benchmark())
-    # vnd_bench.add_benchmark(VndRandom341Benchmark())
-    # vnd_bench.run()
+    vnd_bench = tb.ParallelTestbench()
+    vnd_bench.add_directory("../inst/testing")
+    vnd_bench.add_directory("../inst/competition")
+    vnd_bench.add_benchmark(VndRandom134Benchmark())
+    vnd_bench.add_benchmark(VndRandom143Benchmark())
+    vnd_bench.add_benchmark(VndRandom314Benchmark())
+    vnd_bench.add_benchmark(VndRandom341Benchmark())
+    vnd_bench.run()
 
     # vnd_bench = tb.ParallelTestbench(n=5)
     # vnd_bench.add_directory("../inst/testing")
@@ -43,7 +43,7 @@ def main():
 
     # sa_bench = tb.ParallelTestbench(n=5)
     # sa_bench.add_directory("../inst/testing")
-    # # sa_bench.add_directory("../inst/competition")
+    # sa_bench.add_directory("../inst/competition")
     # sa_bench.add_benchmark(SAComponentMergeRandomBenchmark())
     # sa_bench.add_benchmark(SAVertexMoveRandomBenchmark())
     # sa_bench.add_benchmark(SAVertexSwapRandomBenchmark())
@@ -61,23 +61,23 @@ def main():
     # ls_bench.add_benchmark(LSTFRBenchmark())
     # ls_bench.run()
 
-    ls_bench = tb.ParallelTestbench(n=5)
-    # ls_bench.add_directory("../inst/competition")
-    ls_bench.add_directory("../inst/testing")
-    ls_bench.add_benchmark(LSRUFBenchmark())
-    ls_bench.add_benchmark(LSVMFBenchmark())
-    ls_bench.add_benchmark(LSCMFBenchmark())
-    ls_bench.add_benchmark(LSTFFBenchmark())
-    ls_bench.run()
+    # ls_bench = tb.ParallelTestbench(n=5)
+    # # ls_bench.add_directory("../inst/competition")
+    # ls_bench.add_directory("../inst/testing")
+    # ls_bench.add_benchmark(LSRUFBenchmark())
+    # ls_bench.add_benchmark(LSVMFBenchmark())
+    # ls_bench.add_benchmark(LSCMFBenchmark())
+    # ls_bench.add_benchmark(LSTFFBenchmark())
+    # ls_bench.run()
 
-    ls_bench = tb.ParallelTestbench(n=5)
-    # ls_bench.add_directory("../inst/competition")
-    ls_bench.add_directory("../inst/testing")
-    ls_bench.add_benchmark(LSRUBBenchmark())
-    ls_bench.add_benchmark(LSVMBBenchmark())
-    ls_bench.add_benchmark(LSCMBBenchmark())
-    ls_bench.add_benchmark(LSTFBBenchmark())
-    ls_bench.run()
+    # ls_bench = tb.ParallelTestbench(n=5)
+    # # ls_bench.add_directory("../inst/competition")
+    # ls_bench.add_directory("../inst/testing")
+    # ls_bench.add_benchmark(LSRUBBenchmark())
+    # ls_bench.add_benchmark(LSVMBBenchmark())
+    # ls_bench.add_benchmark(LSCMBBenchmark())
+    # ls_bench.add_benchmark(LSTFBBenchmark())
+    # ls_bench.run()
 
 
 class LSRURBenchmark(tb.Benchmark, ABC):
@@ -92,6 +92,23 @@ class LSRURBenchmark(tb.Benchmark, ABC):
         con = dc.DetCon1(problem)
         ter = termination.IterationTermination(1000)
         nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.RANDOM)
+        ls = localsearch.LocalSearch(nbh1, ter)
+        sol = con.construct()
+        return ls.run(sol)
+
+
+class LSFastVMRBenchmark(tb.Benchmark, ABC):
+
+    def __init__(self):
+        super().__init__(False)
+
+    def name(self) -> str:
+        return "LS Fast VM R"
+
+    def run(self, problem: Problem) -> Solution:
+        con = dc.DetCon1(problem)
+        ter = termination.IterationTermination(1000)
+        nbh1 = nhs.FastVertexMoveNeighborhood(nhs.Improvement.RANDOM)
         ls = localsearch.LocalSearch(nbh1, ter)
         sol = con.construct()
         return ls.run(sol)
