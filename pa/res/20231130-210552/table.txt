@@ -1,0 +1,36 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU B & LS VM B & LS CM B & LS VS B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 90 & 90 & 90 & 90 & 90 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU B & LS VM B & LS CM B & LS VS B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 90.00 & 90.00 & 90.00 & 90.00 & 90.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU B & LS VM B & LS CM B & LS VS B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU B & LS VM B & LS CM B & LS VS B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 194 ms & 211 ms & 173 ms & 158 ms & 78 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU B & LS VM B & LS CM B & LS VS B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 9 ms & 0 ms & 0 ms & 0 ms & 0 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}

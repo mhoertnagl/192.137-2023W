@@ -1,0 +1,36 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+& VND Random 135 & VND Random 153 & VND Random 315 & VND Random 351 \\ \hline
+ heur003\_n\_120\_m\_2588 & 7398 & 7398 & 7398 & 7398 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+& VND Random 135 & VND Random 153 & VND Random 315 & VND Random 351 \\ \hline
+ heur003\_n\_120\_m\_2588 & 7398.00 & 7398.00 & 7398.00 & 7398.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+& VND Random 135 & VND Random 153 & VND Random 315 & VND Random 351 \\ \hline
+ heur003\_n\_120\_m\_2588 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+& VND Random 135 & VND Random 153 & VND Random 315 & VND Random 351 \\ \hline
+ heur003\_n\_120\_m\_2588 & 169 ms & 156 ms & 161 ms & 163 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+& VND Random 135 & VND Random 153 & VND Random 315 & VND Random 351 \\ \hline
+ heur003\_n\_120\_m\_2588 & 23 ms & 26 ms & 20 ms & 18 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}

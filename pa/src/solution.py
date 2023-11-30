@@ -41,6 +41,10 @@ class Solution:
             self.components_valid = False
             self.graph.add_edge(u, v)
 
+    def add_edges(self, es: list[(int, int)]):
+        for (u, v) in es:
+            self.add_edge(u, v)
+
     def remove_edge(self, u: int, v: int):
         if self.graph.has_edge(u, v):
             if self.prob.has_edge(u, v):
@@ -49,6 +53,10 @@ class Solution:
                 self.__value -= self.prob.weight(u, v)
             self.components_valid = False
             self.graph.remove_edge(u, v)
+
+    def remove_edges(self, es: list[(int, int)]):
+        for (u, v) in es:
+            self.remove_edge(u, v)
 
     def toggle_edge(self, u: int, v: int):
         if self.has_edge(u, v):
@@ -90,7 +98,21 @@ class Solution:
         return self.graph.edges
 
     def get_edges(self, vs: set[int]):
-        return [(u, v) for (u, v) in self.graph.edges if u in vs or v in vs]
+        return [(u, v) for (u, v) in self.graph.edges
+                       if u in vs and v in vs]
+
+    def get_edges_between(self, us: set[int], vs: set[int]):
+        return [(u, v) for (u, v) in self.graph.edges
+                       if u in us and v in vs]
+
+    def get_edges_between_ordered_by_weight(self,
+                                            us: set[int],
+                                            vs: set[int],
+                                            reverse=False):
+        ws = [(self.weight(u, v), u, v) for (u, v) in self.graph.edges
+                                        if u in us and v in vs]
+        ws.sort(reverse=reverse)
+        return ws
 
     def get_components(self) -> list[set[int]]:
         if not self.components_valid:
@@ -134,8 +156,19 @@ class Solution:
                     f += self.prob.weight(i, j)
         return f
 
-    def delta_evaluate(self, edges: list[(int, int)]):
-        pass
+    def delta(self, add: list[(int, int)], rem: list[(int, int)]) -> int:
+        df = 0
+        for (u, v) in add:
+            if self.prob.has_edge(u, v):
+                df -= self.prob.weight(u, v)
+            else:
+                df += self.prob.weight(u, v)
+        for (u, v) in rem:
+            if self.prob.has_edge(u, v):
+                df += self.prob.weight(u, v)
+            else:
+                df -= self.prob.weight(u, v)
+        return df
 
     def weight(self, u: int, v: int):
         return self.prob.weight(u, v)

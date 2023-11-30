@@ -26,14 +26,14 @@ def main():
     # con_bench.add_benchmark(GraspBenchmark())
     # con_bench.run()
 
-    vnd_bench = tb.ParallelTestbench()
-    vnd_bench.add_directory("../inst/testing")
-    vnd_bench.add_directory("../inst/competition")
-    vnd_bench.add_benchmark(VndRandom134Benchmark())
-    vnd_bench.add_benchmark(VndRandom143Benchmark())
-    vnd_bench.add_benchmark(VndRandom314Benchmark())
-    vnd_bench.add_benchmark(VndRandom341Benchmark())
-    vnd_bench.run()
+    # vnd_bench = tb.ParallelTestbench()
+    # # vnd_bench.add_directory("../inst/testing")
+    # # vnd_bench.add_directory("../inst/competition")
+    # vnd_bench.add_benchmark(VndRandom134Benchmark())
+    # vnd_bench.add_benchmark(VndRandom143Benchmark())
+    # vnd_bench.add_benchmark(VndRandom314Benchmark())
+    # vnd_bench.add_benchmark(VndRandom341Benchmark())
+    # vnd_bench.run()
 
     # vnd_bench = tb.ParallelTestbench(n=5)
     # vnd_bench.add_directory("../inst/testing")
@@ -44,11 +44,13 @@ def main():
     # sa_bench = tb.ParallelTestbench(n=5)
     # sa_bench.add_directory("../inst/testing")
     # sa_bench.add_directory("../inst/competition")
+    # sa_bench.add_benchmark(SARandomUnionBenchmark())
+    # sa_bench.add_benchmark(SAComponentMergeRandomBenchmark())
     # sa_bench.add_benchmark(SAComponentMergeRandomBenchmark())
     # sa_bench.add_benchmark(SAVertexMoveRandomBenchmark())
     # sa_bench.add_benchmark(SAVertexSwapRandomBenchmark())
     # sa_bench.add_benchmark(SATwoExchangeRandomBenchmark())
-    # sa_bench.add_benchmark(SATwoFlipRandomBenchmark())
+    # # sa_bench.add_benchmark(SATwoFlipRandomBenchmark())
     # # sa_bench.add_benchmark(SAFirstBenchmark())
     # sa_bench.run()
 
@@ -58,25 +60,31 @@ def main():
     # ls_bench.add_benchmark(LSRURBenchmark())
     # ls_bench.add_benchmark(LSVMRBenchmark())
     # ls_bench.add_benchmark(LSCMRBenchmark())
-    # ls_bench.add_benchmark(LSTFRBenchmark())
+    # # ls_bench.add_benchmark(LSTFRBenchmark())
+    # ls_bench.add_benchmark(LSVSRBenchmark())
+    # ls_bench.add_benchmark(LSTERBenchmark())
     # ls_bench.run()
 
     # ls_bench = tb.ParallelTestbench(n=5)
     # # ls_bench.add_directory("../inst/competition")
-    # ls_bench.add_directory("../inst/testing")
+    # # ls_bench.add_directory("../inst/testing")
     # ls_bench.add_benchmark(LSRUFBenchmark())
     # ls_bench.add_benchmark(LSVMFBenchmark())
     # ls_bench.add_benchmark(LSCMFBenchmark())
-    # ls_bench.add_benchmark(LSTFFBenchmark())
+    # # ls_bench.add_benchmark(LSTFFBenchmark())
+    # ls_bench.add_benchmark(LSVSFBenchmark())
+    # ls_bench.add_benchmark(LSTEFBenchmark())
     # ls_bench.run()
 
     # ls_bench = tb.ParallelTestbench(n=5)
     # # ls_bench.add_directory("../inst/competition")
-    # ls_bench.add_directory("../inst/testing")
+    # # ls_bench.add_directory("../inst/testing")
     # ls_bench.add_benchmark(LSRUBBenchmark())
     # ls_bench.add_benchmark(LSVMBBenchmark())
     # ls_bench.add_benchmark(LSCMBBenchmark())
-    # ls_bench.add_benchmark(LSTFBBenchmark())
+    # # ls_bench.add_benchmark(LSTFBBenchmark())
+    # ls_bench.add_benchmark(LSVSBBenchmark())
+    # ls_bench.add_benchmark(LSTEBBenchmark())
     # ls_bench.run()
 
 
@@ -92,23 +100,6 @@ class LSRURBenchmark(tb.Benchmark, ABC):
         con = dc.DetCon1(problem)
         ter = termination.IterationTermination(1000)
         nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.RANDOM)
-        ls = localsearch.LocalSearch(nbh1, ter)
-        sol = con.construct()
-        return ls.run(sol)
-
-
-class LSFastVMRBenchmark(tb.Benchmark, ABC):
-
-    def __init__(self):
-        super().__init__(False)
-
-    def name(self) -> str:
-        return "LS Fast VM R"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        ter = termination.IterationTermination(1000)
-        nbh1 = nhs.FastVertexMoveNeighborhood(nhs.Improvement.RANDOM)
         ls = localsearch.LocalSearch(nbh1, ter)
         sol = con.construct()
         return ls.run(sol)
@@ -307,7 +298,7 @@ class LSRUBBenchmark(tb.Benchmark, ABC):
         super().__init__(False)
 
     def name(self) -> str:
-        return "LS RU R"
+        return "LS RU B"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
@@ -459,16 +450,16 @@ class GraspBenchmark(tb.Benchmark, ABC):
 class VndRandom134Benchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "VND Random 134"
+        return "VND Random 135"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh1, nbh3, nbh4])
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
+        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
+        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
+        vn = vnd.VND([nbh1, nbh3, nbh5])
         sol = con.construct()
         return vn.run(sol)
 
@@ -476,16 +467,16 @@ class VndRandom134Benchmark(tb.Benchmark, ABC):
 class VndRandom143Benchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "VND Random 143"
+        return "VND Random 153"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh1, nbh4, nbh3])
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
+        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
+        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
+        vn = vnd.VND([nbh1, nbh5, nbh3])
         sol = con.construct()
         return vn.run(sol)
 
@@ -493,16 +484,16 @@ class VndRandom143Benchmark(tb.Benchmark, ABC):
 class VndRandom314Benchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "VND Random 314"
+        return "VND Random 315"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh3, nbh1, nbh4])
+        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
+        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
+        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
+        vn = vnd.VND([nbh3, nbh1, nbh5])
         sol = con.construct()
         return vn.run(sol)
 
@@ -510,62 +501,28 @@ class VndRandom314Benchmark(tb.Benchmark, ABC):
 class VndRandom341Benchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "VND Random 341"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        # nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh3, nbh4, nbh1])
-        sol = con.construct()
-        return vn.run(sol)
-
-
-class VndRandom34251Benchmark(tb.Benchmark, ABC):
-
-    def name(self) -> str:
-        return "VND Random 34251"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
-        nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh3, nbh4, nbh2, nbh5, nbh1])
-        sol = con.construct()
-        return vn.run(sol)
-
-
-class VndBest1Benchmark(tb.Benchmark, ABC):
-
-    def name(self) -> str:
-        return "VND Best 1"
+        return "VND Random 351"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
         nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
-        nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.RANDOM)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.RANDOM)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.RANDOM)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.RANDOM)
-        vn = vnd.VND([nbh1])
+        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
+        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
+        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
+        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
+        vn = vnd.VND([nbh3, nbh5, nbh1])
         sol = con.construct()
         return vn.run(sol)
 
 
-class SABenchmark(tb.Benchmark, ABC):
+class SARandomUnionBenchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "SA 1"
+        return "SA random union Random"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.RANDOM)
+        nbh1 = nhs.RandomUnionNeighborhood(nhs.Improvement.RANDOM)
         ter = termination.IterationTermination(100)
         sol = con.construct()
         sa = annealer.Annealer(sol, nbh1, ter)
