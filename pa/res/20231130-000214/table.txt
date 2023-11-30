@@ -1,0 +1,36 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 81 & 90 & 79 & 79 & 90 & 84 & 90 & 81 & 79 & 90 & 84 & 90 & 79 & 79 & 90 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 81.00 & 90.00 & 79.60 & 81.20 & 90.00 & 84.00 & 90.00 & 81.00 & 79.00 & 90.00 & 84.00 & 90.00 & 79.00 & 79.00 & 90.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 0.00 & 0.00 & 0.80 & 1.33 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 108 ms & 111 ms & 104 ms & 109 ms & 3 ms & 2464 ms & 2172 ms & 1267 ms & 67074 ms & 1 ms & 2055 ms & 2315 ms & 713 ms & 69198 ms & 2 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ heur001\_n\_10\_m\_31 & 20 ms & 28 ms & 17 ms & 16 ms & 1 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}

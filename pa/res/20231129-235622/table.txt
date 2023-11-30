@@ -1,0 +1,36 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ test & 19 & 24 & 17 & 15 & 24 & 18 & 24 & 18 & 13 & 24 & 18 & 24 & 18 & 13 & 24 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ test & 19.00 & 24.00 & 18.40 & 17.60 & 24.00 & 18.00 & 24.00 & 18.00 & 13.00 & 24.00 & 18.00 & 24.00 & 18.00 & 13.00 & 24.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ test & 0.00 & 0.00 & 0.80 & 1.85 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ test & 82 ms & 86 ms & 69 ms & 90 ms & 2 ms & 1789 ms & 1354 ms & 933 ms & 34498 ms & 1 ms & 1510 ms & 1515 ms & 993 ms & 37484 ms & 1 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& LS VM R & LS VS R & LS CM R & LS TF R & LS TE R & LS VM S & LS VS F & LS CM F & LS TF F & LS TE F & LS VM B & LS VS B & LS CM B & LS TF B & LS TE B \\ \hline
+ test & 15 ms & 25 ms & 12 ms & 12 ms & 1 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms & 0 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}
