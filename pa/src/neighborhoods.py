@@ -180,7 +180,10 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                     for u in exp_edges:                        
                         if not new_sol.is_vertex_feasible(u):
                             weighted_edges = sol.get_edges_weighted(u, cheap_edges)
-                            new_sol.add_edge(u, weighted_edges[0])                        
+                            for i in range(len(weighted_edges)):
+                                new_sol.add_edge(u, weighted_edges[i])    
+                                if new_sol.is_vertex_feasible(u):
+                                    break
                     if new_sol.get_value() < sol.get_value():
                         return new_sol
         return sol

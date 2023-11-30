@@ -42,8 +42,8 @@ print(sol.get_value())
 print(sol.get_components())
 
 
-nbh = nhs.VertexMoveNeighborhood(nhs.Improvement.FIRST)
-ls_ter = termination.IterationTermination(10)
+nbh = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
+ls_ter = termination.IterationTermination(100)
 # ls_ter = termination.ImprovementTermination(1)
 ls = localsearch.LocalSearch(nbh, ls_ter)
 sol = ls.run(sol)
