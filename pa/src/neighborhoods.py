@@ -220,9 +220,9 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                             if not new_sol.is_vertex_feasible(u):
                                 weighted_edges = sol.get_edges_weighted(u, cheap_edges)
                                 for i in range(len(weighted_edges)):
-                                    new_sol.add_edge(u, weighted_edges[i])    
                                     if new_sol.is_vertex_feasible(u):
                                         break
+                                    new_sol.add_edge(u, weighted_edges[i])                                        
                         if new_sol.get_value() < sol.get_value():
                             return new_sol
         return sol
@@ -236,9 +236,20 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                     new_sol = sol.copy()
                     for u in sol.get_neighbors(v):
                         new_sol.remove_edge(u, v)
-                    for u in c2:
+                    # smart adding of vertices
+                    weighted_edges = sol.get_edges_weighted(v, c2)
+                    cheap_edges = weighted_edges[:len(c2)+1-sol.prob.s]
+                    exp_edges = weighted_edges[-(sol.prob.s -1):]
+                    for u in cheap_edges:
                         if u != v:
                             new_sol.add_edge(u, v)
+                    for u in exp_edges:                        
+                        if not new_sol.is_vertex_feasible(u):
+                            weighted_edges = sol.get_edges_weighted(u, cheap_edges)
+                            for i in range(len(weighted_edges)):
+                                new_sol.add_edge(u, weighted_edges[i])    
+                                if new_sol.is_vertex_feasible(u):
+                                    break
                     if new_sol.get_value() < sol.get_value():
                         sol = new_sol
         return sol

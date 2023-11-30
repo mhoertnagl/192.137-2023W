@@ -11,6 +11,7 @@ class LocalSearch:
     def __init__(self, nbh: Neighborhood, ter: Termination):
         self.nbh = nbh
         self.ter = ter
+        self.ter.i = 0
 
     def run(self, sol: Solution) -> Solution:
         while True:
@@ -18,5 +19,5 @@ class LocalSearch:
             if self.ter.done(sol, new_sol):
                 break
             if new_sol.get_value() <= sol.get_value():
-                sol = new_sol
+                sol = new_sol.copy()
         return sol
