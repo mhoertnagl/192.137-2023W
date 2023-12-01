@@ -32,8 +32,8 @@ from grasper import Grasper
 import matplotlib.pyplot as plt
 
 reader = Reader()
-problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
-# problem = reader.read("../inst//tuning/heur040_n_300_m_13358.txt")
+# problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+problem = reader.read("../inst//tuning/heur040_n_300_m_13358.txt")
 # problem = reader.read("../inst/tuning/heur045_n_300_m_6293.txt")
 # problem = reader.read("../inst/tuning/tuning/heur055_n_300_m_5164.txt")
 # problem = reader.read("../inst/testing/test.txt")
@@ -50,7 +50,7 @@ sol.draw()
 print(sol.get_value())
 print(sol.get_components())
 
-ls_ter = termination.IterationAndImprovementTermination(100,)
+ls_ter = termination.IterationTermination(300,)
 
 # nbh = nhs.OneFlipNeighborhood(nhs.Improvement.FIRST)
 # ls = localsearch.LocalSearch(nbh, ls_ter)
@@ -62,29 +62,37 @@ ls_ter = termination.IterationAndImprovementTermination(100,)
 improvements = [nhs.Improvement.FIRST,nhs.Improvement.BEST,nhs.Improvement.RANDOM]
 
 
-# nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.TwoExchangeNeighborhood(improv)]
 
 legends = ['Vertex Move',"Component Merge","Two Exchange"]
 lo_list = []
 f_list = []
 constructed_sol = con.construct()
 
+improv=improvements[1]
+nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.TwoExchangeNeighborhood(improv)]
+index=2
+nbh = nbhs[1]
+sol = constructed_sol.copy()
+ls = localsearch.LocalSearchTuning(nbh, ls_ter)
+sol,c,f,lo = ls.run(sol)
+lo_list.append(lo)
+plt.plot(np.arange(0,len(f)),f,label = legends[index])
 
-for improv in improvements:
-    nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv)]
-    for index,nbh in enumerate(nbhs):    
-        # improv = improvements[0]
-        # nbh = nbhs[1]
-        sol = constructed_sol.copy()
-        ls = localsearch.LocalSearchTuning(nbh, ls_ter)
-        sol,c,f,lo = ls.run(sol)
-        lo_list.append(lo)
-        f_list.append(f)
-        plt.plot(np.arange(0,len(f)),f,label = legends[index])
-        # break
-    plt.legend()
-    plt.show()
-    # break
+# for improv in improvements:
+#     nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv)]
+#     for index,nbh in enumerate(nbhs):    
+#         # improv = improvements[0]
+#         # nbh = nbhs[1]
+#         sol = constructed_sol.copy()
+#         ls = localsearch.LocalSearchTuning(nbh, ls_ter)
+#         sol,c,f,lo = ls.run(sol)
+#         lo_list.append(lo)
+#         f_list.append(f)
+#         plt.plot(np.arange(0,len(f)),f,label = legends[index])
+#         # break
+#     plt.legend()
+#     plt.show()
+#     # break
 
 
 
