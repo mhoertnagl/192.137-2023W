@@ -21,7 +21,7 @@ class Solution:
             self.graph = prob.graph.copy()
         self.__value = self.__get_value()
         self.components_valid = False
-        self.__components = self.get_components()
+        self.__components = self.__get_components()
 
     def copy(self):
         sol = Solution(self.prob)
