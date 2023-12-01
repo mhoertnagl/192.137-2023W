@@ -101,26 +101,33 @@ class TwoFlipNeighborhood(Neighborhood, ABC):
         for x in range(0, len(edges)):
             for y in range(x+1, len(edges)):
                 (_, i, j), (_, k, l) = edges[x], edges[y]
-                new_sol = sol.copy()
-                new_sol.toggle_edge(i, j)
-                new_sol.toggle_edge(k, l)
-                if new_sol.is_feasible():
-                    if new_sol.get_value() < sol.get_value():
-                        return new_sol
+                prev_f = sol.get_value()
+                sol.toggle_edge(i, j)
+                sol.toggle_edge(k, l)
+                if not sol.is_feasible():
+                    sol.toggle_edge(i, j)
+                    sol.toggle_edge(k, l)
+                    if sol.get_value() < prev_f:
+                        return sol
         return sol
 
     def choose_best(self, sol: Solution) -> Solution:
         edges = sol.prob.all_edges_weighted()
-        new_sol = sol.copy()
+        best, best_f = None, 0
         for x in range(0, len(edges)):
             for y in range(x+1, len(edges)):
                 (_, i, j), (_, k, l) = edges[x], edges[y]
-                test_sol = sol.copy()
-                test_sol.toggle_edge(i, j)
-                test_sol.toggle_edge(k, l)
-                if test_sol.is_feasible():
-                    if test_sol.get_value() < new_sol.get_value():
-                        new_sol = test_sol.copy()
+                sol.toggle_edge(i, j)
+                sol.toggle_edge(k, l)
+                new_f = sol.get_value()
+                if sol.is_feasible() and (best is None or new_f < best_f):
+                    best, best_f = [(i, j), (k, l)], new_f
+                sol.toggle_edge(i, j)
+                sol.toggle_edge(k, l)
+        if best is not None:
+            [(i, j), (k, l)] = best
+            sol.toggle_edge(i, j)
+            sol.toggle_edge(k, l)
         return sol
 
 
@@ -149,7 +156,7 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
         cs = [c for c in sol.get_components() if len(c) >= 4]
         for c in cs:
             es = sol.get_edges(c)
-            for x in range(0, len(es)):
+            for x in range(len(es)):
                 for y in range(x+1, len(es)):
                     (x1, y1), (x2, y2) = es[x], es[y]
                     if not sol.has_edge(x1, y2) and not sol.has_edge(x2, y1):
@@ -195,10 +202,10 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
         v = c1[np.random.randint(0, len(c1))]
         rem = [(u, v) for u in sol.get_neighbors(v)]
         add = [(u, v) for u in c2 if u != v]
-        df = sol.delta(add, rem)
-        if df < 0:
-            sol.remove_edges(rem)
-            sol.add_edges(add)
+        # df = sol.delta(add, rem)
+        # if df < 0:
+        sol.remove_edges(rem)
+        sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
@@ -313,9 +320,9 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
             return sol
         random.shuffle(cs)
         add = sol.get_edges_between(cs[0], cs[1])
-        df = sol.delta(add, [])
-        if df < 0:
-            sol.add_edges(add)
+        # df = sol.delta(add, [])
+        # if df < 0:
+        sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
