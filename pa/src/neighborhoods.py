@@ -355,9 +355,11 @@ class RandomUnionNeighborhood(Neighborhood, ABC):
     def __init__(self, improve: Improvement = Improvement.RANDOM, k_max: int = 10):
         super().__init__(improve)
         self.nbhs = [
+            VertexMoveNeighborhood(improve),
             ComponentMergeNeighborhood(improve, k_max),
             VertexMoveNeighborhood(improve),
             TwoExchangeNeighborhood(improve),
+            VertexMoveNeighborhood(improve),
         ]
         self.improve = improve
         self.k_max = k_max

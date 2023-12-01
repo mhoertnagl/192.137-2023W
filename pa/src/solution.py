@@ -160,15 +160,17 @@ class Solution:
     def delta(self, add: list[(int, int)], rem: list[(int, int)]) -> int:
         df = 0
         for (u, v) in add:
-            if self.prob.has_edge(u, v):
-                df -= self.prob.weight(u, v)
-            else:
-                df += self.prob.weight(u, v)
+            if not self.graph.has_edge(u, v):
+                if self.prob.has_edge(u, v):
+                    df -= self.prob.weight(u, v)
+                else:
+                    df += self.prob.weight(u, v)
         for (u, v) in rem:
-            if self.prob.has_edge(u, v):
-                df += self.prob.weight(u, v)
-            else:
-                df -= self.prob.weight(u, v)
+            if self.graph.has_edge(u, v):
+                if self.prob.has_edge(u, v):
+                    df += self.prob.weight(u, v)
+                else:
+                    df -= self.prob.weight(u, v)
         return df
 
     def weight(self, u: int, v: int):
