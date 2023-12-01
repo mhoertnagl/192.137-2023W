@@ -15,15 +15,15 @@ class Grasper:
     def run(self) -> Solution:
         sol = self.rc.construct()
         sol = self.ls.run(sol)
-        print('terminator i=',self.ter.i)
+        # print('terminator i=',self.ter.i)
         c = 0
         while True:
-            c+=1
+            c += 1
             new_sol = self.rc.construct()
             new_sol = self.ls.run(new_sol)
             if self.ter.done(sol, new_sol):
-                print('stopped at iteration',c)
-                print('terminator i',self.ter.i)
+                # print('stopped at iteration',c)
+                # print('terminator i',self.ter.i)
                 break
             if new_sol.get_value() <= sol.get_value():
                 sol = new_sol.copy()

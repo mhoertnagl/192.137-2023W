@@ -1,0 +1,46 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU R & LS VM R & LS CM R & LS VS R & LS TE R \\ \hline
+ heur049\_n\_300\_m\_17695 & 51336 & 51438 & 50665 & 51620 & 50052 \\ \hline
+ heur050\_n\_300\_m\_19207 & 55928 & 55862 & 56158 & 55846 & 55846 \\ \hline
+ heur051\_n\_300\_m\_20122 & 58657 & 58606 & 58345 & 58684 & 58127 \\ \hline
+\end{tabular}
+\caption{Best value}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU R & LS VM R & LS CM R & LS VS R & LS TE R \\ \hline
+ heur049\_n\_300\_m\_17695 & 51401.80 & 51438.00 & 50757.60 & 51721.00 & 50052.00 \\ \hline
+ heur050\_n\_300\_m\_19207 & 55989.20 & 55894.80 & 56296.00 & 55846.00 & 55846.00 \\ \hline
+ heur051\_n\_300\_m\_20122 & 58687.60 & 58647.40 & 58420.80 & 58762.60 & 58127.00 \\ \hline
+\end{tabular}
+\caption{Average values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU R & LS VM R & LS CM R & LS VS R & LS TE R \\ \hline
+ heur049\_n\_300\_m\_17695 & 63.56 & 0.00 & 68.32 & 100.74 & 0.00 \\ \hline
+ heur050\_n\_300\_m\_19207 & 38.89 & 16.53 & 83.31 & 0.00 & 0.00 \\ \hline
+ heur051\_n\_300\_m\_20122 & 21.62 & 22.40 & 54.94 & 45.14 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU R & LS VM R & LS CM R & LS VS R & LS TE R \\ \hline
+ heur049\_n\_300\_m\_17695 & 55396 ms & 56019 ms & 58220 ms & 57768 ms & 57967 ms \\ \hline
+ heur050\_n\_300\_m\_19207 & 60180 ms & 59828 ms & 60616 ms & 59360 ms & 59237 ms \\ \hline
+ heur051\_n\_300\_m\_20122 & 60685 ms & 60431 ms & 61580 ms & 60855 ms & 60469 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}\end{figure}\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& LS RU R & LS VM R & LS CM R & LS VS R & LS TE R \\ \hline
+ heur049\_n\_300\_m\_17695 & 175 ms & 124 ms & 135 ms & 161 ms & 263 ms \\ \hline
+ heur050\_n\_300\_m\_19207 & 176 ms & 145 ms & 140 ms & 229 ms & 225 ms \\ \hline
+ heur051\_n\_300\_m\_20122 & 81 ms & 289 ms & 56 ms & 268 ms & 177 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}\end{figure}
