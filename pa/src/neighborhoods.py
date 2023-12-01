@@ -228,8 +228,8 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
                     best, best_df = (add, rem), df
         if best is not None:
             (add, rem) = best
-            sol.remove_edges(add)
-            sol.add_edges(rem)
+            sol.remove_edges(rem)
+            sol.add_edges(add)
         return sol
 
 
