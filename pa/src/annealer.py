@@ -5,9 +5,6 @@ from neighborhoods import Neighborhood
 from solution import Solution
 from termination import Termination
 
-# TODO: Equilibrium condition.
-
-
 class Annealer:
 
     def __init__(self,
@@ -27,6 +24,7 @@ class Annealer:
         self.temperature = sol.worst_value() - 0
 
     def run(self) -> Solution:
+        self.ter.init()
         while self.temperature > self.min_temp:
             while True:
                 new_sol = self.nbh.choose(self.sol)
