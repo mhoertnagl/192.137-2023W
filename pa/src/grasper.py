@@ -10,7 +10,6 @@ class Grasper:
         self.rc = rc
         self.ls = ls
         self.ter = ter
-        self.ter.i = 0
 
     def run(self) -> Solution:
         self.ter.init()
