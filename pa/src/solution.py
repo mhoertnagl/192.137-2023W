@@ -102,14 +102,14 @@ class Solution:
                        if u in vs and v in vs]
 
     def get_edges_between(self, us: set[int], vs: set[int]):
-        return [(u, v) for (u, v) in self.graph.edges
+        return [(u, v) for (u, v) in self.prob.all_edges
                        if u in us and v in vs]
 
     def get_edges_between_ordered_by_weight(self,
                                             us: set[int],
                                             vs: set[int],
                                             reverse=False):
-        ws = [(self.weight(u, v), u, v) for (u, v) in self.graph.edges
+        ws = [(self.weight(u, v), u, v) for (u, v) in self.prob.all_edges
                                         if u in us and v in vs]
         ws.sort(reverse=reverse)
         return ws

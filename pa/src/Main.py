@@ -448,70 +448,17 @@ class GraspBenchmark(tb.Benchmark, ABC):
         return grasp.run()
 
 
-class VndRandom134Benchmark(tb.Benchmark, ABC):
+class Vnd123Benchmark(tb.Benchmark, ABC):
 
     def name(self) -> str:
-        return "VND Random 135"
+        return "VND 123"
 
     def run(self, problem: Problem) -> Solution:
         con = dc.DetCon1(problem)
         nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
-        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
-        vn = vnd.VND([nbh1, nbh3, nbh5])
-        sol = con.construct()
-        return vn.run(sol)
-
-
-class VndRandom143Benchmark(tb.Benchmark, ABC):
-
-    def name(self) -> str:
-        return "VND Random 153"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
-        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
-        vn = vnd.VND([nbh1, nbh5, nbh3])
-        sol = con.construct()
-        return vn.run(sol)
-
-
-class VndRandom314Benchmark(tb.Benchmark, ABC):
-
-    def name(self) -> str:
-        return "VND Random 315"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
-        # nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
-        vn = vnd.VND([nbh3, nbh1, nbh5])
-        sol = con.construct()
-        return vn.run(sol)
-
-
-class VndRandom341Benchmark(tb.Benchmark, ABC):
-
-    def name(self) -> str:
-        return "VND Random 351"
-
-    def run(self, problem: Problem) -> Solution:
-        con = dc.DetCon1(problem)
-        nbh1 = nhs.VertexMoveNeighborhood(nhs.Improvement.BEST)
-        # nbh2 = nhs.VertexSwapNeighborhood(nhs.Improvement.BEST)
-        nbh3 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
-        nbh4 = nhs.TwoFlipNeighborhood(nhs.Improvement.BEST)
-        nbh5 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
-        vn = vnd.VND([nbh3, nbh5, nbh1])
+        nbh2 = nhs.ComponentMergeNeighborhood(nhs.Improvement.BEST)
+        nbh3 = nhs.TwoExchangeNeighborhood(nhs.Improvement.BEST)
+        vn = vnd.VND([nbh1, nbh2, nbh3])
         sol = con.construct()
         return vn.run(sol)
 

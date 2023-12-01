@@ -195,8 +195,10 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
         v = c1[np.random.randint(0, len(c1))]
         rem = [(u, v) for u in sol.get_neighbors(v)]
         add = [(u, v) for u in c2 if u != v]
-        sol.remove_edges(rem)
-        sol.add_edges(add)
+        df = sol.delta(add, rem)
+        if df < 0:
+            sol.remove_edges(rem)
+            sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
@@ -248,10 +250,12 @@ class VertexSwapNeighborhood(Neighborhood, ABC):
         add1 = [(u, v1) for u in sol.get_neighbors(v2)]
         rem2 = [(u, v2) for u in sol.get_neighbors(v2)]
         add2 = [(u, v2) for u in sol.get_neighbors(v1)]
-        sol.remove_edges(rem1)
-        sol.add_edges(add1)
-        sol.remove_edges(rem2)
-        sol.add_edges(add2)
+        add = add1 + add2
+        rem = rem1 + rem2
+        df = sol.delta(add, rem)
+        if df < 0:
+            sol.remove_edges(rem)
+            sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
@@ -308,9 +312,10 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
         if len(cs) < 2:
             return sol
         random.shuffle(cs)
-        for u, v in ((x, y) for x in cs[0]
-                            for y in cs[1] if x != y):
-            sol.add_edge(u, v)
+        add = sol.get_edges_between(cs[0], cs[1])
+        df = sol.delta(add, [])
+        if df < 0:
+            sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:

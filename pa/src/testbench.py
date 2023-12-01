@@ -205,8 +205,8 @@ class Table:
                     file.write(f"& {result.best_solution.get_value()} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
-        file.write("\\caption{Best value}")
-        file.write("\\end{figure}")
+        file.write("\\caption{Best value}\n")
+        file.write("\\end{figure}\n")
 
     def __write_average_values(self, file: TextIO):
         file.write("\\begin{figure}\n")
@@ -226,8 +226,8 @@ class Table:
                 file.write(f"& {result.get_average_value():.2f} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
-        file.write("\\caption{Average values.}")
-        file.write("\\end{figure}")
+        file.write("\\caption{Average values.}\n")
+        file.write("\\end{figure}\n")
 
     def __write_std_values(self, file: TextIO):
         file.write("\\begin{figure}\n")
@@ -247,8 +247,8 @@ class Table:
                 file.write(f"& {result.get_std_deviation_value():.2f} ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
-        file.write("\\caption{Standard deviation values.}")
-        file.write("\\end{figure}")
+        file.write("\\caption{Standard deviation values.}\n")
+        file.write("\\end{figure}\n")
 
     def __write_average_runtime(self, file: TextIO):
         file.write("\\begin{figure}\n")
@@ -268,8 +268,8 @@ class Table:
                 file.write(f"& {result.get_average_runtime() * 1000:.0f} ms ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
-        file.write("\\caption{Average runtime.}")
-        file.write("\\end{figure}")
+        file.write("\\caption{Average runtime.}\n")
+        file.write("\\end{figure}\n")
 
     def __write_std_runtime(self, file: TextIO):
         file.write("\\begin{figure}\n")
@@ -289,5 +289,5 @@ class Table:
                 file.write(f"& {result.get_std_deviation_runtime() * 1000:.0f} ms ")
             file.write("\\\\ \\hline\n")
         file.write("\\end{tabular}\n")
-        file.write("\\caption{Standard deviation runtime.}")
-        file.write("\\end{figure}")
+        file.write("\\caption{Standard deviation runtime.}\n")
+        file.write("\\end{figure}\n")
