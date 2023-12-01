@@ -104,11 +104,10 @@ class TwoFlipNeighborhood(Neighborhood, ABC):
                 prev_f = sol.get_value()
                 sol.toggle_edge(i, j)
                 sol.toggle_edge(k, l)
-                if not sol.is_feasible():
-                    sol.toggle_edge(i, j)
-                    sol.toggle_edge(k, l)
-                    if sol.get_value() < prev_f:
-                        return sol
+                if sol.is_feasible() and (sol.get_value() < prev_f):
+                    return sol
+                sol.toggle_edge(i, j)
+                sol.toggle_edge(k, l)
         return sol
 
     def choose_best(self, sol: Solution) -> Solution:
