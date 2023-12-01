@@ -66,16 +66,16 @@ def main():
     # ls_bench.add_benchmark(LSTEFBenchmark())
     # ls_bench.run()
 
-    ls_bench = tb.ParallelTestbench(n=5)
-    ls_bench.add_directory("../inst/competition")
-    # ls_bench.add_directory("../inst/testing")
-    ls_bench.add_benchmark(LSRUBBenchmark())
-    ls_bench.add_benchmark(LSVMBBenchmark())
-    ls_bench.add_benchmark(LSCMBBenchmark())
-    # ls_bench.add_benchmark(LSTFBBenchmark())
-    ls_bench.add_benchmark(LSVSBBenchmark())
-    ls_bench.add_benchmark(LSTEBBenchmark())
-    ls_bench.run()
+    # ls_bench = tb.ParallelTestbench(n=5)
+    # ls_bench.add_directory("../inst/competition")
+    # # ls_bench.add_directory("../inst/testing")
+    # ls_bench.add_benchmark(LSRUBBenchmark())
+    # ls_bench.add_benchmark(LSVMBBenchmark())
+    # ls_bench.add_benchmark(LSCMBBenchmark())
+    # # ls_bench.add_benchmark(LSTFBBenchmark())
+    # ls_bench.add_benchmark(LSVSBBenchmark())
+    # ls_bench.add_benchmark(LSTEBBenchmark())
+    # ls_bench.run()
 
     con_bench = tb.ParallelTestbench(n=1)
     # con_bench.add_directory("../inst/testing")
@@ -436,7 +436,7 @@ class GraspBenchmark(tb.Benchmark, ABC):
         return "GRASP"
 
     def run(self, problem: Problem) -> Solution:
-        con = rc.RanCon1(problem)
+        con = rc.RanCon1(problem, 15)
         nbh = nhs.RandomUnionNeighborhood(nhs.Improvement.FIRST)
         ls_ter = termination.IterationTermination(7500)
         # ls_ter = termination.ImprovementTermination(1)
