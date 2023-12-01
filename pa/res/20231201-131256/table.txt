@@ -1,0 +1,65 @@
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+& VND 123 & VND 132 & VND 213 & VND 231 & VND 312 & VND 321 \\ \hline
+ heur042\_n\_300\_m\_5764 & 16195 & 16195 & 16193 & 16193 & 16195 & 16193 \\ \hline
+ heur044\_n\_300\_m\_3234 & 8791 & 8791 & 8783 & 8783 & 8791 & 8783 \\ \hline
+ heur046\_n\_300\_m\_13150 & 38230 & 38230 & 38230 & 38230 & 38230 & 38230 \\ \hline
+ heur056\_n\_300\_m\_12131 & 34652 & 34652 & 34649 & 34649 & 34652 & 34649 \\ \hline
+ heur059\_n\_300\_m\_7867 & 22636 & 22636 & 22636 & 22636 & 22636 & 22636 \\ \hline
+\end{tabular}
+\caption{Best value}
+\end{figure}
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+& VND 123 & VND 132 & VND 213 & VND 231 & VND 312 & VND 321 \\ \hline
+ heur042\_n\_300\_m\_5764 & 16195.00 & 16195.00 & 16193.00 & 16193.00 & 16195.00 & 16193.00 \\ \hline
+ heur044\_n\_300\_m\_3234 & 8791.00 & 8791.00 & 8783.00 & 8783.00 & 8791.00 & 8783.00 \\ \hline
+ heur046\_n\_300\_m\_13150 & 38230.00 & 38230.00 & 38230.00 & 38230.00 & 38230.00 & 38230.00 \\ \hline
+ heur056\_n\_300\_m\_12131 & 34652.00 & 34652.00 & 34649.00 & 34649.00 & 34652.00 & 34649.00 \\ \hline
+ heur059\_n\_300\_m\_7867 & 22636.00 & 22636.00 & 22636.00 & 22636.00 & 22636.00 & 22636.00 \\ \hline
+\end{tabular}
+\caption{Average values.}
+\end{figure}
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+& VND 123 & VND 132 & VND 213 & VND 231 & VND 312 & VND 321 \\ \hline
+ heur042\_n\_300\_m\_5764 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+ heur044\_n\_300\_m\_3234 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+ heur046\_n\_300\_m\_13150 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+ heur056\_n\_300\_m\_12131 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+ heur059\_n\_300\_m\_7867 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ \hline
+\end{tabular}
+\caption{Standard deviation values.}
+\end{figure}
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+& VND 123 & VND 132 & VND 213 & VND 231 & VND 312 & VND 321 \\ \hline
+ heur042\_n\_300\_m\_5764 & 31358 ms & 30564 ms & 31032 ms & 32718 ms & 30805 ms & 30792 ms \\ \hline
+ heur044\_n\_300\_m\_3234 & 25872 ms & 26342 ms & 26236 ms & 25713 ms & 26127 ms & 26254 ms \\ \hline
+ heur046\_n\_300\_m\_13150 & 186037 ms & 193883 ms & 204548 ms & 204410 ms & 211067 ms & 199793 ms \\ \hline
+ heur056\_n\_300\_m\_12131 & 23212 ms & 25360 ms & 25575 ms & 25178 ms & 30678 ms & 30772 ms \\ \hline
+ heur059\_n\_300\_m\_7867 & 43918 ms & 40048 ms & 36821 ms & 33915 ms & 33025 ms & 31011 ms \\ \hline
+\end{tabular}
+\caption{Average runtime.}
+\end{figure}
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+& VND 123 & VND 132 & VND 213 & VND 231 & VND 312 & VND 321 \\ \hline
+ heur042\_n\_300\_m\_5764 & 3295 ms & 3838 ms & 3304 ms & 2561 ms & 3394 ms & 3293 ms \\ \hline
+ heur044\_n\_300\_m\_3234 & 2377 ms & 2404 ms & 1858 ms & 2259 ms & 2657 ms & 2654 ms \\ \hline
+ heur046\_n\_300\_m\_13150 & 14865 ms & 100711 ms & 120870 ms & 123500 ms & 120698 ms & 106321 ms \\ \hline
+ heur056\_n\_300\_m\_12131 & 8622 ms & 10692 ms & 13876 ms & 13091 ms & 10638 ms & 10381 ms \\ \hline
+ heur059\_n\_300\_m\_7867 & 8873 ms & 7997 ms & 8263 ms & 10877 ms & 13587 ms & 14480 ms \\ \hline
+\end{tabular}
+\caption{Standard deviation runtime.}
+\end{figure}

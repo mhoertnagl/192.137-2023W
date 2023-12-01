@@ -5,6 +5,7 @@ from neighborhoods import Neighborhood
 from solution import Solution
 from termination import Termination
 
+
 class Annealer:
 
     def __init__(self,
