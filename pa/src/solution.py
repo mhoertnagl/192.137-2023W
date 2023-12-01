@@ -115,10 +115,11 @@ class Solution:
         return ws
 
     def get_components(self) -> list[set[int]]:
-        if not self.components_valid:
-            self.__components = self.__get_components()
-            self.components_valid = True
-        return self.__components
+        # if not self.components_valid:
+        #     self.__components = self.__get_components()
+        #     self.components_valid = True
+        # return self.__components
+        return self.__get_components()
 
     def __get_components(self) -> list[set[int]]:
         return list(nx.connected_components(self.graph))
