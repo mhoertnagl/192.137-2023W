@@ -62,8 +62,8 @@ class OneFlipNeighborhood(Neighborhood, ABC):
             new_sol = sol.copy()
             new_sol.toggle_edge(i, j)
             if new_sol.is_feasible():
-                    if new_sol.get_value() < sol.get_value():
-                        return new_sol
+                if new_sol.get_value() < sol.get_value():
+                    return new_sol
         return sol
 
     def choose_best(self, sol: Solution) -> Solution:
@@ -74,8 +74,8 @@ class OneFlipNeighborhood(Neighborhood, ABC):
             test_sol = sol.copy()
             test_sol.toggle_edge(i, j)
             if test_sol.is_feasible():
-                    if test_sol.get_value() < new_sol.get_value():
-                        new_sol = test_sol.copy()
+                if test_sol.get_value() < new_sol.get_value():
+                    new_sol = test_sol.copy()
         return new_sol
 
 
@@ -201,10 +201,10 @@ class VertexMoveNeighborhood(Neighborhood, ABC):
         v = c1[np.random.randint(0, len(c1))]
         rem = [(u, v) for u in sol.get_neighbors(v)]
         add = [(u, v) for u in c2 if u != v]
-        # df = sol.delta(add, rem)
-        # if df < 0:
-        sol.remove_edges(rem)
-        sol.add_edges(add)
+        df = sol.delta(add, rem)
+        if df < 0:
+            sol.remove_edges(rem)
+            sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
@@ -319,9 +319,9 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
             return sol
         random.shuffle(cs)
         add = sol.get_edges_between(cs[0], cs[1])
-        # df = sol.delta(add, [])
-        # if df < 0:
-        sol.add_edges(add)
+        df = sol.delta(add, [])
+        if df < 0:
+            sol.add_edges(add)
         return sol
 
     def choose_first(self, sol: Solution) -> Solution:
