@@ -2,6 +2,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 # import smac
 from benchy import *
+from benchy.plugins.plugin import Plugin
 
 
 class Testbench:
@@ -29,6 +30,7 @@ class Testbench:
         self._haresses.append(harness)
         return self
 
+    # TODO: swap problem and harness order?
     def run(self):
         for plugin in self._plugins:
             plugin.testbench_before(self)

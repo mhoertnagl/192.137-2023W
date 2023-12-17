@@ -1,4 +1,3 @@
-from .benchmark import Benchmark
 from .contexts import ProblemContext
 from .contexts import HarnessContext
 from .contexts import InstanceContext
@@ -7,7 +6,6 @@ from .contexts import AfterInstanceContext
 from .fixture import Fixture
 from .harness import Harness
 from .instance import Instance
-from .plugin import Plugin
 from .problem import Problem
 from .solution import Solution
 from .testbench import Testbench

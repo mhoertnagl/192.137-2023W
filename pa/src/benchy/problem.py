@@ -1,5 +1,8 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class Problem(ABC):
-    pass
+
+    @abstractmethod
+    def name(self):
+        pass

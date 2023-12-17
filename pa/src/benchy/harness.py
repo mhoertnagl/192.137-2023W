@@ -21,13 +21,21 @@ class Harness:
     def repetitions(self) -> int:
         return self._repetitions
 
-    def fixture(self) -> Fixture:
-        return self._fixture
+    # def fixture(self) -> Fixture:
+    #     return self._fixture
 
-    def __iter__(self) -> list[Instance]:
-        # TODO: Return FixtureRunners
-        parameters = self._parameters.values()
-        for parameter in parameters:
-            yield parameter
-        # product()
+    def __iter__(self):
+        domains = [(n, d) for (n, d) in self._parameters.values()]
+        return self.generate_instances(domains, {})
 
+    def generate_instances(self,
+                           domains: list[(str, list)],
+                           args: dict[str, any]):
+        if len(args) >= len(domains):
+            yield Instance(self._fixture, args)
+        else:
+            for (name, domain) in domains[len(args)-1]:
+                for element in domain:
+                    args1 = args.copy()
+                    args1[name] = element
+                    yield self.generate_instances(domains, args1)
