@@ -1,3 +1,4 @@
+import time
 from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 # import smac
 from benchy import *
@@ -32,28 +33,61 @@ class Testbench:
         for plugin in self._plugins:
             plugin.testbench_before(self)
         for problem in self._problems:
-            self.run_problem(problem)
+            ctx2 = ProblemContext(self, problem)
+            self._run_problem(ctx2)
         for plugin in self._plugins:
             plugin.testbench_after(self)
 
-    def run_problem(self, problem: Problem):
+    def _run_problem(self, ctx: ProblemContext):
         for plugin in self._plugins:
-            plugin.problem_before(self, problem)
+            plugin.problem_before(ctx)
         for harness in self._haresses:
-            self.run_harness(problem, harness)
+            ctx2 = HarnessContext(ctx, harness)
+            self._run_harness(ctx2)
         for plugin in self._plugins:
-            plugin.problem_after(self, problem)
+            plugin.problem_after(ctx)
 
-    def run_harness(self, problem: Problem, harness: Harness):
+    def _run_harness(self, ctx: HarnessContext):
         for plugin in self._plugins:
-            plugin.harness_before(self, problem, harness)
-        for fixture in harness:
-            print(fixture, "\n")
+            plugin.harness_before(ctx)
+        for instance in ctx.harness():
+            ctx2 = InstanceContext(ctx, instance)
+            self._run_batch(ctx2)
         for plugin in self._plugins:
-            plugin.harness_after(self, problem, harness)
+            plugin.harness_after(ctx)
+
+    def _run_batch(self, ctx: InstanceContext):
+        tasks = []
+        # Run the instance multiple times in parallel.
+        for run in range(ctx.harness().repetitions()):
+            ctx2 = BeforeInstanceContext(ctx, run)
+            task = self._run_instance(ctx2)
+            tasks.append(task)
+        # Wait for all the parallel runs to finish.
+        done, not_done = wait(tasks, return_when=ALL_COMPLETED)
+        self._finish_batch(ctx, done, not_done)
+
+    def _run_instance(self, ctx: BeforeInstanceContext):
+        for plugin in self._plugins:
+            plugin.instance_before(ctx)
+        return self._executor.submit(run_task, ctx)
+
+    def _finish_batch(self, ctx, done, not_done):
+        d, n = len(done), len(not_done)
+        if n > 0:
+            print(f"Timeout: could not complete {n} of {d+n} runs.")
+        for task in done:
+            self._finish_instance(ctx, task)
+
+    def _finish_instance(self, ctx: InstanceContext, task):
+        solution, elapsed_time, run = task.result()
+        ctx2 = AfterInstanceContext(ctx, run, solution, elapsed_time)
+        for plugin in self._plugins:
+            plugin.instance_after(ctx2)
 
 
-def run_task():
-    pass
-
-# Hooks for all stages of a run -> console logger, file logger, solution file export, csv statistics export
+def run_task(ctx: BeforeInstanceContext):
+    start_time = time.time()
+    solution = ctx.instance().run(ctx.problem())
+    elapsed_time = time.time() - start_time
+    return solution, elapsed_time, ctx.run()
