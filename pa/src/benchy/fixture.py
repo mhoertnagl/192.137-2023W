@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from benchy import IProblem, ISolution
+from .problem import IProblem
+from .solution import ISolution
 
 
 class Fixture(ABC):

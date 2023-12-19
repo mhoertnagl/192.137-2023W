@@ -3,6 +3,31 @@ from abc import ABC, abstractmethod
 from splex import Problem, Solution
 from splex.ga import Population
 
+# Population size as a parameter.
+
+# Select
+# - Roulette selection
+# - Rank selection
+# - Tournament selection
+
+# Recombine
+# - Component based
+#   - Wir wollen Komponenten die in beiden Elternteilen vorkommen erhalten.
+#   - Wir wollen möglichst viele Komponenten erhalten.
+# - Edge based
+#   - A bit for each edge
+#   - classical uniform crossover
+#   - Repair function
+
+# Mutate
+# - Vertex Move
+# - 2 exchange
+# - Component Merge
+
+# Replace
+# - Elitism + n-k best kids
+# - Choose n best
+# - Roulette replace
 
 class GA(ABC):
 

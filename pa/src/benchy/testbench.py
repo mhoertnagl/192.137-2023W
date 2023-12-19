@@ -1,19 +1,136 @@
 import time
 from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 # import smac
-from benchy import *
-from benchy.plugins.plugin import Plugin
+from .problem import IProblem
+from .solution import ISolution
+from .instance import Instance
+from .harness import Harness
+
+
+class ProblemContext:
+
+    def __init__(self, testbench, problem: IProblem):
+        self._testbench = testbench
+        self._problem = problem
+
+    def testbench(self):
+        return self._testbench
+
+    def problem(self):
+        return self._problem
+
+
+class HarnessContext:
+
+    def __init__(self, ctx: ProblemContext, harness: Harness):
+        self._testbench = ctx.testbench()
+        self._problem = ctx.problem()
+        self._harness = harness
+
+    def testbench(self):
+        return self._testbench
+
+    def problem(self):
+        return self._problem
+
+    def harness(self):
+        return self._harness
+
+
+class InstanceContext:
+
+    def __init__(self, ctx: HarnessContext, instance: Instance):
+        self._testbench = ctx.testbench()
+        self._problem = ctx.problem()
+        self._harness = ctx.harness()
+        self._instance = instance
+
+    def testbench(self):
+        return self._testbench
+
+    def problem(self):
+        return self._problem
+
+    def harness(self):
+        return self._harness
+
+    def instance(self):
+        return self._instance
+
+
+class BeforeInstanceContext:
+
+    def __init__(self, ctx: InstanceContext, run: int):
+        self._testbench = ctx.testbench()
+        self._problem = ctx.problem()
+        self._harness = ctx.harness()
+        self._instance = ctx.instance()
+        self._run = run
+
+    def testbench(self):
+        return self._testbench
+
+    def problem(self):
+        return self._problem
+
+    def harness(self):
+        return self._harness
+
+    def instance(self):
+        return self._instance
+
+    def run(self):
+        return self._run
+
+
+class AfterInstanceContext:
+
+    def __init__(self,
+                 ctx: InstanceContext,
+                 run: int,
+                 solution: ISolution,
+                 elapsed_time: float):
+        self._testbench = ctx.testbench()
+        self._problem = ctx.problem()
+        self._harness = ctx.harness()
+        self._instance = ctx.instance()
+        self._run = run
+        self._solution = solution
+        self._elapsed_time = elapsed_time
+
+    def testbench(self):
+        return self._testbench
+
+    def problem(self):
+        return self._problem
+
+    def harness(self):
+        return self._harness
+
+    def instance(self):
+        return self._instance
+
+    def run(self):
+        return self._run
+
+    def solution(self):
+        return self._solution
+
+    def elapsed_time(self):
+        return self._elapsed_time
 
 
 class Testbench:
 
     def __init__(self):
-        self._plugins: list[Plugin] = list()
+        # self._plugins: list[Plugin] = list()
+        self._plugins: list = list()
         self._problems: list[IProblem] = list()
         self._haresses: list[Harness] = list()
         self._executor = ProcessPoolExecutor()
 
-    def add_plugin(self, plugin: Plugin):
+    # def add_plugin(self, plugin: Plugin):
+    def add_plugin(self, plugin):
         self._plugins.append(plugin)
         return self
 
@@ -30,7 +147,6 @@ class Testbench:
         self._haresses.append(harness)
         return self
 
-    # TODO: swap problem and harness order?
     def run(self):
         for plugin in self._plugins:
             plugin.testbench_before(self)

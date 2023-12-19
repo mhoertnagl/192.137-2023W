@@ -1,6 +1,5 @@
-from itertools import product
-
-from benchy import *
+from .fixture import Fixture
+from .instance import Instance
 
 
 class Harness:
@@ -25,21 +24,18 @@ class Harness:
     def repetitions(self):
         return self._repetitions
 
-    # def fixture(self) -> Fixture:
-    #     return self._fixture
-
     def __iter__(self):
-        domains = [(n, d) for (n, d) in self._parameters.values()]
-        return self.generate_instances(domains, {})
+        domains = list(self._parameters.items())
+        return self._generate_instances(domains, {})
 
-    def generate_instances(self,
+    def _generate_instances(self,
                            domains: list[(str, list)],
                            args: dict[str, any]):
         if len(args) >= len(domains):
             yield Instance(self._fixture, args)
         else:
-            for (name, domain) in domains[len(args)-1]:
-                for element in domain:
-                    args1 = args.copy()
-                    args1[name] = element
-                    yield self.generate_instances(domains, args1)
+            name, domain = domains[len(args)]
+            for element in domain:
+                args1 = args.copy()
+                args1[name] = element
+                yield from self._generate_instances(domains, args1)

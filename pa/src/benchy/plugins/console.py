@@ -1,6 +1,6 @@
 from abc import ABC
 
-from benchy import *
+from benchy.testbench import *
 from benchy.plugins.plugin import Plugin
 
 
@@ -33,7 +33,7 @@ class ConsoleLogPlugin(Plugin, ABC):
         print(f"Harness '{ctx.harness().name()}' completed")
 
     def instance_before(self, ctx: BeforeInstanceContext):
-        pass
+        print(ctx.instance().args())
 
     def instance_after(self, ctx: AfterInstanceContext):
-        print("*", end=None)
+        pass

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from benchy import *
+from benchy.testbench import Testbench
+from benchy.contexts import *
 
 
 class Plugin(ABC):

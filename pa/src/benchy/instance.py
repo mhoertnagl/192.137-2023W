@@ -15,3 +15,9 @@ class Instance:
 
     def run(self, problem: IProblem):
         self._fixture.run(problem, self._args)
+
+    def __repr__(self):
+        return self._args.__repr__()
+
+    def __str__(self):
+        return self._args.__str__()
