@@ -16,19 +16,24 @@ class ConsoleLogPlugin(Plugin, ABC):
         print("=" * 60)
 
     def problem_before(self, ctx: ProblemContext):
-        pass
+        print("-" * 60)
+        print(f"Running Problem '{ctx.problem().name()}'")
+        print("-" * 60)
 
     def problem_after(self, ctx: ProblemContext):
-        pass
+        print("-" * 60)
+        print(f"Problem '{ctx.problem().name()}' completed")
+        print("-" * 60)
 
     def harness_before(self, ctx: HarnessContext):
-        pass
+        print(f"Running Harness '{ctx.harness().name()}'")
 
     def harness_after(self, ctx: HarnessContext):
-        pass
+        print()
+        print(f"Harness '{ctx.harness().name()}' completed")
 
     def instance_before(self, ctx: BeforeInstanceContext):
         pass
 
     def instance_after(self, ctx: AfterInstanceContext):
-        pass
+        print("*", end=None)

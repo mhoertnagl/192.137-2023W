@@ -5,7 +5,8 @@ from benchy import *
 
 class Harness:
 
-    def __init__(self, repetitions: int = 10):
+    def __init__(self, name: str, repetitions: int = 10):
+        self._name = name
         self._repetitions = repetitions
         self._parameters: dict[str, list] = dict()
         self._fixture: Fixture | None = None
@@ -18,7 +19,10 @@ class Harness:
         self._fixture = fixture
         return self
 
-    def repetitions(self) -> int:
+    def name(self):
+        return self._name
+
+    def repetitions(self):
         return self._repetitions
 
     # def fixture(self) -> Fixture:
