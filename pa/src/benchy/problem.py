@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Problem(ABC):
+class IProblem(ABC):
 
     @abstractmethod
     def name(self):

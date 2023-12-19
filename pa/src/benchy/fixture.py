@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from benchy import Problem, Solution
+from benchy import IProblem, ISolution
 
 
 class Fixture(ABC):
 
     @abstractmethod
-    def run(self, problem: Problem, args: dict[str, any]) -> Solution:
+    def run(self, problem: IProblem, args: dict[str, any]) -> ISolution:
         pass

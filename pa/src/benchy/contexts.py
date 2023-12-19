@@ -3,7 +3,7 @@ from benchy import *
 
 class ProblemContext:
 
-    def __init__(self, testbench: Testbench, problem: Problem):
+    def __init__(self, testbench: Testbench, problem: IProblem):
         self._testbench = testbench
         self._problem = problem
 
@@ -82,7 +82,7 @@ class AfterInstanceContext:
     def __init__(self,
                  ctx: InstanceContext,
                  run: int,
-                 solution: Solution,
+                 solution: ISolution,
                  elapsed_time: float):
         self._testbench = ctx.testbench
         self._problem = ctx.problem

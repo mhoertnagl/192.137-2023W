@@ -9,7 +9,7 @@ class Testbench:
 
     def __init__(self):
         self._plugins: list[Plugin] = list()
-        self._problems: list[Problem] = list()
+        self._problems: list[IProblem] = list()
         self._haresses: list[Harness] = list()
         self._executor = ProcessPoolExecutor()
 
@@ -17,11 +17,11 @@ class Testbench:
         self._plugins.append(plugin)
         return self
 
-    def add_problem(self, problem: Problem):
+    def add_problem(self, problem: IProblem):
         self._problems.append(problem)
         return self
 
-    def add_problems(self, problems: list[Problem]):
+    def add_problems(self, problems: list[IProblem]):
         for problem in problems:
             self.add_problem(problem)
         return self

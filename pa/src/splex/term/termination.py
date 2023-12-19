@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from splex import SPlexSolution
+from splex import Solution
 
 
 class Termination(ABC):
@@ -10,5 +10,5 @@ class Termination(ABC):
         pass
 
     @abstractmethod
-    def done(self, old: SPlexSolution, new: SPlexSolution) -> bool:
+    def done(self, old: Solution, new: Solution) -> bool:
         pass

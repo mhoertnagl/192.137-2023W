@@ -1,6 +1,6 @@
 from abc import ABC
 
-from splex import SPlexSolution
+from splex import Solution
 from splex.term import Termination
 
 
@@ -14,7 +14,7 @@ class ImprovementTermination(Termination, ABC):
     def init(self):
         self._i = 0
 
-    def done(self, old: SPlexSolution, new: SPlexSolution) -> bool:
+    def done(self, old: Solution, new: Solution) -> bool:
         f1, f0 = new.value(), old.value()
         if 1 - (f1 / f0) > self._limit:
             # Change is bigger than the limit.

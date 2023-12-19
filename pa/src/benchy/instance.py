@@ -13,5 +13,5 @@ class Instance:
     def args(self):
         return self._args
 
-    def run(self, problem: Problem):
+    def run(self, problem: IProblem):
         self._fixture.run(problem, self._args)

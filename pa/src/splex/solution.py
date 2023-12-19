@@ -1,7 +1,9 @@
 from abc import ABC
 
-from benchy import Solution
+from benchy import ISolution
 
 
-class SPlexSolution(Solution, ABC):
-    pass
+class Solution(ISolution, ABC):
+
+    def value(self) -> int | float:
+        pass

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from splex import SPlexProblem, SPlexSolution
+from splex import Problem, Solution
 
 
 class Construction(ABC):
 
     @abstractmethod
-    def construct(self, problem: SPlexProblem) -> SPlexSolution:
+    def construct(self, problem: Problem) -> Solution:
         pass

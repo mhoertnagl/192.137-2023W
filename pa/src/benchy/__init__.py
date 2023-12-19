@@ -6,6 +6,6 @@ from .contexts import AfterInstanceContext
 from .fixture import Fixture
 from .harness import Harness
 from .instance import Instance
-from .problem import Problem
-from .solution import Solution
+from .problem import IProblem
+from .solution import ISolution
 from .testbench import Testbench
