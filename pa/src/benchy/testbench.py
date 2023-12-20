@@ -192,10 +192,10 @@ class Testbench:
             plugin.instance_before(ctx)
         return self._executor.submit(run_task, ctx)
 
-    def _finish_batch(self, ctx, done, not_done):
+    def _finish_batch(self, ctx: InstanceContext, done, not_done):
         d, n = len(done), len(not_done)
         if n > 0:
-            print(f"Timeout: could not complete {n} of {d+n} runs.")
+            print(f"Timeout: could not complete {n} out of {d+n} runs.")
         for task in done:
             self._finish_instance(ctx, task)
 
