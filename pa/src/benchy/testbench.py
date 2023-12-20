@@ -123,13 +123,11 @@ class AfterInstanceContext:
 class Testbench:
 
     def __init__(self):
-        # self._plugins: list[Plugin] = list()
         self._plugins: list = list()
         self._problems: list[IProblem] = list()
         self._haresses: list[Harness] = list()
         self._executor = ProcessPoolExecutor()
 
-    # def add_plugin(self, plugin: Plugin):
     def add_plugin(self, plugin):
         self._plugins.append(plugin)
         return self
@@ -148,6 +146,10 @@ class Testbench:
         return self
 
     def run(self):
+        self._run_problems()
+        self._executor.shutdown(cancel_futures=True)
+
+    def _run_problems(self):
         for plugin in self._plugins:
             plugin.testbench_before(self)
         for problem in self._problems:

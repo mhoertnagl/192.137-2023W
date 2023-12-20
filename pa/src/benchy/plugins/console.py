@@ -35,5 +35,5 @@ class ConsoleLogPlugin(Plugin, ABC):
     def instance_before(self, ctx: BeforeInstanceContext):
         print(ctx.instance().args())
 
-    def instance_after(self, ctx: AfterInstanceContext):
-        pass
+    # def instance_after(self, ctx: AfterInstanceContext):
+    #     pass

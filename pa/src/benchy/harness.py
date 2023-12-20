@@ -1,6 +1,8 @@
 from .fixture import Fixture
 from .instance import Instance
 
+# TODO: Domain is actually a set.
+
 
 class Harness:
 
@@ -24,9 +26,14 @@ class Harness:
     def repetitions(self):
         return self._repetitions
 
+    def parameter_names(self):
+        return list(self._parameters.keys())
+
+    def domains(self):
+        return list(self._parameters.items())
+
     def __iter__(self):
-        domains = list(self._parameters.items())
-        return self._generate_instances(domains, {})
+        return self._generate_instances(self.domains(), {})
 
     def _generate_instances(self,
                            domains: list[(str, list)],
