@@ -43,7 +43,7 @@ class Problem(IProblem, ABC):
     def name(self):
         return self._name
 
-    def has_edge(self, u: int, v: int) -> bool:
+    def connected(self, u: int, v: int) -> bool:
         return self._adjacent[u-1, v-1] == 1
 
     def weight(self, u: int, v: int) -> int:

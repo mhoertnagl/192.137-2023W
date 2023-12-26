@@ -15,7 +15,7 @@ class EdgeConstruction(Construction, ABC):
 
     def construct(self, problem: Problem) -> Solution:
         self._components = [{i} for i in range(1, problem.n+1)]
-        self._solution = Solution()
+        self._solution = Solution(problem)
         for (_, u, v) in self._batch_shuffle(problem):
             # Find the components that contain u and v
             # respectively. Maybe the same component.

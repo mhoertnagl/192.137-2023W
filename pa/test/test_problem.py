@@ -19,18 +19,18 @@ def test_problem():
 
 
 class TestProblem(TestCase):
-    def test_has_edge(self):
+    def test_connected(self):
         problem = test_problem()
-        self.assertTrue(problem.has_edge(1, 2))
-        self.assertTrue(problem.has_edge(2, 1))
-        self.assertFalse(problem.has_edge(2, 3))
-        self.assertFalse(problem.has_edge(3, 2))
-        self.assertTrue(problem.has_edge(3, 4))
-        self.assertTrue(problem.has_edge(4, 3))
-        self.assertFalse(problem.has_edge(4, 5))
-        self.assertFalse(problem.has_edge(5, 4))
-        self.assertFalse(problem.has_edge(3, 5))
-        self.assertFalse(problem.has_edge(5, 3))
+        self.assertTrue(problem.connected(1, 2))
+        self.assertTrue(problem.connected(2, 1))
+        self.assertFalse(problem.connected(2, 3))
+        self.assertFalse(problem.connected(3, 2))
+        self.assertTrue(problem.connected(3, 4))
+        self.assertTrue(problem.connected(4, 3))
+        self.assertFalse(problem.connected(4, 5))
+        self.assertFalse(problem.connected(5, 4))
+        self.assertFalse(problem.connected(3, 5))
+        self.assertFalse(problem.connected(5, 3))
 
     def test_weight(self):
         problem = test_problem()
