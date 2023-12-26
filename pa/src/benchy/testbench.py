@@ -181,33 +181,30 @@ class Testbench:
         # Run the instance multiple times in parallel.
         for run in range(ctx.harness().repetitions()):
             ctx2 = BeforeInstanceContext(ctx, run)
-            task = self._run_instance(ctx2)
+            for plugin in self._plugins:
+                plugin.instance_before(ctx2)
+            task = self._executor.submit(
+                run_task,
+                ctx2.instance(),
+                ctx2.problem(),
+                ctx2.run()
+            )
             tasks.append(task)
         # Wait for all the parallel runs to finish.
         done, not_done = wait(tasks, return_when=ALL_COMPLETED)
-        self._finish_batch(ctx, done, not_done)
-
-    def _run_instance(self, ctx: BeforeInstanceContext):
-        for plugin in self._plugins:
-            plugin.instance_before(ctx)
-        return self._executor.submit(run_task, ctx)
-
-    def _finish_batch(self, ctx: InstanceContext, done, not_done):
-        d, n = len(done), len(not_done)
-        if n > 0:
-            print(f"Timeout: could not complete {n} out of {d+n} runs.")
+        # # Print an error message if some task could not be finished.
+        # d, n = len(done), len(not_done)
+        # if n > 0:
+        #     print(f"Timeout: could not complete {n} out of {d+n} runs.")
+        # Process completed tasks.
         for task in done:
-            self._finish_instance(ctx, task)
+            solution, elapsed_time, run = task.result()
+            ctx2 = AfterInstanceContext(ctx, run, solution, elapsed_time)
+            for plugin in self._plugins:
+                plugin.instance_after(ctx2)
 
-    def _finish_instance(self, ctx: InstanceContext, task):
-        solution, elapsed_time, run = task.result()
-        ctx2 = AfterInstanceContext(ctx, run, solution, elapsed_time)
-        for plugin in self._plugins:
-            plugin.instance_after(ctx2)
-
-
-def run_task(ctx: BeforeInstanceContext):
+def run_task(instance, problem, run):
     start_time = time.time()
-    solution = ctx.instance().run(ctx.problem())
+    solution = instance.run(problem)
     elapsed_time = time.time() - start_time
-    return solution, elapsed_time, ctx.run()
+    return solution, elapsed_time, run

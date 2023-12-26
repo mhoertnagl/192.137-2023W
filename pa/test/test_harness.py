@@ -5,7 +5,7 @@ from benchy import Harness
 
 class TestHarness(TestCase):
     def test_iter1(self):
-        harness = Harness("test")
+        harness = Harness("test", None)
         harness.add_parameter("alpha", [False, True])
         harness.add_parameter("beta", [False, True])
         harness.add_parameter("gamma", [False, True])
@@ -23,7 +23,7 @@ class TestHarness(TestCase):
         ])
 
     def test_iter(self):
-        harness = Harness("test")
+        harness = Harness("test", None)
         harness.add_parameter("alpha", list(range(4)))
         harness.add_parameter("beta", ["a", "b", "c"])
         harness.add_parameter("gamma", [0.1, 0.2, 0.3, 0.4])

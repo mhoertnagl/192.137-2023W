@@ -18,17 +18,17 @@ class CsvPlugin(Plugin, ABC):
         self._out_dir = out_dir
         self._dfs: dict[str, pd.DataFrame] = dict()
 
-    # def testbench_before(self, testbench: Testbench):
-    #     pass
-    #
-    # def testbench_after(self, testbench: Testbench):
-    #     pass
-    #
-    # def problem_before(self, ctx: ProblemContext):
-    #     pass
-    #
-    # def problem_after(self, ctx: ProblemContext):
-    #     pass
+    def testbench_before(self, testbench: Testbench):
+        pass
+
+    def testbench_after(self, testbench: Testbench):
+        pass
+
+    def problem_before(self, ctx: ProblemContext):
+        pass
+
+    def problem_after(self, ctx: ProblemContext):
+        pass
 
     def harness_before(self, ctx: HarnessContext):
         harness_name = ctx.harness().name()
@@ -39,15 +39,16 @@ class CsvPlugin(Plugin, ABC):
         parameter_names = ctx.harness().parameter_names()
         return [COL_PROBLEM, *parameter_names, COL_RUN, COL_BEST, COL_TIME]
 
-    # def harness_after(self, ctx: HarnessContext):
-    #     pass
+    def harness_after(self, ctx: HarnessContext):
+        pass
 
-    # def instance_before(self, ctx: BeforeInstanceContext):
-    #     pass
+    def instance_before(self, ctx: BeforeInstanceContext):
+        pass
 
     def instance_after(self, ctx: AfterInstanceContext):
         harness_name = ctx.harness().name()
         self._append_result(ctx)
+        # TODO: File Path
         self._dfs[harness_name].to_csv()
 
     def _append_result(self, ctx):

@@ -4,6 +4,9 @@ from benchy.testbench import *
 from benchy.plugins.plugin import Plugin
 
 
+# https://rich.readthedocs.io/en/latest/
+
+
 class ConsoleLogPlugin(Plugin, ABC):
     def testbench_before(self, testbench: Testbench):
         print("=" * 60)
@@ -33,7 +36,10 @@ class ConsoleLogPlugin(Plugin, ABC):
         print(f"Harness '{ctx.harness().name()}' completed")
 
     def instance_before(self, ctx: BeforeInstanceContext):
-        print(ctx.instance().args())
+        pass
 
-    # def instance_after(self, ctx: AfterInstanceContext):
-    #     pass
+    def instance_after(self, ctx: AfterInstanceContext):
+        args = ctx.instance().args()
+        elapsed_time = f"{ctx.elapsed_time() * 1000:.0f} ms"
+        value = ctx.solution().value()
+        print(args, elapsed_time, value)

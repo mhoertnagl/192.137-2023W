@@ -1,7 +1,6 @@
 from abc import ABC
 
 import numpy as np
-import networkx as nx
 
 from benchy import ISolution
 from splex import Problem
@@ -39,12 +38,12 @@ class Solution(ISolution, ABC):
         return self._graph.connected(u, v)
 
     def add_edge(self, u: int, v: int):
-        self._graph.add_edge(u, v)
         self._value += self.delta([(u, v)], [])
+        self._graph.add_edge(u, v)
 
     def remove_edge(self, u: int, v: int):
-        self._graph.remove_edge(u, v)
         self._value += self.delta([], [(u, v)])
+        self._graph.remove_edge(u, v)
 
     def degree(self, v: int):
         return self._graph.degree(v)
@@ -56,7 +55,7 @@ class Solution(ISolution, ABC):
         return self._graph.component(v)
 
     def is_feasible(self):
-        for v in range(1, self._problem.n):
+        for v in range(1, self._problem.n+1):
             if not self.is_vertex_feasible(v):
                 return False
         return True
@@ -66,12 +65,12 @@ class Solution(ISolution, ABC):
         deg = self._graph.degree(v)
         return deg >= len(c) - self._problem.s
 
-    def _value(self) -> int:
-        P = self._problem._adjacent
-        S = self._graph._adjacent
-        W = self._problem._weights
-        D = np.multiply(np.absolute(P - S), W)
-        return np.sum(D)
+    # def _value(self) -> int:
+    #     P = self._problem._adjacent
+    #     S = self._graph._adjacent
+    #     W = self._problem._weights
+    #     D = np.multiply(np.absolute(P - S), W)
+    #     return np.sum(D)
 
         # f, n = 0, self._problem.n + 1
         # for i in range(1, n):

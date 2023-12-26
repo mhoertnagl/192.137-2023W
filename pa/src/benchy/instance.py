@@ -14,7 +14,7 @@ class Instance:
         return self._args
 
     def run(self, problem: IProblem):
-        self._fixture.run(problem, self._args)
+        return self._fixture.run(problem, self._args)
 
     def __repr__(self):
         return self._args.__repr__()
