@@ -19,12 +19,6 @@ class TestGraph(TestCase):
         self.assertFalse(g.connected(1, 2))
         self.assertFalse(g.connected(2, 1))
 
-    def test_add_edge(self):
-        self.fail()
-
-    def test_remove_edge(self):
-        self.fail()
-
     def test_degree(self):
         g = Graph(3)
         self.assertEqual(g.degree(1), 0)

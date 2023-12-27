@@ -37,9 +37,17 @@ class Solution(ISolution, ABC):
     def connected(self, u: int, v: int):
         return self._graph.connected(u, v)
 
+    def add_edges(self, es: list[(int, int)]):
+        self._value += self.delta(es, [])
+        self._graph.add_edges(es)
+
     def add_edge(self, u: int, v: int):
         self._value += self.delta([(u, v)], [])
         self._graph.add_edge(u, v)
+
+    def remove_edges(self, es: list[(int, int)]):
+        self._value += self.delta([], es)
+        self._graph.remove_edges(es)
 
     def remove_edge(self, u: int, v: int):
         self._value += self.delta([], [(u, v)])
@@ -47,6 +55,9 @@ class Solution(ISolution, ABC):
 
     def degree(self, v: int):
         return self._graph.degree(v)
+
+    def neighbors(self, v: int):
+        return self._graph.neighbors(v)
 
     def components(self):
         return self._graph.components()

@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
 
 from splex import Problem, Solution
+from splex.con import Construction
 from splex.ga import Population
+from splex.ga.mut import Mutator
+from splex.ga.rep import Replacer
+
 
 # Population size as a parameter.
 
@@ -29,40 +33,92 @@ from splex.ga import Population
 # - Choose n best
 # - Roulette replace
 
-class GA(ABC):
-
-    def __init__(self):
+class GA:
+    def __init__(self,
+                 size: int,
+                 construction: Construction,
+                 mutator: Mutator,
+                 replacer: Replacer):
+        self._size = size
+        self._construction = construction
+        self._mutator = mutator
+        self._replacer = replacer
         self._population = Population()
 
     def run(self, problem: Problem) -> Solution:
-        self._population = self.initialize(problem)
-        while not self.done():
-            selected = self.select(self._population)
-            kids = self.recombine(selected)
-            kids = self.mutate(kids)
-            self._population = self.replace(self._population, kids)
+        self.initialize(problem)
+        while not self.done(problem, self._population):
+            selected = self.select(problem, self._population)
+            kids = self.recombine(problem, selected)
+            self.mutate(problem, kids)
+            self.replace(problem, kids)
         return self._population.best()
 
-    @abstractmethod
     def initialize(self, problem: Problem):
-        pass
+        self._population = Population()
+        solutions = []
+        for _ in range(self._size):
+            solution = self._construction.construct(problem)
+            solutions.append(solution)
+        self._population.extend(solutions)
 
-    @abstractmethod
-    def select(self, population: Population) -> Population:
-        pass
+    def mutate(self, problem: Problem, population: Population):
+        # TODO: mutate only part of the population?
+        for solution in population:
+            self._mutator.mutate(problem, solution)
 
-    @abstractmethod
-    def recombine(self, population: Population) -> Population:
-        pass
-
-    @abstractmethod
-    def mutate(self, population: Population) -> Population:
-        pass
-
-    @abstractmethod
-    def replace(self, parents: Population, kids: Population) -> Population:
-        pass
-
-    @abstractmethod
-    def done(self) -> bool:
-        pass
+    def replace(self, problem: Problem, kids: Population):
+        self._population = self._replacer.replace(
+            problem,
+            self._population,
+            kids,
+            self._size
+        )
+# class GA(ABC):
+#
+#     def __init__(self):
+#         self._population = Population()
+#
+#     def run(self, problem: Problem) -> Solution:
+#         self._population = self.initialize(problem)
+#         while not self.done(problem, self._population):
+#             selected = self.select(problem, self._population)
+#             kids = self.recombine(problem, selected)
+#             kids = self.mutate(problem, kids)
+#             self._population = self.replace(problem, self._population, kids)
+#         return self._population.best()
+#
+#     @abstractmethod
+#     def initialize(self, problem: Problem, size: int) -> Population:
+#         pass
+#
+#     @abstractmethod
+#     def select(self,
+#                problem: Problem,
+#                population: Population) -> Population:
+#         pass
+#
+#     @abstractmethod
+#     def recombine(self,
+#                   problem: Problem,
+#                   population: Population) -> Population:
+#         pass
+#
+#     @abstractmethod
+#     def mutate(self,
+#                problem: Problem,
+#                population: Population) -> Population:
+#         pass
+#
+#     @abstractmethod
+#     def replace(self,
+#                 problem: Problem,
+#                 parents: Population,
+#                 kids: Population) -> Population:
+#         pass
+#
+#     @abstractmethod
+#     def done(self,
+#              problem: Problem,
+#              population: Population) -> bool:
+#         pass

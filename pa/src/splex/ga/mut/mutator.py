@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from splex import Solution
+from splex import Problem, Solution
 
 
 class Mutator(ABC):
 
     @abstractmethod
-    def mutate(self, solution: Solution) -> Solution:
+    def mutate(self, problem: Problem, solution: Solution):
         pass
