@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 
 import pandas as pd
@@ -14,7 +15,7 @@ COL_TIME = 'time'
 
 class CsvPlugin(Plugin, ABC):
 
-    def __int__(self, out_dir: str):
+    def __init__(self, out_dir: str):
         self._out_dir = out_dir
         self._dfs: dict[str, pd.DataFrame] = dict()
 
@@ -48,8 +49,8 @@ class CsvPlugin(Plugin, ABC):
     def instance_after(self, ctx: AfterInstanceContext):
         harness_name = ctx.harness().name()
         self._append_result(ctx)
-        # TODO: File Path
-        self._dfs[harness_name].to_csv()
+        filename = os.path.join(self._out_dir, f"{harness_name}.csv")
+        self._dfs[harness_name].to_csv(filename)
 
     def _append_result(self, ctx):
         harness_name = ctx.harness().name()
@@ -63,5 +64,5 @@ class CsvPlugin(Plugin, ABC):
         row[COL_PROBLEM] = ctx.problem().name()
         row[COL_RUN] = ctx.run()
         row[COL_BEST] = ctx.solution().value()
-        row[COL_TIME] = ctx.elapsed_time()
-        return pd.DataFrame(row)
+        row[COL_TIME] = f"{ctx.elapsed_time() * 1000:.0f}"
+        return pd.DataFrame.from_records([row])
