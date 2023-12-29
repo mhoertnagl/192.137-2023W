@@ -5,14 +5,10 @@ from splex.con import Construction
 from splex.ga import Population
 from splex.ga.mut import Mutator
 from splex.ga.rep import Replacer
+from splex.ga.sel import Selection
 
 
 # Population size as a parameter.
-
-# Select
-# - Roulette selection
-# - Rank selection
-# - Tournament selection
 
 # Recombine
 # - Component based
@@ -37,10 +33,12 @@ class GA:
     def __init__(self,
                  size: int,
                  construction: Construction,
+                 selection: Selection,
                  mutator: Mutator,
                  replacer: Replacer):
         self._size = size
         self._construction = construction
+        self._selection = selection
         self._mutator = mutator
         self._replacer = replacer
         self._population = Population()
@@ -48,7 +46,7 @@ class GA:
     def run(self, problem: Problem) -> Solution:
         self.initialize(problem)
         while not self.done(problem, self._population):
-            selected = self.select(problem, self._population)
+            selected = self.select(problem)
             kids = self.recombine(problem, selected)
             self.mutate(problem, kids)
             self.replace(problem, kids)
@@ -61,6 +59,9 @@ class GA:
             solution = self._construction.construct(problem)
             solutions.append(solution)
         self._population.extend(solutions)
+
+    def select(self, problem: Problem) -> Population:
+        return self._selection.select(problem, self._population)
 
     def mutate(self, problem: Problem, population: Population):
         # TODO: mutate only part of the population?

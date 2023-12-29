@@ -13,6 +13,7 @@ from splex.ga.mut import Mutator
 class VertexMoveMutation(Mutator, ABC):
 
     def __init__(self, rc: float, rv: float):
+        # random.seed(time.time_ns())
         self._rc = rc
         self._rv = rv
 
@@ -28,7 +29,6 @@ class VertexMoveMutation(Mutator, ABC):
     #             solution.add_edges(add)
 
     def mutate(self, problem: Problem, solution: Solution):
-        # random.seed(time.time_ns())
         ca = solution.components()
         for _ in range(math.ceil(self._rc * len(ca))):
             [c1, c2] = sample(ca, 2)
