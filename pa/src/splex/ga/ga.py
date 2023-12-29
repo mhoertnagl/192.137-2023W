@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from splex import Problem, Solution
 from splex.con import Construction
 from splex.ga import Population
+from splex.ga.comb import Combiner
 from splex.ga.mut import Mutator
 from splex.ga.rep import Replacer
 from splex.ga.sel import Selection
@@ -20,13 +21,10 @@ from splex.ga.sel import Selection
 #   - Repair function
 
 # Mutate
-# - Vertex Move
 # - 2 exchange
 # - Component Merge
 
 # Replace
-# - Elitism + n-k best kids
-# - Choose n best
 # - Roulette replace
 
 class GA:
@@ -34,11 +32,13 @@ class GA:
                  size: int,
                  construction: Construction,
                  selection: Selection,
+                 combiner: Combiner,
                  mutator: Mutator,
                  replacer: Replacer):
         self._size = size
         self._construction = construction
         self._selection = selection
+        self._combiner = combiner
         self._mutator = mutator
         self._replacer = replacer
         self._population = Population()
@@ -47,18 +47,18 @@ class GA:
         self.initialize(problem)
         while not self.done(problem, self._population):
             selected = self.select(problem)
-            kids = self.recombine(problem, selected)
+            kids = self._combiner.recombine(problem, selected)
             self.mutate(problem, kids)
             self.replace(problem, kids)
         return self._population.best()
 
     def initialize(self, problem: Problem):
-        self._population = Population()
-        solutions = []
-        for _ in range(self._size):
-            solution = self._construction.construct(problem)
-            solutions.append(solution)
-        self._population.extend(solutions)
+        solutions = self._construction.construct_many(problem, self._size)
+        # solutions = []
+        # for _ in range(self._size):
+        #     solution = self._construction.construct(problem)
+        #     solutions.append(solution)
+        self._population = Population(solutions)
 
     def select(self, problem: Problem) -> Population:
         return self._selection.select(problem, self._population)
@@ -75,6 +75,8 @@ class GA:
             kids,
             self._size
         )
+
+
 # class GA(ABC):
 #
 #     def __init__(self):
