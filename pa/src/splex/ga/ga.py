@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from splex import Problem, Solution
 from splex.con import Construction
-from splex.ga import Population
+from splex.ga.population import Population
 from splex.ga.comb import Combiner
 from splex.ga.mut import Mutator
 from splex.ga.rep import Replacer

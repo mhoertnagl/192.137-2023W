@@ -33,15 +33,6 @@ class Population:
             return self
         return Population(self._list[:size])
 
-    # def roulette(self, size: int):
-    #     sel = np.random.choice(
-    #         self._list,
-    #         size=size,
-    #         replace=False,
-    #         p=self.probabilities()
-    #     )
-    #     return Population(sel)
-
     def sample(self, size: int):
         sample = random.sample(self._list, size)
         return Population(sample)
@@ -60,7 +51,7 @@ class Population:
         return sum([s.value() for s in self._list])
 
     def _sort(self):
-        self._list.sort(key=lambda s: s.value(), reverse=True)
+        self._list.sort(key=lambda s: s.value())
 
     def __getitem__(self, item):
         return self._list.__getitem__(item)

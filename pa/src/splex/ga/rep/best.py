@@ -1,8 +1,7 @@
 from abc import ABC
 
 from splex import Problem
-from splex.ga import Population
-from splex.ga.population import join_populations
+from splex.ga.population import Population
 
 from splex.ga.rep import Replacer
 

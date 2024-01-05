@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 
 from splex import Problem
-from splex.ga import Population
+from splex.ga.population import Population
 
 
 class Combiner(ABC):
 
     @abstractmethod
     def recombine(self,
-                problem: Problem,
-                selected: Population) -> Population:
+                  problem: Problem,
+                  selected: Population) -> Population:
         pass

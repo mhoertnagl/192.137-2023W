@@ -50,11 +50,29 @@ class Graph:
         m1, m2 = min(u, v), max(u, v)
         self._edges.remove((m1, m2))
 
+    def edges(self, vs: set[int] | None = None) -> set[(int, int)]:
+        if vs is None:
+            return self._edges
+        return self._sub_edges(vs)
+
+    def _sub_edges(self, vs: set[int]) -> set[(int, int)]:
+        subset: set[(int, int)] = set()
+        for (u,v) in self._edges:
+            if u in vs and v in vs:
+                subset.add((u,v))
+        return subset
+
     def degree(self, v: int) -> int:
         return self._degrees[v-1]
 
     def neighbors(self, v: int):
         return self._neighbors[v]
+
+    def frozen_components(self):
+        s: set[frozenset[int]] = set()
+        for c in self._components.values():
+            s.add(frozenset(c))
+        return s
 
     def components(self):
         l: list[set[int]] = []

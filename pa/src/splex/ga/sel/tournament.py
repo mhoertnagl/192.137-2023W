@@ -2,7 +2,7 @@ import random
 from abc import ABC
 
 from splex import Problem, Solution
-from splex.ga import Population
+from splex.ga.population import Population
 
 from splex.ga.sel import Selection
 

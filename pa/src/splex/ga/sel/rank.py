@@ -3,7 +3,7 @@ from abc import ABC
 import numpy as np
 
 from splex import Problem
-from splex.ga import Population
+from splex.ga.population import Population
 
 from splex.ga.sel import Selection
 
