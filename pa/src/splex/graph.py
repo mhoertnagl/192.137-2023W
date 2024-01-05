@@ -50,7 +50,7 @@ class Graph:
         m1, m2 = min(u, v), max(u, v)
         self._edges.remove((m1, m2))
 
-    def edges(self, vs: set[int] | None = None) -> set[(int, int)]:
+    def edges(self, vs: frozenset[int] | set[int] | None = None) -> set[(int, int)]:
         if vs is None:
             return self._edges
         return self._sub_edges(vs)

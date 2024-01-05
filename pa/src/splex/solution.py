@@ -42,7 +42,7 @@ class Solution(ISolution, ABC):
     def is_edited(self, u: int, v: int):
         return self._problem.connected(u, v) != self._graph.connected(u, v)
 
-    def add_edges(self, es: list[(int, int)]):
+    def add_edges(self, es: list[(int, int)] | set[(int, int)]):
         self._value += self.delta(es, [])
         self._graph.add_edges(es)
 
@@ -58,7 +58,7 @@ class Solution(ISolution, ABC):
         self._value += self.delta([], [(u, v)])
         self._graph.remove_edge(u, v)
 
-    def edges(self, vs: set[int] | None = None) -> set[(int, int)]:
+    def edges(self, vs: frozenset[int] | set[int] | None = None) -> set[(int, int)]:
         return self._graph.edges(vs)
 
     def degree(self, v: int):

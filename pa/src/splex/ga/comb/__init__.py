@@ -1,3 +1,5 @@
 from .combiner import Combiner
-from .components import ComponentsCombiner
-from .components import select_components
+from .utils import ComponentsCombiner
+from .utils import select_components
+from .utils import pick_components
+from .utils import merge_parents
