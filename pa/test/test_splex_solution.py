@@ -136,6 +136,3 @@ class TestSolution(TestCase):
         sol = data.solution_4z_s2_06()
         self.assertTrue(sol.is_feasible())
         self.assertEqual(6, sol.value())
-
-    def test_value(self):
-        pass

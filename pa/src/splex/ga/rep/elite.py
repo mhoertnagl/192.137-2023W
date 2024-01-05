@@ -16,6 +16,7 @@ class EliteReplacer(Replacer, ABC):
                 parents: Population,
                 kids: Population,
                 size: int) -> Population:
+        # TODO: Sample parent elite?
         elite = parents.resize(self._elite_size)
         rest = kids.sample(size - self._elite_size)
         return elite.join(rest)

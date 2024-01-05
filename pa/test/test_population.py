@@ -33,9 +33,6 @@ class TestPopulation(TestCase):
             self.s01, self.s02, self.s04
         ], pop.list())
 
-    def test_join(self):
-        self.fail()
-
     def test_resize(self):
         pop = Population([
             self.s01, self.s02, self.s03,
@@ -45,14 +42,12 @@ class TestPopulation(TestCase):
         exp = Population([self.s06, self.s05, self.s03])
         self.assertListEqual(exp.list(), act.list())
 
-    def test_sample(self):
-        self.fail()
-
     def test_best(self):
-        self.fail()
-
-    def test_list(self):
-        self.fail()
+        pop = Population([
+            self.s01, self.s02, self.s03,
+            self.s06, self.s04,
+        ])
+        self.assertEqual(self.s03, pop.best())
 
     def test_probabilities(self):
         s01 = data.solution_4z_s2_01()

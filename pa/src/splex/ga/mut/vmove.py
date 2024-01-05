@@ -10,16 +10,21 @@ from splex.ga.mut import Mutator
 
 class VertexMoveMutation(Mutator, ABC):
 
-    def __init__(self, rc: float, rv: float):
+    def __init__(self, fc: float, fv: float):
+        """
+
+        :param fc:  [0.0, 1.0] Fraction of mutated components.
+        :param fv:  [0.0, 1.0] Fraction of mutated vertices per component.
+        """
         # random.seed(time.time_ns())
-        self._rc = rc
-        self._rv = rv
+        self._fc = fc
+        self._fv = fv
 
     def mutate(self, problem: Problem, solution: Solution):
         ca = solution.components()
-        for _ in range(math.ceil(self._rc * len(ca))):
+        for _ in range(math.ceil(self._fc * len(ca))):
             [c1, c2] = sample(ca, 2)
-            for v in sample_frac(c1, self._rv):
+            for v in sample_frac(c1, self._fv):
                 rem = [(u, v) for u in solution.neighbors(v)]
                 add = [(u, v) for u in c2 if u != v]
                 solution.remove_edges(rem)
