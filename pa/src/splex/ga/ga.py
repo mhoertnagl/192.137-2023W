@@ -42,17 +42,23 @@ class GA:
         self._mutator = mutator
         self._replacer = replacer
         self._population = Population()
+        self._best_values: list[int | float] = []  # History of best values
+        self._best: Solution | None = None         # Best solution
+
+    def best_values(self):
+        return self._best_values
 
     def run(self, problem: Problem) -> Solution:
-        self.initialize(problem)
+        self._initialize(problem)
         while not self.done(problem, self._population):
-            selected = self.select(problem)
+            selected = self._select(problem)
             kids = self._combiner.recombine(problem, selected)
-            self.mutate(problem, kids)
-            self.replace(problem, kids)
-        return self._population.best()
+            self._mutate(problem, kids)
+            self._replace(problem, kids)
+            self._update_best()
+        return self._best
 
-    def initialize(self, problem: Problem):
+    def _initialize(self, problem: Problem):
         solutions = self._construction.construct_many(problem, self._size)
         # solutions = []
         # for _ in range(self._size):
@@ -60,15 +66,15 @@ class GA:
         #     solutions.append(solution)
         self._population = Population(solutions)
 
-    def select(self, problem: Problem) -> Population:
+    def _select(self, problem: Problem) -> Population:
         return self._selection.select(problem, self._population)
 
-    def mutate(self, problem: Problem, population: Population):
+    def _mutate(self, problem: Problem, population: Population):
         # TODO: mutate only part of the population?
         for solution in population:
             self._mutator.mutate(problem, solution)
 
-    def replace(self, problem: Problem, kids: Population):
+    def _replace(self, problem: Problem, kids: Population):
         self._population = self._replacer.replace(
             problem,
             self._population,
@@ -76,6 +82,11 @@ class GA:
             self._size
         )
 
+    def _update_best(self):
+        best = self._population.best()
+        self._best_values.append(best.value())
+        if self._best is None or best.is_better_than(self._best):
+            self._best = best
 
 # class GA(ABC):
 #
