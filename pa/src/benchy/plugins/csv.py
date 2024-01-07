@@ -66,7 +66,7 @@ class CsvPlugin(Plugin, ABC):
             row = ctx.instance().args().copy()
             row[COL_PROBLEM] = ctx.problem().name()
             row[COL_RUN] = ctx.run()
-            row[COL_ITERATION] = i
+            row[COL_ITERATION] = f"{i:.0f}"
             row[COL_BEST] = ctx.bests()[i]  # ctx.solution().value()
             row[COL_TIME] = f"{ctx.elapsed_time() * 1000:.0f}"
             rows.append(row)

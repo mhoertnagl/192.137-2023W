@@ -185,14 +185,14 @@ class Testbench:
         tasks = []
         # Run the instance multiple times in parallel.
         for run in range(ctx.harness().repetitions()):
-            ctx2 = BeforeInstanceContext(ctx, run)
+            ctx2 = BeforeInstanceContext(ctx, run + 1)
             for plugin in self._plugins:
                 plugin.instance_before(ctx2)
             task = self._executor.submit(
                 run_task,
                 ctx2.instance(),
                 ctx2.problem(),
-                ctx2.run()
+                run + 1
             )
             tasks.append(task)
         # Wait for all the parallel runs to finish.
