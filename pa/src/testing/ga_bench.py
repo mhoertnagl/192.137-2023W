@@ -30,7 +30,7 @@ if __name__ == '__main__':
     tb = Testbench()
     f1 = GAFixture()
     h1 = Harness("Genetic Algorithm", f1, 1)
-    h1.add_parameter("pop_size", [10])
+    h1.add_parameter("pop_size", [100])
     h1.add_parameter("construction", [
         # EdgeConstruction(25),
         # EdgeConstruction(50),
