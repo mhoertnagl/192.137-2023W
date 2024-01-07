@@ -9,7 +9,7 @@ from splex.con import Construction
 class EdgeConstruction(Construction, ABC):
 
     def __init__(self, k: int = 100):
-        self.k = k
+        self._k = k
 
     def construct(self, problem: Problem) -> Solution:
         solution = Solution(problem)
@@ -44,7 +44,7 @@ class EdgeConstruction(Construction, ABC):
     def _batch_shuffle(self, problem: Problem):
         # Partition list of edges in k long sub-lists.
         edges = problem.all_edges()
-        p_edges = [edges[i:i + self.k] for i in range(0, len(edges), self.k)]
+        p_edges = [edges[i:i + self._k] for i in range(0, len(edges), self._k)]
         # Shuffle each sublist.
         for i in range(len(p_edges)):
             shuffle(p_edges[i])
@@ -60,3 +60,9 @@ class EdgeConstruction(Construction, ABC):
     def _degree(self, s: Solution, v: int, x: int, y: int):
         deg = s.degree(v)
         return deg+1 if v == x or v == y else deg
+
+    def __repr__(self):
+        return f"Edge Construction [k={self._k}]"
+
+    def __str__(self):
+        return self.__repr__()

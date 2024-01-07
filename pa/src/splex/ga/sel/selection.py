@@ -9,5 +9,6 @@ class Selection(ABC):
     @abstractmethod
     def select(self,
                problem: Problem,
-               parents: Population) -> Population:
+               parents: Population,
+               size: int) -> Population:
         pass

@@ -89,6 +89,7 @@ class AfterInstanceContext:
                  ctx: InstanceContext,
                  run: int,
                  solution: ISolution,
+                 bests: list[int | float],
                  elapsed_time: float):
         self._testbench = ctx.testbench()
         self._problem = ctx.problem()
@@ -96,6 +97,7 @@ class AfterInstanceContext:
         self._instance = ctx.instance()
         self._run = run
         self._solution = solution
+        self._bests = bests
         self._elapsed_time = elapsed_time
 
     def testbench(self):
@@ -115,6 +117,9 @@ class AfterInstanceContext:
 
     def solution(self):
         return self._solution
+
+    def bests(self):
+        return self._bests
 
     def elapsed_time(self):
         return self._elapsed_time
@@ -198,13 +203,14 @@ class Testbench:
         #     print(f"Timeout: could not complete {n} out of {d+n} runs.")
         # Process completed tasks.
         for task in done:
-            solution, elapsed_time, run = task.result()
-            ctx2 = AfterInstanceContext(ctx, run, solution, elapsed_time)
+            solution, bests, elapsed_time, run = task.result()
+            ctx2 = AfterInstanceContext(ctx, run, solution, bests, elapsed_time)
             for plugin in self._plugins:
                 plugin.instance_after(ctx2)
 
+
 def run_task(instance, problem, run):
     start_time = time.time()
-    solution = instance.run(problem)
+    solution, bests = instance.run(problem)
     elapsed_time = time.time() - start_time
-    return solution, elapsed_time, run
+    return solution, bests, elapsed_time, run

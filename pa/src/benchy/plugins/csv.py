@@ -9,6 +9,7 @@ from benchy.plugins.plugin import Plugin
 
 COL_PROBLEM = 'problem'
 COL_RUN = 'run'
+COL_ITERATION = 'iteration'
 COL_BEST = 'best'
 COL_TIME = 'time'
 
@@ -52,17 +53,21 @@ class CsvPlugin(Plugin, ABC):
         filename = os.path.join(self._out_dir, f"{harness_name}.csv")
         self._dfs[harness_name].to_csv(filename)
 
-    def _append_result(self, ctx):
+    def _append_result(self, ctx: AfterInstanceContext):
         harness_name = ctx.harness().name()
         old_df = self._dfs[harness_name]
         row = self._create_row(ctx)
         new_df = pd.concat([old_df, row], ignore_index=True)
         self._dfs[harness_name] = new_df
 
-    def _create_row(self, ctx):
-        row = ctx.instance().args().copy()
-        row[COL_PROBLEM] = ctx.problem().name()
-        row[COL_RUN] = ctx.run()
-        row[COL_BEST] = ctx.solution().value()
-        row[COL_TIME] = f"{ctx.elapsed_time() * 1000:.0f}"
-        return pd.DataFrame.from_records([row])
+    def _create_row(self, ctx: AfterInstanceContext):
+        rows = []
+        for i in range(len(ctx.bests())):
+            row = ctx.instance().args().copy()
+            row[COL_PROBLEM] = ctx.problem().name()
+            row[COL_RUN] = ctx.run()
+            row[COL_ITERATION] = i
+            row[COL_BEST] = ctx.bests()[i]  # ctx.solution().value()
+            row[COL_TIME] = f"{ctx.elapsed_time() * 1000:.0f}"
+            rows.append(row)
+        return pd.DataFrame.from_records(rows)

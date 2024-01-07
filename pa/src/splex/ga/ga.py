@@ -8,9 +8,6 @@ from splex.ga.mut import Mutator
 from splex.ga.rep import Replacer
 from splex.ga.sel import Selection
 
-
-# Population size as a parameter.
-
 # Recombine
 # - Component based
 #   - Wir wollen Komponenten die in beiden Elternteilen vorkommen erhalten.
@@ -20,13 +17,6 @@ from splex.ga.sel import Selection
 #   - classical uniform crossover
 #   - Repair function
 
-# Mutate
-# - 2 exchange
-# - Component Merge
-
-# Replace
-# - Roulette replace
-
 class GA:
     def __init__(self,
                  size: int,
@@ -34,13 +24,15 @@ class GA:
                  selection: Selection,
                  combiner: Combiner,
                  mutator: Mutator,
-                 replacer: Replacer):
+                 replacer: Replacer,
+                 iterations: int):
         self._size = size
         self._construction = construction
         self._selection = selection
         self._combiner = combiner
         self._mutator = mutator
         self._replacer = replacer
+        self._iterations = iterations
         self._population = Population()
         self._best_values: list[int | float] = []  # History of best values
         self._best: Solution | None = None         # Best solution
@@ -48,26 +40,27 @@ class GA:
     def best_values(self):
         return self._best_values
 
-    def run(self, problem: Problem) -> Solution:
+    def run(self, problem: Problem) -> (Solution, list[int | float]):
         self._initialize(problem)
-        while not self.done(problem, self._population):
+        # while not self.done(problem, self._population):
+        for _ in range(self._iterations):
+            # print("Pop Size: ", len(self._population))
             selected = self._select(problem)
-            kids = self._combiner.recombine(problem, selected)
+            kids = self._combiner.recombine(problem, selected, self._size)
             self._mutate(problem, kids)
             self._replace(problem, kids)
             self._update_best()
-        return self._best
+        return self._best, self._best_values
 
     def _initialize(self, problem: Problem):
         solutions = self._construction.construct_many(problem, self._size)
-        # solutions = []
-        # for _ in range(self._size):
-        #     solution = self._construction.construct(problem)
-        #     solutions.append(solution)
         self._population = Population(solutions)
+        # Save the best constructed solution.
+        self._update_best()
+        print("Construction value:", self._population.best().value())
 
     def _select(self, problem: Problem) -> Population:
-        return self._selection.select(problem, self._population)
+        return self._selection.select(problem, self._population, self._size)
 
     def _mutate(self, problem: Problem, population: Population):
         # TODO: mutate only part of the population?

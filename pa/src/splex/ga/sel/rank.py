@@ -1,3 +1,4 @@
+import math
 from abc import ABC
 
 import numpy as np
@@ -10,10 +11,18 @@ from splex.ga.sel import Selection
 
 class RankSelection(Selection, ABC):
 
-    def __init__(self, size: int):
-        self._size = size
+    def __init__(self, f: float):
+        self._f = f
 
     def select(self,
                problem: Problem,
-               parents: Population) -> Population:
-        return Population(parents[:self._size])
+               parents: Population,
+               size: int) -> Population:
+        sz = math.ceil(self._f * size)
+        return Population(parents[:sz])
+
+    def __repr__(self):
+        return f"Rank Selection [f={self._f}]"
+
+    def __str__(self):
+        return self.__repr__()

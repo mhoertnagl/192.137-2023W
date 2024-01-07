@@ -9,5 +9,6 @@ class Combiner(ABC):
     @abstractmethod
     def recombine(self,
                   problem: Problem,
-                  selected: Population) -> Population:
+                  selected: Population,
+                  size: int) -> Population:
         pass

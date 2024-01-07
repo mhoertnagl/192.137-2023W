@@ -28,6 +28,12 @@ class Harness:
     def domains(self):
         return list(self._parameters.items())
 
+    def size(self):
+        sz = 1
+        for values in self._parameters.values():
+            sz *= len(values)
+        return sz * self._repetitions
+
     def __iter__(self):
         return self._generate_instances(self.domains(), {})
 

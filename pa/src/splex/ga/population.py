@@ -33,6 +33,11 @@ class Population:
             return self
         return Population(self._list[:size])
 
+    def split(self, size: int):
+        if size <= 0 or size >= len(self._list):
+            return self, Population()
+        return Population(self._list[:size]), Population(self._list[size:])
+
     def sample(self, size: int):
         sample = random.sample(self._list, size)
         return Population(sample)

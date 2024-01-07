@@ -7,5 +7,5 @@ from .solution import ISolution
 class Fixture(ABC):
 
     @abstractmethod
-    def run(self, problem: IProblem, args: dict[str, any]) -> ISolution:
+    def run(self, problem: IProblem, args: dict[str, any]) -> (ISolution, list[int | float]):
         pass

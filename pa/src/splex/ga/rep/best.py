@@ -14,3 +14,9 @@ class BestReplacer(Replacer, ABC):
                 kids: Population,
                 size: int) -> Population:
         return parents.join(kids).resize(size)
+
+    def __repr__(self):
+        return f"Best Replacement"
+
+    def __str__(self):
+        return self.__repr__()

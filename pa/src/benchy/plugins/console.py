@@ -3,11 +3,15 @@ from abc import ABC
 from benchy.testbench import *
 from benchy.plugins.plugin import Plugin
 
-
+# import threading
 # https://rich.readthedocs.io/en/latest/
 
 
 class ConsoleLogPlugin(Plugin, ABC):
+
+    def __init__(self):
+        self._counter = 0
+
     def testbench_before(self, testbench: Testbench):
         print("=" * 60)
         print(f"Running testbench")
@@ -39,7 +43,9 @@ class ConsoleLogPlugin(Plugin, ABC):
         pass
 
     def instance_after(self, ctx: AfterInstanceContext):
+        self._counter += 1
+        progress = f"{self._counter} of {ctx.harness().size()}"
         args = ctx.instance().args()
         elapsed_time = f"{ctx.elapsed_time() * 1000:.0f} ms"
         value = ctx.solution().value()
-        print(args, elapsed_time, value)
+        print(progress, args, elapsed_time, value)

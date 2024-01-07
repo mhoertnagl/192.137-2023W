@@ -24,13 +24,19 @@ class VertexMoveMutation(Mutator, ABC):
         ca = solution.components()
         for _ in range(math.ceil(self._fc * len(ca))):
             [c1, c2] = sample(ca, 2)
-            for v in sample_frac(c1, self._fv):
+            for v in sample_frac(list(c1), self._fv):
                 rem = [(u, v) for u in solution.neighbors(v)]
                 add = [(u, v) for u in c2 if u != v]
                 solution.remove_edges(rem)
                 solution.add_edges(add)
 
+    def __repr__(self):
+        return f"Vertex Move Mutation [fc={self._fc}, fv={self._fv}]"
 
-def sample_frac(population, fraction: float):
+    def __str__(self):
+        return self.__repr__()
+
+
+def sample_frac(population: list, fraction: float):
     k = math.ceil(fraction * len(population))
     return sample(population, k)
