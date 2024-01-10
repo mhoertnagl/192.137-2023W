@@ -4,6 +4,7 @@ Created on Thu Dec 21 19:35:17 2023
 
 @author: mfischer
 """
+
 from reader import Reader
 import numpy as np
 import pyomo.environ as pyo
@@ -14,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-class MILPModel:
+class MILPModelFast:
     def __init__(self, solution: Solution, subprob: list):
         self.solution = solution
         self.problem = solution.prob
@@ -38,36 +39,18 @@ class MILPModel:
         m = pyo.ConcreteModel()
         m.N = pyo.Set(initialize=N)
         m.A = pyo.Var(m.N,m.N,domain=pyo.Binary)
-        m.B = pyo.Var(m.N,m.N,domain=pyo.Binary)
-        m.Bt= pyo.Var(m.N,m.N,domain=pyo.Binary)
-        m.Bm= pyo.Var(m.N,m.N,domain=pyo.Binary)
-        m.k = pyo.Var(m.N,domain=pyo.Integers)
-        m.p = pyo.Var(m.N,domain = pyo.Reals)
         
         # define constraints
         m.cons = pyo.ConstraintList()
-        m.cons.add(expr = sum(m.B[n,j] for n in N for j in N) == V) # every node can only be assigned once
         
         for n in N:
-            m.cons.add(expr= sum(m.A[n,:])>= m.p[n]-s)  # |S| - s constraint
+            m.cons.add(expr= sum(m.A[n,:])>= V-s)  # |S| - s constraint
             m.cons.add(expr = m.A[n,n] == 0)            # diag(A) = 0!
-            m.cons.add(expr = sum(m.B[n,j] for j in N) == 1) # only one node per line
-            m.cons.add(expr = m.k[n] == sum(m.B[:,n]))  
-            m.cons.add(expr = m.p[n] == sum(m.Bm[n,l] for l in N))    
+             
             for j in N:
-                m.cons.add(expr = m.A[n,j] == m.A[j,n])  # A matrix must be diagonal
-                m.cons.add(expr = m.Bt[n,j] == m.B[j,n]) # transpose B matrix            
-        for b in N:
-            for index, i in enumerate(N[:-1]):
-                for j in N[index+1:]:
-                    m.cons.add(expr = m.A[i,j] <= 1 - (m.B[i,b]-m.B[j,b]))
-                    m.cons.add(expr = m.A[i,j] <= 1 - (m.B[j,b]-m.B[i,b]))  
-        for j in N:    
-            for i in N:   
-                m.cons.add(expr = m.Bm[i,j] == sum(m.B[i,l]*m.Bt[l,j] for l in N))
-        for index, n in enumerate(N[:-1]):
-            m.cons.add(expr = m.k[n] >= m.k[N[index+1]])
-            
+                m.cons.add(expr = m.A[n,j] == m.A[j,n])  # A matrix must be diagonal                         
+       
+                    
         # objective
         m.obj = pyo.Objective(expr = sum(m.A[n,j]*W[n][j] for n in N for j in N), sense=pyo.minimize)
         return m
@@ -88,7 +71,7 @@ class MILPModel:
                 if(A_solved[i][j]==0):
                     self.solution.remove_edge(i,j)
         return self.solution, A_solved
-            
+              
        
 # reader = Reader()
 # # problem = reader.read("../inst/testing/test.txt")    

@@ -139,7 +139,18 @@ class Solution:
                 if self.degree(v) < sz - self.prob.s:
                     return False
         return True
-
+    
+    def repair(self):
+        while not self.is_feasible():
+            for c in self.get_components():
+                sz = len(c)
+                for v in c:
+                    if self.degree(v) < sz - self.prob.s:
+                        for nb in self.get_neighbors(v):
+                            self.remove_edge(v, nb)
+                            if self.degree(v) < sz - self.prob.s:
+                                break
+                            
     def is_vertex_feasible(self, v: int):
         for c in self.get_components():
             if v in c:

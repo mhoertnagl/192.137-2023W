@@ -13,7 +13,7 @@ class Problem:
         self.s = s           # s-plex number.
         self.n = n           # Number of vertices.
         self.graph = nx.Graph()  # Input graph.
-        self.weights = np.zeros((n, n), dtype=int)
+        self.__weights = np.zeros((n, n), dtype=int)
         self.edges = set()
         self.all_edges = []
         self.__inti_edges(edges)
@@ -24,7 +24,8 @@ class Problem:
         for (u, v, p, w) in edges:
             if p == 1:
                 self.graph.add_edge(u, v)
-            self.weights[u - 1, v - 1] = w
+            self.__weights[u - 1, v - 1] = w
+            self.__weights[v - 1, u - 1] = w
 
     def __init_all_edges(self):
         for i in range(1, self.n+1):
@@ -36,10 +37,13 @@ class Problem:
 
     def has_edge(self, u: int, v: int):
         return self.graph.has_edge(u, v)
+    
+    def get_weights(self):
+        return self.__weights[:,:]
 
     def weight(self, u: int, v: int):
         m0, m1 = min(u, v), max(u, v)
-        return self.weights[m0 - 1, m1 - 1]
+        return self.__weights[m0 - 1, m1 - 1]
 
     def initial_edges_weighted(self, reverse=False):
         return self.edges_weighted(self.edges, reverse)

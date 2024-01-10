@@ -1,6 +1,8 @@
 import random
 from abc import ABC, abstractmethod
 from enum import Enum
+from milp_model import MILPModel
+from milp_model_fast import MILPModelFast
 
 import numpy as np
 
@@ -188,6 +190,76 @@ class TwoExchangeNeighborhood(Neighborhood, ABC):
             sol.add_edges(add)
         return sol
 
+class MILPVertexMoveNeighborhoodFast(Neighborhood, ABC):
+
+    def __init__(self,
+                 improve: Improvement = Improvement.RANDOM,
+                 k_max: int = 5, time_limit: int = 60):
+        super().__init__(improve)
+        self.improve = improve
+        self.k_max = k_max
+        self.time_limit = time_limit
+
+    def choose_random(self, sol: Solution) -> Solution:
+        cs = sol.get_components()
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        c1 = list(cs[0])
+        c2 = list(cs[1])
+        
+        v = c1[np.random.randint(0, len(c1))]
+        rem = [(u, v) for u in sol.get_neighbors(v)]
+        add = [u for u in c2 if u != v]
+        add.append(v)
+        # df = sol.delta(add, rem)
+        # if df < 0:
+        sol.remove_edges(rem)
+        milp_model = MILPModelFast(sol, add)
+        sol, A_solved = milp_model.solve(time_limit=self.time_limit)
+        return sol
+
+    def choose_first(self, sol: Solution) -> Solution:
+        cs = sol.get_components()
+        f = sol.get_value()
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        r = range(len(cs))
+        for c1, c2 in ((cs[x], cs[y]) for x in r
+                                      for y in r if x != y):
+            for v in c1:
+                rem = [(u, v) for u in sol.get_neighbors(v)]
+                add = [u for u in c2 if u != v]
+                add.append(v)
+                sol.remove_edges(rem)
+                milp_model = MILPModelFast(sol.copy(), add)
+                sol_new, A_solved = milp_model.solve(time_limit=self.time_limit)
+                sol_new, A_solved = milp_model.solve()
+                df = sol_new.get_value()
+                if df < f:
+                    return sol_new
+                else:
+                    sol.add_edges(rem)
+        return sol
+
+    def choose_best(self, sol: Solution) -> Solution:
+        cs = sol.get_components()
+        r = range(len(cs))
+        best, best_df = None, 0
+        for c1, c2 in ((cs[x], cs[y]) for x in r
+                                      for y in r if x != y):
+            for v in c1:
+                rem = [(u, v) for u in sol.get_neighbors(v)]
+                add = [(u, v) for u in c2 if u != v]
+                df = sol.delta(add, rem)
+                if best is None or df < best_df:
+                    best, best_df = (add, rem), df
+        if best is not None:
+            (add, rem) = best
+            sol.remove_edges(rem)
+            sol.add_edges(add)
+        return sol
 
 class VertexMoveNeighborhood(Neighborhood, ABC):
 
@@ -318,6 +390,7 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
         if len(cs) < 2:
             return sol
         random.shuffle(cs)
+        
         add = sol.get_edges_between(cs[0], cs[1])
         # df = sol.delta(add, [])
         # if df < 0:
@@ -354,6 +427,122 @@ class ComponentMergeNeighborhood(Neighborhood, ABC):
         if best is not None:
             sol.add_edges(best)
         return sol
+
+class MILPMergeComponents(Neighborhood, ABC):
+
+    def __init__(self,
+                 improve: Improvement = Improvement.RANDOM,
+                 k_max: int = 5, time_limit: int = 60):
+        super().__init__(improve)
+        self.improve = improve
+        self.k_max = k_max
+        self.time_limit = time_limit
+
+    def choose_random(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components() if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)                 
+        milp_model = MILPModel(sol,cs[0].union(cs[1]))
+        sol, A_solved = milp_model.solve(self.time_limit,False)        
+        return sol
+
+    def choose_first(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components()
+                      if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        for c1, c2 in ((cs[x], cs[y]) for x in range(len(cs))
+                                      for y in range(x+1, len(cs))):
+            f = sol.get_value()
+            sol_new = sol.copy()
+            milp_model = MILPModel(sol_new,c1.union(c2))
+            sol_new, A_solved = milp_model.solve(self.time_limit,False)   
+            df = sol_new.get_value()
+            if df < f:    
+                print(df)
+                return sol_new            
+        return sol
+
+    def choose_best(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components()
+                      if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        best, best_df = None, 0
+        for c1, c2 in ((cs[x], cs[y]) for x in range(len(cs))
+                                      for y in range(x+1, len(cs))):
+            
+            milp_model = MILPModel(sol.copy(),c1.union(c2))
+            sol_new = milp_model.solve(self.time_limit,False)   
+            df = sol_new.get_value()
+            add = c1.union(c2)            
+     
+            if best is None or df < best_df:
+                best, best_df = add, df
+        if best is not None:
+            milp_model = MILPModel(sol.copy(),best)
+            sol_new = milp_model.solve(self.time_limit,False)  
+        return sol_new
+
+class MILPMergeComponentsFast(Neighborhood, ABC):
+    
+    def __init__(self,
+                 improve: Improvement = Improvement.RANDOM,
+                 k_max: int = 5, time_limit: int = 60):
+        super().__init__(improve)
+        self.improve = improve
+        self.k_max = k_max
+        self.time_limit = time_limit
+
+    def choose_random(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components() if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)                 
+        milp_model = MILPModelFast(sol,cs[0].union(cs[1]))
+        sol = milp_model.solve(self.time_limit,False)        
+        return sol
+
+    def choose_first(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components()
+                      if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        random.shuffle(cs)
+        for c1, c2 in ((cs[x], cs[y]) for x in range(len(cs))
+                                      for y in range(x+1, len(cs))):
+            f = sol.get_value()
+            sol_new = sol.copy()
+            milp_model = MILPModelFast(sol_new,c1.union(c2))
+            sol_new, A_solved = milp_model.solve(self.time_limit,False)   
+            df = sol_new.get_value()
+            if df < f:    
+                print(df)
+                return sol_new            
+        return sol
+
+    def choose_best(self, sol: Solution) -> Solution:
+        cs = [c for c in sol.get_components()
+                      if len(c) <= self.k_max]
+        if len(cs) < 2:
+            return sol
+        best, best_df = None, 0
+        for c1, c2 in ((cs[x], cs[y]) for x in range(len(cs))
+                                      for y in range(x+1, len(cs))):
+            
+            milp_model = MILPModelFast(sol.copy(),c1.union(c2))
+            sol_new = milp_model.solve(self.time_limit,False)   
+            df = sol_new.get_value()
+            add = c1.union(c2)            
+     
+            if best is None or df < best_df:
+                best, best_df = add, df
+        if best is not None:
+            milp_model = MILPModelFast(sol.copy(),best)
+            sol_new = milp_model.solve(self.time_limit,False)  
+        return sol_new
 
 
 class RandomUnionNeighborhood(Neighborhood, ABC):

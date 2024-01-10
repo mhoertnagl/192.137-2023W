@@ -37,24 +37,33 @@ import vnd
 import termination
 from grasper import Grasper
 import matplotlib.pyplot as plt
+import os
 
 reader = Reader()
 
 # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
 
-inst_names = ["heur040_n_300_m_13358","heur045_n_300_m_6293","heur055_n_300_m_5164"]
+# inst_names = ["heur040_n_300_m_13358","heur045_n_300_m_6293","heur055_n_300_m_5164"]
+inst_names = os.listdir("../inst/competition/")
+# for x in os.listdir("../inst/testing/"):
+    # inst_names.append(x) 
+    
+lo_list = []
+f_list = []
 
 for inst_name in inst_names:
-    
-    problem = reader.read("../inst//tuning/"+inst_name+".txt")
-    # problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
+    # problem = reader.read("../inst//tuning/"+inst_name+".txt")
+    problem = reader.read("../inst/testing/heur002_n_100_m_3274.txt")
     con = dc.DetCon2(problem)
-    sol = con.construct()
-    worst_val = sol.get_value()
+    
     ls_ter = termination.IterationAndImprovementTermination(1000)
     
-    improvements = [nhs.Improvement.FIRST,nhs.Improvement.BEST,nhs.Improvement.RANDOM]
-    improv_names = ["First improvement","Best Improvement","Random"]
+    # improvements = [nhs.Improvement.FIRST,nhs.Improvement.BEST,nhs.Improvement.RANDOM]
+    improvements = [nhs.Improvement.FIRST]
+
+    # improv_names = ["First improvement","Best Improvement","Random"]
+    improv_names = ["First improvement"]
+
     legends = ['Vertex Move',"Component Merge","Two Exchange"]
     lo_list = []
     f_list = []
@@ -66,7 +75,8 @@ for inst_name in inst_names:
     plt.figure(figsize=(20, 6))
     plt.suptitle(inst_name)
     for index2,improv in enumerate(improvements):
-        nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv)]
+        # nbhs = [nhs.VertexMoveNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv),nhs.ComponentMergeNeighborhood(improv)]
+        nbhs = [nhs.VertexMoveNeighborhood(improv)]
         plt.subplot(131+index2)
         print(improv_names[index2])
         for index,nbh in enumerate(nbhs):    
@@ -84,13 +94,29 @@ for inst_name in inst_names:
             
         plt.title(improv_names[index2])
         plt.legend()
+        
     # plt.setp(ax, ylim=(min(min(f_list)),worst_val*1.1))
-    plt.savefig(fname = inst_name+".png")
+    # plt.savefig("../HeuOpt\\192.137-2023W\\"+".png")
+    # plt.savefig("..//res/plots/"+ inst_name + ".png")
     plt.show()
     
 
+# get best values
+lo_all=[]
+f_min_all = []
+for f in f_list:
+    lo = f.index(min(f)) 
+    f_min = min(f)
+    lo_all.append(lo)
+    f_min_all.append(min(f))
+    
+stat_vertex = f_min_all[0::3]
+stat_compon = f_min_all[1::3]
+stat_twoexc = f_min_all[2::3]
 
-
+stat_vertex2 = lo_all[0::3]
+stat_compon2 = lo_all[1::3]
+stat_twoexc2 = lo_all[2::3]
 
 # nbh = nhs.ComponentMergeNeighborhood(nhs.Improvement.FIRST)
 # ls = localsearch.LocalSearch(nbh, ls_ter)

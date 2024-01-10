@@ -54,8 +54,13 @@ class IterationAndImprovementTermination(Termination, ABC):
         if self.i >= self.n:
             return True        
         f1, f0 = new_sol.get_value(), sol.get_value()
-        if 1 - (f1 / f0) < self.limit:
-            self.i += 1
+        # if 1 - (f1 / f0) < self.limit:
+            # self.i += 1
+        # else:
+            # self.i = 0
+        if f1 > f0:
+            self.i = f0
         else:
-            self.i = 0
+            self.i += 1
+            
         return False
