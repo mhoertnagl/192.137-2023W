@@ -39,13 +39,13 @@ if __name__ == '__main__':
     ])
     h1.add_parameter("selection", [
         # RankSelection(0.25),
-        RankSelection(0.50),
+        # RankSelection(0.50),
         # RankSelection(0.75),
         # RouletteSelection(0.25),
-        RouletteSelection(0.50),
+        # RouletteSelection(0.50),
         # RouletteSelection(0.75),
         # TournamentSelection(0.25, 2),
-        TournamentSelection(0.50, 2),
+        # TournamentSelection(0.50, 2),
         # TournamentSelection(0.75, 2),
         # TournamentSelection(0.25, 4),
         TournamentSelection(0.50, 4),
@@ -60,10 +60,10 @@ if __name__ == '__main__':
     ])
     h1.add_parameter("mutator", [
         VertexMoveMutation(fc=0.05, fv=0.05),
-        # VertexMoveMutation(fc=0.05, fv=0.10),
-        # VertexMoveMutation(fc=0.10, fv=0.05),
+        # VertexMoveMutation(fc=0.05, fv=0.25),
+        # VertexMoveMutation(fc=0.25, fv=0.25),
         # VertexMoveMutation(fc=0.10, fv=0.10),
-        # VertexMoveMutation(fc=0.15, fv=0.05),
+        # VertexMoveMutation(fc=0.50, fv=0.50),
         # VertexMoveMutation(fc=0.75, fv=0.75),
     ])
     h1.add_parameter("replacer", [
@@ -78,8 +78,8 @@ if __name__ == '__main__':
     # p1 = read_file("../../inst/testing/heur002_n_100_m_3274.txt")
     # p1 = read_file("../../inst/testing/heur037_n_347_m_31752.txt")
 
-    p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
-    # p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
+    # p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
+    p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
     # p1 = read_file("../../inst/tuning/heur046_n_300_m_13150.txt")
     # p1 = read_file("../../inst/tuning/heur048_n_300_m_14666.txt")
     # p1 = read_file("../../inst/tuning/heur053_n_300_m_39861.txt")
