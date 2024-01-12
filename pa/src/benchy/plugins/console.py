@@ -48,11 +48,13 @@ class ConsoleLogPlugin(Plugin, ABC):
         progress = f"{self._counter} of {ctx.harness().size()}"
         args = ctx.instance().args()
         elapsed_time = f"{ctx.elapsed_time() * 1000:.0f} ms"
+        construction = ctx.bests()[0]
         value = ctx.solution().value()
         feasible = ctx.solution().is_feasible()
         print("Instance:", progress)
         print("Args:", args)
         print("Time:", elapsed_time)
+        print("Construction:", construction)
         print("Best:", value)
         print("Feasible:", feasible)
         print()
