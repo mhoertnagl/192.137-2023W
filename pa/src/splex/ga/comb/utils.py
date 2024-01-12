@@ -89,3 +89,12 @@ def merge_parents(problem: Problem, p1: Solution, p2: Solution):
     for c2 in rs2:
         kid.add_edges(p2.edges(c2))
     return kid
+
+
+def converge_parents(problem: Problem, p1: Solution, p2: Solution):
+    kid = Solution(problem)
+    cs1 = p1.frozen_components()
+    cs2 = p2.frozen_components()
+    for c in cs1.intersection(cs2):
+        kid.add_edges(p1.edges(c))
+    return kid

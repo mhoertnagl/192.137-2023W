@@ -17,13 +17,9 @@ class EliteReplacer(Replacer, ABC):
                 parents: Population,
                 kids: Population,
                 size: int) -> Population:
-        # TODO: Sample parent elite?
         sz = math.ceil(self._f * size)
         elite, losers = parents.split(sz)
         rest = losers.join(kids).sample(size - sz)
-        # if size - sz >= len(kids):
-        #     return elite.join(kids)
-        # rest = kids.sample(size - sz)
         return elite.join(rest)
 
     def __repr__(self):

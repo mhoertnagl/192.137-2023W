@@ -22,13 +22,17 @@ class VertexMoveMutation(Mutator, ABC):
 
     def mutate(self, problem: Problem, solution: Solution):
         ca = solution.components()
+        if len(ca) < 2:
+            print("Less than 2 components.")
+            return
         for _ in range(math.ceil(self._fc * len(ca))):
             [c1, c2] = sample(ca, 2)
-            for v in sample_frac(list(c1), self._fv):
+            for v in c1:  # sample_frac(list(c1), self._fv):
                 rem = [(u, v) for u in solution.neighbors(v)]
                 add = [(u, v) for u in c2 if u != v]
-                solution.remove_edges(rem)
-                solution.add_edges(add)
+                if solution.delta(add, rem) < 0:
+                    solution.remove_edges(rem)
+                    solution.add_edges(add)
 
     def __repr__(self):
         return f"Vertex Move Mutation [fc={self._fc}, fv={self._fv}]"

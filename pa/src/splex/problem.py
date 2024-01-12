@@ -57,3 +57,10 @@ class Problem(IProblem, ABC):
 
     def non_edges(self):
         return self._non_edges
+
+    def weights_for_edges(self, es: list[(int, int)]):
+        wedges: list[(int, int, int)] = []
+        for (u,v) in es:
+            wedges.append((self.weight(u,v), u, v))
+        wedges.sort()
+        return wedges

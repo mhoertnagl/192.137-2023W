@@ -57,7 +57,7 @@ class GA:
         self._population = Population(solutions)
         # Save the best constructed solution.
         self._update_best()
-        print("Construction value:", self._population.best().value())
+        # print("Construction value:", self._population.best().value())
 
     def _select(self, problem: Problem) -> Population:
         return self._selection.select(problem, self._population, self._size)

@@ -33,6 +33,7 @@ class ConsoleLogPlugin(Plugin, ABC):
         print("-" * 60)
 
     def harness_before(self, ctx: HarnessContext):
+        self._counter = 0
         print(f"Running Harness '{ctx.harness().name()}'")
 
     def harness_after(self, ctx: HarnessContext):
