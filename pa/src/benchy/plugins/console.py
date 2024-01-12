@@ -37,7 +37,6 @@ class ConsoleLogPlugin(Plugin, ABC):
         print(f"Running Harness '{ctx.harness().name()}'")
 
     def harness_after(self, ctx: HarnessContext):
-        print()
         print(f"Harness '{ctx.harness().name()}' completed")
 
     def instance_before(self, ctx: BeforeInstanceContext):
@@ -61,4 +60,3 @@ class ConsoleLogPlugin(Plugin, ABC):
         print("Construction:", construction)
         print("Best:", value)
         print("Feasible:", feasible)
-        print()
