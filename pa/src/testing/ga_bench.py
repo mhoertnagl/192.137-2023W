@@ -30,7 +30,7 @@ class GAFixture(Fixture, ABC):
 if __name__ == '__main__':
     tb = Testbench()
     f1 = GAFixture()
-    h1 = Harness("Genetic Algorithm", f1, 1)
+    h1 = Harness("Genetic Algorithm", f1, 30)
     h1.add_parameter("pop_size", [15])
     h1.add_parameter("construction", [
         # EdgeConstruction(25),
@@ -39,17 +39,17 @@ if __name__ == '__main__':
         VertexConstruction()
     ])
     h1.add_parameter("selection", [
-        # RankSelection(0.25),
-        # RankSelection(0.50),
+        RankSelection(0.25),
+        RankSelection(0.50),
         # RankSelection(0.75),
-        # RouletteSelection(0.25),
-        # RouletteSelection(0.50),
+        RouletteSelection(0.25),
+        RouletteSelection(0.50),
         # RouletteSelection(0.75),
-        # TournamentSelection(0.25, 2),
+        TournamentSelection(0.25, 2),
         TournamentSelection(0.50, 2),
         # TournamentSelection(0.75, 2),
-        # TournamentSelection(0.25, 4),
-        # TournamentSelection(0.50, 4),
+        TournamentSelection(0.25, 4),
+        TournamentSelection(0.50, 4),
         # TournamentSelection(0.75, 4)
     ])
     h1.add_parameter("combiner", [
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         # EliteReplacer(0.50),
     ])
     # h1.add_parameter("iterations", [100, 500, 1000])
-    h1.add_parameter("iterations", [500])
+    h1.add_parameter("iterations", [100])
 
     # p1 = read_file("../../inst/testing/heur002_n_100_m_3274.txt")
     # p1 = read_file("../../inst/testing/heur003_n_120_m_2588.txt")
@@ -82,6 +82,15 @@ if __name__ == '__main__':
     # p1 = read_file("../../inst/testing/heur005_n_160_m_4015.txt")
     # p1 = read_file("../../inst/testing/heur006_n_180_m_6067.txt")
     # p1 = read_file("../../inst/testing/heur007_n_200_m_6731.txt")
+
+    ps = [
+        read_file("../../inst/testing/heur002_n_100_m_3274.txt"),
+        read_file("../../inst/testing/heur003_n_120_m_2588.txt"),
+        read_file("../../inst/testing/heur004_n_140_m_3014.txt"),
+        read_file("../../inst/testing/heur005_n_160_m_4015.txt"),
+        read_file("../../inst/testing/heur006_n_180_m_6067.txt"),
+        read_file("../../inst/testing/heur007_n_200_m_6731.txt")
+    ]
 
     # p1 = read_file("../../inst/testing/heur037_n_347_m_31752.txt")
 
@@ -97,7 +106,7 @@ if __name__ == '__main__':
     # p1 = read_file("../../inst/competition/heur051_n_300_m_20122.txt")
 
     # ps = read_dir("../../inst/tuning")
-    ps = read_dir("../../inst/testing")
+    # ps = read_dir("../../inst/testing")
 
     tb.add_plugin(ConsoleLogPlugin())
     tb.add_plugin(CsvPlugin('../../res'))
