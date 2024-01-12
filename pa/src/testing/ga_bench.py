@@ -30,7 +30,7 @@ if __name__ == '__main__':
     tb = Testbench()
     f1 = GAFixture()
     h1 = Harness("Genetic Algorithm", f1, 5)
-    h1.add_parameter("pop_size", [10])
+    h1.add_parameter("pop_size", [5])
     h1.add_parameter("construction", [
         # EdgeConstruction(25),
         # EdgeConstruction(50),
@@ -68,21 +68,22 @@ if __name__ == '__main__':
     ])
     h1.add_parameter("replacer", [
         BestReplacer(),
-        EliteReplacer(0.10),
-        EliteReplacer(0.25),
-        EliteReplacer(0.50),
+        # EliteReplacer(0.10),
+        # EliteReplacer(0.25),
+        # EliteReplacer(0.50),
     ])
     # h1.add_parameter("iterations", [100, 500, 1000])
-    h1.add_parameter("iterations", [100])
+    h1.add_parameter("iterations", [100, 500, 1000])
 
     # p1 = read_file("../../inst/testing/heur002_n_100_m_3274.txt")
     # p1 = read_file("../../inst/testing/heur037_n_347_m_31752.txt")
 
     # p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
     # p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
-    p1 = read_file("../../inst/tuning/heur046_n_300_m_13150.txt")
+    # p1 = read_file("../../inst/tuning/heur046_n_300_m_13150.txt")
     # p1 = read_file("../../inst/tuning/heur048_n_300_m_14666.txt")
-    # p1 = read_file("../../inst/tuning/heur053_n_300_m_39861.txt")
+    ## p1 = read_file("../../inst/tuning/heur053_n_300_m_39861.txt")
+    p1 = read_file("../../inst/tuning/heur055_n_300_m_5164.txt")
 
     # p1 = read_file("../../inst/competition/heur049_n_300_m_17695.txt")
 
