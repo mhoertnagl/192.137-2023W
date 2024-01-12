@@ -68,9 +68,9 @@ if __name__ == '__main__':
     ])
     h1.add_parameter("replacer", [
         BestReplacer(),
-        # EliteReplacer(0.10),
-        # EliteReplacer(0.25),
-        # EliteReplacer(0.50),
+        EliteReplacer(0.10),
+        EliteReplacer(0.25),
+        EliteReplacer(0.50),
     ])
     # h1.add_parameter("iterations", [100, 500, 1000])
     h1.add_parameter("iterations", [100])
@@ -79,8 +79,8 @@ if __name__ == '__main__':
     # p1 = read_file("../../inst/testing/heur037_n_347_m_31752.txt")
 
     # p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
-    p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
-    # p1 = read_file("../../inst/tuning/heur046_n_300_m_13150.txt")
+    # p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
+    p1 = read_file("../../inst/tuning/heur046_n_300_m_13150.txt")
     # p1 = read_file("../../inst/tuning/heur048_n_300_m_14666.txt")
     # p1 = read_file("../../inst/tuning/heur053_n_300_m_39861.txt")
 

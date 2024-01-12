@@ -18,7 +18,7 @@ class VertexConstruction(Construction, ABC):
                     cv = solution.component(v)
                     edges = [(u, w) for u in c for w in cv]
                     delta = solution.delta(edges, [])
-                    if best_d is None or delta < best_d:
+                    if delta < best_d:
                         best_e = edges
                         best_d = delta
             if best_d < 0:
@@ -30,33 +30,6 @@ class VertexConstruction(Construction, ABC):
 
     def __str__(self):
         return self.__repr__()
-
-
-# class VertexConstruction(Construction, ABC):
-#
-#     def construct(self, problem: Problem) -> Solution:
-#         solution = Solution(problem)
-#         vertices = list(range(1, problem.n+1))
-#         random.shuffle(vertices)
-#         for v in vertices:
-#             feasible = solution.is_feasible()
-#             best_e, best_d = None, None
-#             for c in solution.components():
-#                 if v not in c:
-#                     edges = [(u, v) for u in c]
-#                     delta = solution.delta(edges, [])
-#                     if best_d is None or delta < best_d:
-#                         best_e = edges
-#                         best_d = delta
-#             if best_e is not None:
-#                 solution.add_edges(best_e)
-#         return solution
-#
-#     def __repr__(self):
-#         return f"Vertex Construction"
-#
-#     def __str__(self):
-#         return self.__repr__()
 
 
 class VertexConstruction2(Construction, ABC):

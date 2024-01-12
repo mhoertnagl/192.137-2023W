@@ -45,7 +45,7 @@ class ConstructCombiner(Combiner, ABC):
                     cv = solution.component(v)
                     edges = [(u, w) for u in c for w in cv]
                     delta = solution.delta(edges, [])
-                    if best_d is None or delta < best_d:
+                    if delta < best_d:
                         best_e = edges
                         best_d = delta
             if best_d < 0:
