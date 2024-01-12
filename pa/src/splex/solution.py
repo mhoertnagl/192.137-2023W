@@ -12,7 +12,7 @@ class Solution(ISolution, ABC):
     def __init__(self, problem: Problem):
         self._problem = problem
         self._graph = Graph(problem.n)
-        self._feasible = np.zeros(problem.n, dtype=bool)
+        # self._feasible = np.zeros(problem.n, dtype=bool)
         self._value = self._compute_value()
 
     def value(self) -> int | float:
@@ -79,6 +79,7 @@ class Solution(ISolution, ABC):
     def is_feasible(self):
         for v in range(1, self._problem.n+1):
             if not self.is_vertex_feasible(v):
+                # print("Not feasible anymore:", v)
                 return False
         return True
 

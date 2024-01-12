@@ -39,28 +39,17 @@ class ConstructCombiner(Combiner, ABC):
                  remainder: list[int]):
         shuffle(remainder)
         for v in remainder:
-            best_e, best_d = None, None
+            best_e, best_d = None, 0
             for c in solution.components():
                 if v not in c:
-                    edges, delta = self.find_edges_to_add(problem, solution, v, c)
+                    cv = solution.component(v)
+                    edges = [(u, w) for u in c for w in cv]
+                    delta = solution.delta(edges, [])
                     if best_d is None or delta < best_d:
                         best_e = edges
                         best_d = delta
-            if best_e is not None:
+            if best_d < 0:
                 solution.add_edges(best_e)
-
-    def find_edges_to_add(self,
-                          prob: Problem,
-                          sol: Solution,
-                          v: int,
-                          c: set[int]):
-        edges = []
-        for u in c:
-            edges.append((u, v))
-        if len(c) > prob.s + 1:
-            wedges = prob.weights_for_edges(edges)
-            edges = [(u, v) for (w, u, v) in wedges[:len(c)+1-prob.s]]
-        return edges, sol.delta(edges, [])
 
     def __repr__(self):
         return f"Converge Combiner [f={self._f}]"

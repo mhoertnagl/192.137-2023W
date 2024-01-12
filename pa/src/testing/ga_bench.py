@@ -30,22 +30,22 @@ if __name__ == '__main__':
     tb = Testbench()
     f1 = GAFixture()
     h1 = Harness("Genetic Algorithm", f1, 5)
-    h1.add_parameter("pop_size", [5, 10])
+    h1.add_parameter("pop_size", [5])
     h1.add_parameter("construction", [
         # EdgeConstruction(25),
         # EdgeConstruction(50),
-        EdgeConstruction(100)
-        # VertexConstruction2()
+        # EdgeConstruction(100)
+        VertexConstruction()
     ])
     h1.add_parameter("selection", [
         # RankSelection(0.25),
         RankSelection(0.50),
         # RankSelection(0.75),
         # RouletteSelection(0.25),
-        RouletteSelection(0.50),
+        # RouletteSelection(0.50),
         # RouletteSelection(0.75),
         # TournamentSelection(0.25, 2),
-        TournamentSelection(0.50, 2),
+        # TournamentSelection(0.50, 2),
         # TournamentSelection(0.75, 2),
         # TournamentSelection(0.25, 4),
         # TournamentSelection(0.50, 4),
@@ -53,10 +53,10 @@ if __name__ == '__main__':
     ])
     h1.add_parameter("combiner", [
         # PickCombiner(0.25),
-        PickCombiner(0.50),
+        # PickCombiner(0.50),
         # PickCombiner(0.75),
         # ConvergeCombiner(0.50),
-        # ConstructCombiner(0.50)
+        ConstructCombiner(0.50)
     ])
     h1.add_parameter("mutator", [
         VertexMoveMutation(fc=0.05, fv=0.05),
@@ -69,23 +69,23 @@ if __name__ == '__main__':
     h1.add_parameter("replacer", [
         BestReplacer(),
         # EliteReplacer(0.10),
-        EliteReplacer(0.25),
+        # EliteReplacer(0.25),
         # EliteReplacer(0.50),
     ])
     # h1.add_parameter("iterations", [100, 500, 1000])
-    h1.add_parameter("iterations", [100, 500])
+    h1.add_parameter("iterations", [100])
 
     # p1 = read_file("../../inst/testing/heur002_n_100_m_3274.txt")
     # p1 = read_file("../../inst/testing/heur037_n_347_m_31752.txt")
-    # p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
+    p1 = read_file("../../inst/tuning/heur040_n_300_m_13358.txt")
     # p1 = read_file("../../inst/tuning/heur044_n_300_m_3234.txt")
     # p1 = read_file("../../inst/competition/heur049_n_300_m_17695.txt")
 
-    ps = read_dir("../../inst/tuning")
+    # ps = read_dir("../../inst/tuning")
 
     tb.add_plugin(ConsoleLogPlugin())
     tb.add_plugin(CsvPlugin("../../res"))
     tb.add_harness(h1)
-    # tb.add_problem(p1)
-    tb.add_problems(ps)
+    tb.add_problem(p1)
+    # tb.add_problems(ps)
     tb.run()

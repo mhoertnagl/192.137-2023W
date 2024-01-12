@@ -49,4 +49,10 @@ class ConsoleLogPlugin(Plugin, ABC):
         args = ctx.instance().args()
         elapsed_time = f"{ctx.elapsed_time() * 1000:.0f} ms"
         value = ctx.solution().value()
-        print(progress, args, elapsed_time, value)
+        feasible = ctx.solution().is_feasible()
+        print("Instance:", progress)
+        print("Args:", args)
+        print("Time:", elapsed_time)
+        print("Best:", value)
+        print("Feasible:", feasible)
+        print()

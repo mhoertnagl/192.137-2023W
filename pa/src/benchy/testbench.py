@@ -183,7 +183,6 @@ class Testbench:
 
     def _run_batch(self, ctx: InstanceContext):
         tasks = []
-        # Run the instance multiple times in parallel.
         for run in range(ctx.harness().repetitions()):
             ctx2 = BeforeInstanceContext(ctx, run + 1)
             for plugin in self._plugins:
@@ -195,13 +194,7 @@ class Testbench:
                 run + 1
             )
             tasks.append(task)
-        # Wait for all the parallel runs to finish.
         done, not_done = wait(tasks, return_when=ALL_COMPLETED)
-        # # Print an error message if some task could not be finished.
-        # d, n = len(done), len(not_done)
-        # if n > 0:
-        #     print(f"Timeout: could not complete {n} out of {d+n} runs.")
-        # Process completed tasks.
         for task in done:
             solution, bests, elapsed_time, run = task.result()
             ctx2 = AfterInstanceContext(ctx, run, solution, bests, elapsed_time)

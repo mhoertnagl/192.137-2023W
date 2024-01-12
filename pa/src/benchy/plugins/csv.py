@@ -34,8 +34,10 @@ class CsvPlugin(Plugin, ABC):
 
     def harness_before(self, ctx: HarnessContext):
         harness_name = ctx.harness().name()
+        problem_name = ctx.problem().name()
+        dataframe_name = harness_name + "-" + problem_name
         columns = self._column_names(ctx)
-        self._dfs[harness_name] = pd.DataFrame(columns=columns)
+        self._dfs[dataframe_name] = pd.DataFrame(columns=columns)
 
     def _column_names(self, ctx):
         parameter_names = ctx.harness().parameter_names()
@@ -49,16 +51,20 @@ class CsvPlugin(Plugin, ABC):
 
     def instance_after(self, ctx: AfterInstanceContext):
         harness_name = ctx.harness().name()
+        problem_name = ctx.problem().name()
+        dataframe_name = harness_name + "-" + problem_name
         self._append_result(ctx)
-        filename = os.path.join(self._out_dir, f"{harness_name}.csv")
-        self._dfs[harness_name].to_csv(filename)
+        filename = os.path.join(self._out_dir, f"{dataframe_name}.csv")
+        self._dfs[dataframe_name].to_csv(filename)
 
     def _append_result(self, ctx: AfterInstanceContext):
         harness_name = ctx.harness().name()
-        old_df = self._dfs[harness_name]
+        problem_name = ctx.problem().name()
+        dataframe_name = harness_name + "-" + problem_name
+        old_df = self._dfs[dataframe_name]
         row = self._create_row(ctx)
         new_df = pd.concat([old_df, row], ignore_index=True)
-        self._dfs[harness_name] = new_df
+        self._dfs[dataframe_name] = new_df
 
     def _create_row(self, ctx: AfterInstanceContext):
         rows = []
@@ -67,7 +73,7 @@ class CsvPlugin(Plugin, ABC):
             row[COL_PROBLEM] = ctx.problem().name()
             row[COL_RUN] = ctx.run()
             row[COL_ITERATION] = f"{i:.0f}"
-            row[COL_BEST] = ctx.bests()[i]  # ctx.solution().value()
+            row[COL_BEST] = ctx.bests()[i]
             row[COL_TIME] = f"{ctx.elapsed_time() * 1000:.0f}"
             rows.append(row)
         return pd.DataFrame.from_records(rows)

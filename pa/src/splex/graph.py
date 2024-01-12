@@ -42,13 +42,19 @@ class Graph:
         self._degrees[v-1] -= 1
         self._adjacent[u-1, v-1] = False
         self._adjacent[v-1, u-1] = False
-        self._neighbors[u].remove(v)
-        self._neighbors[v].remove(u)
+        # TODO: This should not be necessary.
+        if v in self._neighbors[u]:
+            self._neighbors[u].remove(v)
+        # TODO: This should not be necessary.
+        if u in self._neighbors[v]:
+            self._neighbors[v].remove(u)
         self._disconnect_components(u, v)
 
     def _remove_edge(self, u: int, v: int):
         m1, m2 = min(u, v), max(u, v)
-        self._edges.remove((m1, m2))
+        # TODO: This should not be necessary.
+        if (m1, m2) in self._edges:
+            self._edges.remove((m1, m2))
 
     def edges(self, vs: frozenset[int] | set[int] | None = None) -> set[(int, int)]:
         if vs is None:
