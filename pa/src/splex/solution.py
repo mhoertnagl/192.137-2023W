@@ -13,7 +13,6 @@ class Solution(ISolution, ABC):
     def __init__(self, problem: Problem):
         self._problem = problem
         self._graph = Graph(problem.n)
-        # self._feasible = np.zeros(problem.n, dtype=bool)
         self._value = self._compute_value()
 
     def value(self) -> int | float:
@@ -80,7 +79,6 @@ class Solution(ISolution, ABC):
     def is_feasible(self):
         for v in range(1, self._problem.n+1):
             if not self.is_vertex_feasible(v):
-                # print("Not feasible anymore:", v)
                 return False
         return True
 
@@ -98,7 +96,9 @@ class Solution(ISolution, ABC):
     def to_file(self) -> str:
         s = StringIO()
         s.write(f"{self._problem.name}\n")
-        for (u, v) in self.edges():
+        edges = list(self.edges())
+        edges.sort()
+        for (u, v) in edges:
             if self.is_edited(u, v):
                 s.write(f"{u} {v}\n")
         return s.getvalue()

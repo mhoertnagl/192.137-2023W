@@ -6,7 +6,9 @@ from splex import Problem
 
 
 def read_dir(path: str):
-    for item in os.listdir(path):
+    items = os.listdir(path)
+    items.sort()
+    for item in items:
         filename = os.path.join(path, item)
         if os.path.isfile(filename):
             yield read_file(filename)

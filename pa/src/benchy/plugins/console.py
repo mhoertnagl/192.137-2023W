@@ -52,7 +52,11 @@ class ConsoleLogPlugin(Plugin, ABC):
         value = ctx.solution().value()
         feasible = ctx.solution().is_feasible()
         print("Instance:", progress)
-        print("Args:", args)
+        print("Args:")
+        keys = list(args.keys())
+        keys.sort()
+        for key in keys:
+            print(f"  {key}:", args[key])
         print("Time:", elapsed_time)
         print("Construction:", construction)
         print("Best:", value)
