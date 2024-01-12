@@ -13,17 +13,17 @@ def get_iterations(data: pd.DataFrame, column: str, selection: str, runs: int = 
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../res/tune-selection.csv')
+    data = pd.read_csv('../../res/tune-mutator.csv')
 
     legends = [
-        'Rank Selection [f=0.5]',
-        'Roulette Selection [f=0.5]',
-        'Tournament Selection [f=0.5, k=2]',
-        'Tournament Selection [f=0.5, k=4]'
+        'Vertex Move Mutation [fc=0.05, fv=0.05]',
+        'Vertex Move Mutation [fc=0.25, fv=0.25]',
+        'Vertex Move Mutation [fc=0.5, fv=0.5]',
+        'Vertex Move Mutation [fc=0.75, fv=0.75]'
     ]
 
     for legend in legends:
-        iterations = get_iterations(data, 'selection', legend)
+        iterations = get_iterations(data, 'mutator', legend)
         plt.plot(
             np.arange(0, len(iterations)),
             iterations,
@@ -33,4 +33,4 @@ if __name__ == '__main__':
     plt.legend()
     # plt.show()
 
-    plt.savefig("../../res/plots/tune-selection.svg")
+    plt.savefig("../../res/plots/tune-mutator.svg")

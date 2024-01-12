@@ -45,10 +45,10 @@ if __name__ == '__main__':
         # RouletteSelection(0.50),
         # RouletteSelection(0.75),
         # TournamentSelection(0.25, 2),
-        # TournamentSelection(0.50, 2),
+        TournamentSelection(0.50, 2),
         # TournamentSelection(0.75, 2),
         # TournamentSelection(0.25, 4),
-        TournamentSelection(0.50, 4),
+        # TournamentSelection(0.50, 4),
         # TournamentSelection(0.75, 4)
     ])
     h1.add_parameter("combiner", [

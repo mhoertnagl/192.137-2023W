@@ -13,17 +13,17 @@ def get_iterations(data: pd.DataFrame, column: str, selection: str, runs: int = 
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../res/tune-selection.csv')
+    data = pd.read_csv('../../res/tune-replacer.csv')
 
     legends = [
-        'Rank Selection [f=0.5]',
-        'Roulette Selection [f=0.5]',
-        'Tournament Selection [f=0.5, k=2]',
-        'Tournament Selection [f=0.5, k=4]'
+        'Best Replacement',
+        'Elite Replacement [f=0.1]',
+        'Elite Replacement [f=0.25]',
+        'Elite Replacement [f=0.5]'
     ]
 
     for legend in legends:
-        iterations = get_iterations(data, 'selection', legend)
+        iterations = get_iterations(data, 'replacer', legend)
         plt.plot(
             np.arange(0, len(iterations)),
             iterations,
@@ -33,4 +33,4 @@ if __name__ == '__main__':
     plt.legend()
     # plt.show()
 
-    plt.savefig("../../res/plots/tune-selection.svg")
+    plt.savefig("../../res/plots/tune-replacer.svg")

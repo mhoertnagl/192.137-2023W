@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def get_iterations(data: pd.DataFrame, column: str, selection: str, runs: int = 5) -> np.ndarray:
+def get_iterations(data: pd.DataFrame, column: str, selection: any, runs: int = 5) -> np.ndarray:
     sel = data[data[column] == selection]
     bests = sel[sel['run'] == 1]['best']
     for run in range(2, runs+1):
@@ -13,24 +13,29 @@ def get_iterations(data: pd.DataFrame, column: str, selection: str, runs: int = 
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../../res/tune-selection.csv')
+    data = pd.read_csv('../../res/tune-iterations.csv')
 
     legends = [
-        'Rank Selection [f=0.5]',
-        'Roulette Selection [f=0.5]',
-        'Tournament Selection [f=0.5, k=2]',
-        'Tournament Selection [f=0.5, k=4]'
+        '100 iterations',
+        '500 iterations',
+        '1000 iterations'
     ]
 
-    for legend in legends:
-        iterations = get_iterations(data, 'selection', legend)
+    items = [
+        100,
+        500,
+        1000
+    ]
+
+    for i in range(len(items)):
+        iterations = get_iterations(data, 'iterations', items[i])
         plt.plot(
             np.arange(0, len(iterations)),
             iterations,
-            label=legend
+            label=legends[i]
         )
 
     plt.legend()
     # plt.show()
 
-    plt.savefig("../../res/plots/tune-selection.svg")
+    plt.savefig("../../res/plots/tune-iterations.svg")
