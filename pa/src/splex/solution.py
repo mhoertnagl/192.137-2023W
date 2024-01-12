@@ -1,4 +1,5 @@
 from abc import ABC
+from io import StringIO
 
 import numpy as np
 
@@ -93,3 +94,11 @@ class Solution(ISolution, ABC):
 
     def __str__(self):
         return f"{self.value()}"
+
+    def to_file(self) -> str:
+        s = StringIO()
+        s.write(f"{self._problem.name}\n")
+        for (u, v) in self.edges():
+            if self.is_edited(u, v):
+                s.write(f"{u} {v}\n")
+        return s.getvalue()

@@ -14,6 +14,10 @@ class ISolution(ABC):
     def is_feasible(self):
         pass
 
+    @abstractmethod
+    def to_file(self) -> str:
+        pass
+
 
 def best_of(candidates: list[ISolution]) -> ISolution | None:
     winner: ISolution | None = None
